@@ -13,7 +13,7 @@
     if (!item || typeof item.name !== "string") return null;
     const name = item.name.trim();
     if (!name) return null;
-    return { toolId: makeId(item), name, url: String(item.url || "").trim(), category: String(item.category || "").trim(), company: String(item.company || "").trim(), icon: String(item.icon || "⭐") };
+    return { toolId: makeId(item), name, url: String(item.url || "").trim(), category: String(window.ASHCategories?.main(item.category) || item.category || "").trim(), company: String(item.company || "").trim(), icon: String(item.icon || "⭐") };
   }
   function readKey(key) {
     try {

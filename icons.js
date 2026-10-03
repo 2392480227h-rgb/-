@@ -129,6 +129,8 @@
   }
 
   function brand(name, websiteUrl) {
+    const enabled = name === "ChatGPT" || name === "Gemini" || name === "Claude";
+    if (!enabled) return '<span class="brand-icon brand-icon--legacy" aria-hidden="true">'+svg("info")+'</span>';
     const src = brandUrl(name, websiteUrl);
     let fallback = '';
     try {

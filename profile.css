@@ -139,3 +139,6 @@ button,a{font:inherit}
 .favorite-item-icon .brand-fallback{display:none;width:100%;height:100%;align-items:center;justify-content:center}
 .favorite-item-icon .brand-icon[data-broken="1"] .brand-fallback{display:grid}
 .favorite-item-icon .brand-fallback .ui-svg{width:20px;height:20px;color:#7b879c}
+
+/* Favorite logos: never show the generic fallback beneath a valid brand logo */
+.favorite-item-icon .brand-fallback{display:none!important}

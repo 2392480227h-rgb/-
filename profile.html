@@ -11,8 +11,8 @@
 <body>
 <header class="profile-sitebar">
   <div class="profile-wrap profile-nav">
-    <a class="profile-brand" href="./"><span>🧭</span><strong>AI 新手导航</strong><em>AI Starter Hub</em></a>
-    <a class="back-home" href="./">← 返回首页</a>
+    <a class="profile-brand" href="./"><span class="profile-brand-icon" data-icon="compass"></span><strong>AI 新手导航</strong><em>AI Starter Hub</em></a>
+    <a class="back-home" href="./"><span data-icon="arrowLeft"></span> 返回首页</a>
   </div>
 </header>
 
@@ -27,7 +27,7 @@
   </section>
 
   <section id="signedOut" class="panel signed-out" hidden>
-    <div class="empty-icon">👤</div>
+    <div class="empty-icon" data-icon="user"></div>
     <h2>先登录，开启你的个人空间</h2>
     <p>登录后才能保存收藏和最近看过的工具。账号入口与退出登录会保持分开。</p>
     <button id="signInButton" class="primary-button" type="button">使用 Google 登录</button>
@@ -45,14 +45,14 @@
         </div>
       </div>
       <div class="account-actions">
-        <button id="switchAccountButton" class="secondary-button" type="button">🔄 切换账号</button>
-        <button id="signOutButton" class="danger-button" type="button">🚪 退出登录</button>
+        <button id="switchAccountButton" class="secondary-button" type="button"><span data-icon="refresh"></span> 切换账号</button>
+        <button id="signOutButton" class="danger-button" type="button"><span data-icon="logout"></span> 退出登录</button>
       </div>
     </section>
 
     <section class="feature-grid">
       <article class="feature-card">
-        <div class="feature-icon">⭐</div>
+        <div class="feature-icon" data-icon="star"></div>
         <div>
           <span class="panel-label">FAVORITES / 收藏</span>
           <h2>我的收藏</h2>
@@ -62,7 +62,7 @@
       </article>
 
       <article class="feature-card">
-        <div class="feature-icon">🕘</div>
+        <div class="feature-icon" data-icon="clock"></div>
         <div>
           <span class="panel-label">RECENT / 最近</span>
           <h2>最近看过</h2>
@@ -81,9 +81,9 @@
         <span class="building-tag">正在搭建</span>
       </div>
       <div class="roadmap-grid">
-        <div><span>⭐</span><strong>收藏</strong><small>即将接入 Supabase</small></div>
-        <div><span>🕘</span><strong>最近看过</strong><small>自动记录访问时间</small></div>
-        <div><span>👤</span><strong>账号资料</strong><small>当前版本已支持</small></div>
+        <div><span data-icon="star"></span><strong>收藏</strong><small>即将接入 Supabase</small></div>
+        <div><span data-icon="clock"></span><strong>最近看过</strong><small>自动记录访问时间</small></div>
+        <div><span data-icon="user"></span><strong>账号资料</strong><small>当前版本已支持</small></div>
       </div>
     </section>
   </div>
@@ -91,11 +91,11 @@
 
 <footer class="profile-footer">
   <div class="profile-wrap">
-    <span>🧭 AI 新手导航 · AI Starter Hub</span>
+    <span><span data-icon="compass"></span> AI 新手导航 · AI Starter Hub</span>
     <small>账号数据和个人功能会逐步完善。</small>
   </div>
 </footer>
 
-<script type="module" src="profile.js"></script>
+<script src="icons.js?v=20261003-1"></script><script type="module" src="profile.js"></script>
 </body>
 </html>

@@ -112,6 +112,8 @@
     "Symbolab":"symbolab"
   };
 
+  const verifiedSimpleIconSlugs = new Set(["googlegemini","anthropic","perplexity","notebooklm","githubcopilot","cursor","huggingface","ollama","lmstudio","minimax","elevenlabs","suno","deepseek","bytedance","alibabacloud","baidu","poe","mistralai","google","grammarly","deepl","googletranslate","veed","replit","symbolab"]);
+
   function svg(name, className = "") {
     const paths = uiPaths[name] || uiPaths.info;
     return '<svg class="ui-svg '+className+'" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+paths+'</svg>';
@@ -119,27 +121,22 @@
 
   function brandUrl(name, websiteUrl) {
     const slug = brandSlugs[name];
-    if (slug) return 'https://cdn.simpleicons.org/' + slug;
+    if (slug && verifiedSimpleIconSlugs.has(slug)) return 'https://cdn.simpleicons.org/' + slug;
     try {
       const host = new URL(websiteUrl).hostname;
       return 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(host) + '&sz=128';
     } catch {
       return '';
     }
-  }
-
-  function brand(name, websiteUrl) {
-    const enabled = name === "ChatGPT" || name === "Gemini" || name === "Claude";
-    if (!enabled) return '<span class="brand-icon brand-icon--legacy" aria-hidden="true">'+svg("info")+'</span>';
+  }  function brand(name, websiteUrl) {
     const src = brandUrl(name, websiteUrl);
     let fallback = '';
     try {
-      fallback = 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(new URL(websiteUrl).hostname) + '&sz=128';
+      const host = new URL(websiteUrl).hostname;
+      fallback = 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(host) + '&sz=128';
     } catch {}
     const fallbackAttr = fallback ? ' data-fallback="'+fallback+'"' : '';
     const handler = "if(this.dataset.fallback){const next=this.dataset.fallback;this.dataset.fallback='';this.src=next;return;}this.closest('.brand-icon').dataset.broken='1'";
     return '<span class="brand-icon" aria-hidden="true"><img src="'+src+'" alt="" loading="lazy" referrerpolicy="no-referrer"'+fallbackAttr+' onerror="'+handler+'"><span class="brand-fallback">'+svg("info")+'</span></span>';
-  }
-
-  window.ASHIcons = { svg, brand, brandUrl };
+  }  window.ASHIcons = { svg, brand, brandUrl };
 })();

@@ -1,34 +1,6 @@
 const internationalNames={"豆包":"Doubao","通义千问":"Qwen","文心助手":"ERNIE Assistant","腾讯元宝":"Yuanbao","智谱清言":"ChatGLM","秘塔AI搜索":"Metaso","即梦AI":"Jimeng AI","通义灵码":"Qoder CN"};
 
-const categoryMap={
-  "聊天 / 综合":"聊天 / 助手",
-  "搜索 / 研究":"搜索 / 研究",
-  "学习 / 研究":"搜索 / 研究",
-  "聊天 / 办公":"写作 / 办公",
-  "写作 / 办公":"写作 / 办公",
-  "翻译":"写作 / 办公",
-  "会议 / 音频":"写作 / 办公",
-  "演示 / 文档":"写作 / 办公",
-  "图表 / 文档":"写作 / 办公",
-  "图片":"图片 / 设计",
-  "图片 / 设计":"图片 / 设计",
-  "设计":"图片 / 设计",
-  "图片 / 抠图":"图片 / 设计",
-  "视频":"视频 / 音频",
-  "视频 / 音频":"视频 / 音频",
-  "视频 / 数字人":"视频 / 音频",
-  "音频 / 配音":"视频 / 音频",
-  "音乐":"视频 / 音频",
-  "编程":"编程 / 开发",
-  "编程 / 搜索":"编程 / 开发",
-  "开发 / 模型":"编程 / 开发",
-  "模型 / 开源":"模型 / 开源",
-  "本地 AI":"本地 AI"
-};
-function mainCategory(toolOrCategory){
-  const raw=Array.isArray(toolOrCategory)?toolOrCategory[2]:toolOrCategory;
-  return categoryMap[raw]||raw||"其他";
-}
+const mainCategory=(toolOrCategory)=>window.ASHCategories?.main(toolOrCategory)||((Array.isArray(toolOrCategory)?toolOrCategory[2]:toolOrCategory)||"其他");
 const taskMap={"聊天":"聊天 / 助手","学习":"搜索 / 研究","写作":"写作 / 办公","图片":"图片 / 设计","视频":"视频 / 音频","编程":"编程 / 开发"};
 
 const tools=[
@@ -113,7 +85,7 @@ const tools=[
 ["Phind","🔎","编程 / 搜索","面向开发者的 AI 搜索与编程助手。","免费入口","https://www.phind.com/","Phind"],
 ["Symbolab","🧮","学习 / 研究","数学题求解与步骤讲解工具，适合学习。","免费入口","https://www.symbolab.com/","Symbolab"]
 ];
-const cats=["全部","聊天 / 助手","搜索 / 研究","写作 / 办公","图片 / 设计","视频 / 音频","编程 / 开发","模型 / 开源","本地 AI"];let active="全部";
+const cats=["全部",...(window.ASHCategories?.list||[])];let active="全部";
 const $=s=>document.querySelector(s);
 function renderCats(){ $("#cats").innerHTML=cats.map(c=>`<button class="cat ${c===active?"active":""}" data-c="${c}">${c}</button>`).join("");document.querySelectorAll(".cat").forEach(b=>b.onclick=()=>{active=b.dataset.c;renderCats();render()})}
 function esc(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}

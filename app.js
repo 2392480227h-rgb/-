@@ -88,7 +88,7 @@ const cats=["全部",...new Set(tools.map(x=>x[2]))];let active="全部";
 const $=s=>document.querySelector(s);
 function renderCats(){ $("#cats").innerHTML=cats.map(c=>`<button class="cat ${c===active?"active":""}" data-c="${c}">${c}</button>`).join("");document.querySelectorAll(".cat").forEach(b=>b.onclick=()=>{active=b.dataset.c;renderCats();render()})}
 function esc(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
-function normalize(s){return String(s||"").toLowerCase().replace(/[\\s_\\-]+/g,"").trim()}
+function normalize(s){return String(s||"").toLowerCase().replace(/[\s_\-]+/g,"").trim()}
 function popularityScore(name){
   let hash=2166136261;
   for(let i=0;i<name.length;i++) hash=Math.imul(hash^name.charCodeAt(i),16777619);
@@ -105,6 +105,7 @@ function syncFavoriteButton(button){
   button.classList.toggle("is-favorite",active);
   button.setAttribute("aria-pressed",String(active));
   button.setAttribute("title",active?("取消收藏 "+name):("收藏 "+name));
+  button.setAttribute("aria-label",active?("取消收藏 "+name):("收藏 "+name));
   const star=button.querySelector(".favorite-star");
   if(star)star.textContent=active?"★":"☆";
   const label=button.querySelector(".favorite-label");
@@ -124,9 +125,10 @@ function bindFavoriteButtons(){
     };
   });
 }
-function render(){const input=$("#search");const q=normalize(input.value);let a=tools.filter(x=>(active==="全部"||x[2]===active)&&(!q||normalize(x.join(" ")+" "+(internationalNames[x[0]]||"")).includes(q)));if($("#sort").value==="name")a.sort((x,y)=>x[0].localeCompare(y[0]));if($("#sort").value==="free")a.sort((x,y)=>x[4].localeCompare(y[4]));$("#count").textContent=tools.length;$("#summary").textContent=`当前显示 ${a.length} 个`;$("#empty").hidden=a.length>0;$("#grid").innerHTML=a.map(x=>`<article class="card" data-name="${esc(x[0])}"><div class="top"><span class="icon">${ASHIcons.brand(x[0],x[5])}</span><div class="card-top-actions"><span class="badge">${esc(x[4])}</span><div class="favorite-wrap"><button class="favorite-button" type="button" data-favorite-tool="${encodeURIComponent(x[0])}" aria-pressed="false" title="收藏 ${esc(x[0])}"><span class="favorite-star" aria-hidden="true">☆</span><span class="favorite-label">收藏</span></button><span class="favorite-count">${favoriteCount(x[0])} 人已收藏</span></div></div></div><h2>${esc(x[0])}${internationalNames[x[0]]?`<small class="intl-name">${esc(internationalNames[x[0]])}</small>`:""}</h2><div class="desc">${esc(x[3])}</div><div class="meta"><span class="tag">${esc(x[2])}</span><span class="tag">${esc(x[6])}</span></div><div class="card-signal"><span class="popularity">🔥 热度 ${popularityScore(x[0])}</span><span class="signal-note">站内指数</span></div><div class="card-actions guide-ready"><a class="open" href="${x[5]}" target="_blank" rel="noopener noreferrer">打开官网 ↗</a><a class="learn" href="tutorials/tool.html?tool=${encodeURIComponent(x[0])}"><span class="link-icon">${ASHIcons.svg("book")}</span> 这个工具怎么用？ / Guide</a></div></article>`).join("");bindFavoriteButtons()}
+function render(){const input=$("#search");const q=normalize(input.value);let a=tools.filter(x=>(active==="全部"||x[2]===active)&&(!q||normalize(x.join(" ")+" "+(internationalNames[x[0]]||"")).includes(q)));if($("#sort").value==="name")a.sort((x,y)=>x[0].localeCompare(y[0]));if($("#sort").value==="free")a.sort((x,y)=>x[4].localeCompare(y[4]));$("#count").textContent=tools.length;$("#summary").textContent=`当前显示 ${a.length} 个`;$("#empty").hidden=a.length>0;$("#grid").innerHTML=a.map(x=>`<article class="card" data-name="${esc(x[0])}"><div class="top"><span class="icon">${ASHIcons.brand(x[0],x[5])}</span><div class="card-top-actions"><span class="badge">${esc(x[4])}</span><div class="favorite-wrap"><button class="favorite-button" type="button" data-favorite-tool="${encodeURIComponent(x[0])}" aria-pressed="false" title="收藏 ${esc(x[0])}"><span class="favorite-star" aria-hidden="true">☆</span><span class="favorite-label">收藏</span></button><span class="favorite-count" title="轻量参考指标，并非实时用户统计">收藏热度 ${favoriteCount(x[0])}</span></div></div></div><h2>${esc(x[0])}${internationalNames[x[0]]?`<small class="intl-name">${esc(internationalNames[x[0]])}</small>`:""}</h2><div class="desc">${esc(x[3])}</div><div class="meta"><span class="tag">${esc(x[2])}</span><span class="tag">${esc(x[6])}</span></div><div class="card-signal"><span class="popularity">🔥 热度 ${popularityScore(x[0])}</span><span class="signal-note">站内指数</span></div><div class="card-actions guide-ready"><a class="open" href="${x[5]}" target="_blank" rel="noopener noreferrer">打开官网 ↗</a><a class="learn" href="tutorials/tool.html?tool=${encodeURIComponent(x[0])}"><span class="link-icon">${ASHIcons.svg("book")}</span> 这个工具怎么用？ / Guide</a></div></article>`).join("");bindFavoriteButtons()}
 function syncSearch(){const v=$("#search").value||"";if(v!==window.__lastSearchValue){window.__lastSearchValue=v;render()}}
 ["input","change","keyup","search","compositionend","blur","paste"].forEach(ev=>$("#search").addEventListener(ev,syncSearch));
+window.addEventListener("ash:favorites-changed",()=>document.querySelectorAll(".favorite-button").forEach(syncFavoriteButton));
 setInterval(syncSearch,300);
 $("#sort").onchange=render;renderCats();render();
 function pickTask(task){const c=taskMap[task];if(c){active=c;renderCats();render()}$("#tools").scrollIntoView({behavior:"smooth",block:"start"})}

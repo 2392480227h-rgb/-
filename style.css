@@ -90,4 +90,6 @@ html,body,#suggestions,#suggestions *{-webkit-text-size-adjust:none!important;te
 .favorite-button.is-favorite:hover{border-color:#e7c34b;background:#fff7df}
 .favorite-count{color:#a0a9b8;font-size:9px;line-height:1.2;white-space:nowrap}
 .favorite-button.is-favorite + .favorite-count{color:#a27b13;font-weight:700}
+#favorites .favorite-count{letter-spacing:.01em}
+.favorite-button:not(.is-favorite) .favorite-star{color:#a7afbd}
 @media(max-width:520px){.favorite-wrap{gap:2px}.favorite-count{font-size:8px}}

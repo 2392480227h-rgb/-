@@ -103,6 +103,7 @@ button,a{font:inherit}
 .favorite-item-actions .secondary-button,.favorite-item-actions .danger-button{margin:0}
 .favorites-empty{display:flex;flex-direction:column;gap:2px;margin-top:18px;padding:20px;border:1px dashed #dfe4ed;background:#fafbfc;border-radius:12px;color:#7b8699;font-size:12px}
 .favorites-empty strong{color:#56627a}
+.favorite-summary-ready{color:#a27b13}
 @media(max-width:520px){
   .favorite-item{grid-template-columns:42px minmax(0,1fr);align-items:start}
   .favorite-item-icon{width:42px;height:42px}

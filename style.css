@@ -44,3 +44,10 @@ html,body{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 #suggestions .suggest-chips>.suggest-chip .chip-brands{display:inline-flex!important;align-items:center!important;gap:2px!important;flex:0 0 auto!important}
 #suggestions .suggest-chips>.suggest-chip .chip-brands .brand-icon{width:16px!important;height:16px!important;min-width:16px!important;min-height:16px!important;max-width:16px!important;max-height:16px!important}
 @media(max-width:520px){#suggestions .suggest-chips>.suggest-chip{height:34px!important;max-height:34px!important;padding:6px 9px!important;font-size:13px!important;line-height:18px!important}#suggestions .suggest-chips>.suggest-chip .chip-brands .brand-icon{width:16px!important;height:16px!important}}
+
+/* Mobile browser font inflation guard: keep the search prompt labels at their authored size */
+html,body{ -webkit-text-size-adjust:none !important; text-size-adjust:none !important; }
+#suggestions,#suggestions *{ -webkit-text-size-adjust:none !important; text-size-adjust:none !important; }
+#suggestions .suggest-chips>.suggest-chip,#suggestions .suggest-chips>.suggest-chip>span{font-size:13px !important;line-height:18px !important;}
+#suggestions .suggest-chips>.suggest-chip{height:34px !important;max-height:34px !important;padding:6px 10px !important;}
+@media(max-width:520px){#suggestions .suggest-chips>.suggest-chip{height:34px !important;max-height:34px !important;padding:6px 9px !important;}}

@@ -10,7 +10,7 @@ function setStatus(text) {
 }
 
 function fallbackAvatar(user) {
-  const name = String(user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email || "U").trim();
+  const name = String(user?.user_metadata?.name || user?.user_metadata?.full_name || user?.email || "U").trim();
   return name ? name.slice(0, 1).toUpperCase() : "U";
 }
 
@@ -107,7 +107,7 @@ function renderSession(session) {
     return;
   }
 
-  const name = String(user.user_metadata?.full_name || user.user_metadata?.name || "已登录用户").trim() || "已登录用户";
+  const name = String(user.user_metadata?.name || user.user_metadata?.full_name || "已登录用户").trim() || "已登录用户";
   $("profileName").textContent = name;
   $("profileEmail").textContent = String(user.email || "Google 账号");
   renderAvatar(user);

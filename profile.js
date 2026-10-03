@@ -54,7 +54,9 @@ function renderFavorites() {
   empty.hidden = favorites.length > 0;
   for (const item of favorites) {
     const article = document.createElement("article"); article.className = "favorite-item";
-    const icon = document.createElement("div"); icon.className = "favorite-item-icon"; icon.textContent = item.icon || "⭐";
+    const icon = document.createElement("div"); icon.className = "favorite-item-icon";
+    if (window.ASHIcons?.brand) icon.innerHTML = window.ASHIcons.brand(item.name, item.url);
+    else icon.textContent = item.icon || "⭐";
     const copy = document.createElement("div"); copy.className = "favorite-item-copy";
     const name = document.createElement("strong"); name.textContent = item.name;
     const meta = document.createElement("small"); meta.textContent = [item.category, item.company].filter(Boolean).join(" · ");

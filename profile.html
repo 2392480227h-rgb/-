@@ -29,7 +29,7 @@
   <section id="signedOut" class="panel signed-out" hidden>
     <div class="empty-icon" data-icon="user"></div>
     <h2>先登录，开启你的个人空间</h2>
-    <p>登录后才能保存收藏和最近看过的工具。账号入口与退出登录会保持分开。</p>
+    <p>不用登录也能在当前设备收藏工具；登录后，可以在个人空间集中查看你的收藏。</p>
     <button id="signInButton" class="primary-button" type="button">使用 Google 登录</button>
   </section>
 
@@ -72,6 +72,21 @@
       </article>
     </section>
 
+    <section class="panel favorites-panel" aria-labelledby="favoritesTitle">
+      <div class="panel-heading">
+        <div>
+          <span class="panel-label">FAVORITES / 收藏</span>
+          <h2 id="favoritesTitle">我的收藏</h2>
+        </div>
+        <span id="favoriteSummary" class="building-tag">0 个工具</span>
+      </div>
+      <div id="favoritesList" class="favorites-list"></div>
+      <div id="favoritesEmpty" class="favorites-empty" hidden>
+        <strong>还没有收藏工具。</strong>
+        <span>回到首页，在喜欢的工具上点一下“☆ 收藏”即可。</span>
+      </div>
+    </section>
+
     <section class="panel roadmap-panel">
       <div class="panel-heading">
         <div>
@@ -81,7 +96,7 @@
         <span class="building-tag">正在搭建</span>
       </div>
       <div class="roadmap-grid">
-        <div><span data-icon="star"></span><strong>收藏</strong><small>即将接入 Supabase</small></div>
+        <div><span data-icon="star"></span><strong>收藏</strong><small>当前版本支持本地收藏</small></div>
         <div><span data-icon="clock"></span><strong>最近看过</strong><small>自动记录访问时间</small></div>
         <div><span data-icon="user"></span><strong>账号资料</strong><small>当前版本已支持</small></div>
       </div>
@@ -96,6 +111,6 @@
   </div>
 </footer>
 
-<script src="icons.js?v=20261003-3"></script><script type="module" src="profile.js"></script>
+<script src="icons.js?v=20261003-3"></script><script src="favorites.js?v=20261003-1"></script><script type="module" src="profile.js"></script>
 </body>
 </html>

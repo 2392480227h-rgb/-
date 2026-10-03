@@ -5,8 +5,10 @@ const signedOut = $("signedOut");
 const signedIn = $("signedIn");
 const status = $("profileStatus");
 
-function setStatus(text) {
-  if (status) status.textContent = text;
+function setStatus(text, loggedIn = false) {
+  if (!status) return;
+  status.textContent = text;
+  status.classList.toggle("is-logged-in", loggedIn);
 }
 
 function fallbackAvatar(user) {
@@ -103,15 +105,16 @@ function renderSession(session) {
   renderRecent();
 
   if (!loggedIn) {
-    setStatus("未登录");
+    setStatus("● 未登录", false);
     return;
   }
 
-  const name = String(user.user_metadata?.name || user.user_metadata?.full_name || "已登录用户").trim() || "已登录用户";
+  const rawName = String(user.user_metadata?.name || user.user_metadata?.full_name || "已登录用户").trim();
+  const name = rawName.split("(")[0].trim() || rawName || "已登录用户";
   $("profileName").textContent = name;
   $("profileEmail").textContent = String(user.email || "Google 账号");
   renderAvatar(user);
-  setStatus("● 已登录");
+  setStatus("● 已登录", true);
 }
 
 async function startLogin(forceAccountSelect = false) {

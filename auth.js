@@ -2,11 +2,11 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 /*
   AI Starter Hub · Google Auth
-  Only put the Supabase project URL and publishable key here.
-  Never put a Supabase service_role key in browser code.
+  The publishable key is intended for browser code.
+  Never put a Supabase secret/service_role key here.
 */
-const SUPABASE_URL = "";
-const SUPABASE_PUBLISHABLE_KEY = "";
+const SUPABASE_URL = "https://rebwsnahwpyqahmuycri.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_TVRAm1r1Er3xBfrtA6Q8DA_eeCYqQZk";
 
 const button = document.getElementById("authButton");
 if (!button) {

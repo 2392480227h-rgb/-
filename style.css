@@ -28,3 +28,11 @@
 /* Search suggestion brand icons */
 .suggest-icon .brand-icon{width:34px;height:34px;border:0;background:#f0f3f9}
 .suggest-icon .brand-icon img{width:72%;height:72%}
+
+/* Search prompt brand chips */
+.suggest-chip{display:inline-flex;align-items:center;gap:8px}
+.chip-brands{display:inline-flex;align-items:center;gap:2px;flex:0 0 auto}
+.chip-brands .brand-icon{width:18px;height:18px;border:0;background:transparent;border-radius:5px}
+.chip-brands .brand-icon img{width:86%;height:86%;object-fit:contain}
+.chip-brands .brand-fallback{width:86%;height:86%}
+@media(max-width:520px){.suggest-chip{gap:7px}.chip-brands .brand-icon{width:17px;height:17px}}

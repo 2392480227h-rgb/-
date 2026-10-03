@@ -4,17 +4,17 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AI 工具新手教程 · AI Starter Hub</title>
 <meta name="description" content="AI 工具新手图文教程，中英双语，帮助第一次使用 AI 的人快速上手。">
-<link rel="stylesheet" href="../style.css?v=20261003-9">
-<link rel="stylesheet" href="tutorial.css?v=20261003-3">
+<link rel="stylesheet" href="../style.css?v=20261004-2">
+<link rel="stylesheet" href="tutorial.css?v=20261004-1">
 </head>
 <body>
 <header class="topbar"><div class="wrap"><a class="brand" href="../"><span data-icon="compass"></span> AI 新手导航</a><a class="back" href="index.html"><span data-icon="book"></span> 教程目录 / Guides</a></div></header>
 <main class="wrap content" id="app"><section class="section"><h2>正在加载教程 / Loading guide…</h2></section></main>
-<script src="../icons.js?v=20261003-3"></script><script>document.querySelectorAll("[data-icon]").forEach(el=>{el.innerHTML=ASHIcons.svg(el.dataset.icon);});</script><script src="tutorial-data.js?v=20261003-1"></script>
+<script src="../icons.js?v=20261004-1"></script><script>document.querySelectorAll("[data-icon]").forEach(el=>{el.innerHTML=ASHIcons.svg(el.dataset.icon);});</script><script src="tutorial-data.js?v=20261004-2"></script>
 <script>
 (async()=>{
 const params=new URLSearchParams(location.search), name=params.get("tool");
-const app=await fetch("../app.js?v=20261003-10").then(r=>r.text());
+const app=await fetch("../app.js?v=20261004-2").then(r=>r.text());
 const body=app.match(/const tools=\[(.*?)\n\];/s)?.[1];
 const tools=body?Function("return ["+body+"]")():[];
 const t=tools.find(x=>x[0]===name);
@@ -34,8 +34,11 @@ const fallback={
 "图片":{mode:"image",learn:"先写清主体、风格、画面和用途。",learnEn:"Define the subject, style, composition, and use.",task:"生成第一张简单图片。",taskEn:"Generate a first simple image.",prompt:"生成一张主体明确、背景干净、适合手机屏幕的图片。",promptEn:"Generate a mobile-friendly image with a clear subject and a clean background.",tip:"一次只改一个变量。",tipEn:"Change one variable at a time.",avoid:"不要把十种风格和二十个主体塞进一句话。",avoidEn:"Do not combine too many styles and subjects in one prompt."},
 "图片 / 设计":{mode:"design",learn:"先确定尺寸、用途和文字内容，再排版。",learnEn:"Choose the size, purpose, and copy before designing.",task:"制作一张手机竖版宣传图。",taskEn:"Create one vertical mobile promo graphic.",prompt:"做一张手机竖版宣传图，标题醒目，信息分成 3 块，底部留二维码区域。",promptEn:"Create a vertical mobile promo graphic with a bold title, 3 information blocks, and a QR-code area at the bottom.",tip:"文字内容先整理，再做视觉设计。",tipEn:"Prepare the copy before the visual layout.",avoid:"不要边改文案边大改版式，容易来回返工。",avoidEn:"Avoid changing the copy and layout at the same time."},
 "图片 / 抠图":{mode:"image",learn:"上传主体清晰的图片，再处理背景。",learnEn:"Upload a clear subject image, then work on the background.",task:"完成一次抠图并导出。",taskEn:"Remove the background and export the result.",prompt:"保留主体完整边缘，移除背景，边缘自然。",promptEn:"Keep the subject edges clean, remove the background, and keep the edges natural.",tip:"主体和背景反差明显时更容易处理。",tipEn:"Clear subject/background contrast usually helps."},
+"设计 / 图片":{mode:"design",learn:"先确定尺寸、用途和文字内容，再排版。",learnEn:"Choose the size, purpose, and copy before designing.",task:"制作一张手机竖版宣传图。",taskEn:"Create one vertical mobile promo graphic.",prompt:"做一张手机竖版宣传图，标题醒目，信息分成 3 块，底部留二维码区域。",promptEn:"Create a vertical mobile promo graphic with a bold title, 3 information blocks, and a QR-code area at the bottom."},
+"设计":{mode:"design",learn:"先确定尺寸、用途和文字内容，再排版。",learnEn:"Choose the size, purpose, and copy before designing.",task:"制作一张手机竖版宣传图。",taskEn:"Create one vertical mobile promo graphic.",prompt:"做一张手机竖版宣传图，标题醒目，信息分成 3 块，底部留二维码区域。",promptEn:"Create a vertical mobile promo graphic with a bold title, 3 information blocks, and a QR-code area at the bottom."},
 "视频":{mode:"video",learn:"先做一个 5 秒镜头或导入一小段素材。",learnEn:"Start with a 5-second shot or a short source clip.",task:"完成一次生成、剪辑或字幕。",taskEn:"Complete one generation, edit, or captioning task.",prompt:"做一个 5 秒短视频，主体稳定、动作自然、镜头不要突然变化。",promptEn:"Create a 5-second clip with a stable subject, natural motion, and no sudden camera changes.",tip:"先让画面稳定，再堆特效。",tipEn:"Get stable footage first, then add effects.",avoid:"第一次不要同时追求复杂动作、长镜头和大量元素。",avoidEn:"Do not combine complex motion, long shots, and many elements on the first try."},
 "视频 / 数字人":{mode:"video",learn:"先准备 15 到 20 秒口播文案和清晰声音。",learnEn:"Prepare a 15–20 second script and a clean voice sample.",task:"做一段最短的数字人口播。",taskEn:"Create a short avatar video.",prompt:"制作 15 秒中文口播，语气自然、节奏清晰，画面简洁。",promptEn:"Create a 15-second Chinese avatar video with natural delivery, clear pacing, and a simple scene.",tip:"先短后长，方便检查嘴型和语气。",tipEn:"Start short so you can inspect sync and delivery."},
+"视频 / 音频":{mode:"video",learn:"先处理一小段视频或音频素材，再完成剪辑。",learnEn:"Start with a short video or audio clip, then make one focused edit.",task:"完成一次剪辑、转写或字幕任务。",taskEn:"Complete one focused edit, transcription, or caption task.",prompt:"把这段素材整理成清晰的成片，保留重点并加上必要字幕。",promptEn:"Turn this clip into a clear edit, keep the important parts, and add necessary captions."},
 "音频 / 配音":{mode:"audio",learn:"先输入短文案，试听不同声音。",learnEn:"Enter a short script and preview different voices.",task:"生成一段自然配音。",taskEn:"Generate one natural voice clip.",prompt:"用清晰、自然、略带亲和力的语气朗读，语速适中。",promptEn:"Read this clearly and naturally with a friendly tone and moderate pacing.",tip:"正式发布前确认声音与素材的使用权限。",tipEn:"Before publishing, confirm you have the right to use the voice and material."},
 "音乐":{mode:"music",learn:"先确定风格、情绪和用途。",learnEn:"Define genre, mood, and use.",task:"生成第一段背景音乐或歌曲。",taskEn:"Generate your first background track or song.",prompt:"生成一段轻快、温暖、适合学习时播放的音乐，节奏稳定。",promptEn:"Create light, warm music for studying with a steady rhythm.",tip:"先定情绪，再研究高级控制。",tipEn:"Set the mood first, then explore advanced controls."},
 "演示 / 文档":{mode:"presentation",learn:"先告诉工具主题、受众和页数。",learnEn:"Start with the topic, audience, and slide count.",task:"生成一份 6 到 8 页入门演示。",taskEn:"Create a 6–8 slide beginner presentation.",prompt:"做一个 8 页的入门演示，每页只讲一个重点，最后给出结论。",promptEn:"Create an 8-slide beginner presentation with one key idea per slide and a final conclusion.",tip:"AI 先帮你出结构，人再检查事实和重点。",tipEn:"Let AI build structure first, then verify facts and emphasis."},

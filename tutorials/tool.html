@@ -5,157 +5,92 @@
 <title>AI 工具新手教程 · AI Starter Hub</title>
 <meta name="description" content="AI 工具新手图文教程，中英双语，帮助第一次使用 AI 的人快速上手。">
 <link rel="stylesheet" href="../style.css?v=20261003-9">
-<link rel="stylesheet" href="tutorial.css?v=20261003-2">
+<link rel="stylesheet" href="tutorial.css?v=20261003-3">
 </head>
 <body>
 <header class="topbar"><div class="wrap"><a class="brand" href="../">🧭 AI 新手导航</a><a class="back" href="index.html">📖 教程目录 / Guides</a></div></header>
 <main class="wrap content" id="app"><section class="section"><h2>正在加载教程 / Loading guide…</h2></section></main>
+<script src="tutorial-data.js?v=20261003-1"></script>
 <script>
 (async()=>{
 const params=new URLSearchParams(location.search), name=params.get("tool");
-const app=await fetch("../app.js?v=20261003-9").then(r=>r.text());
+const app=await fetch("../app.js?v=20261003-10").then(r=>r.text());
 const body=app.match(/const tools=\[(.*?)\n\];/s)?.[1];
 const tools=body?Function("return ["+body+"]")():[];
 const t=tools.find(x=>x[0]===name);
-const esc=s=>String(s||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
-if(!t){document.title="教程未找到 · AI Starter Hub";document.querySelector("#app").innerHTML='<section class="section"><h2>找不到这个工具 / Tool not found</h2><p class="lead">返回教程目录，选择一个工具开始学习。</p><div class="actions"><a class="btn primary" href="index.html">返回教程目录</a></div></section>';return}
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+if(!t){
+document.title="教程未找到 · AI Starter Hub";
+document.querySelector("#app").innerHTML='<section class="section"><h2>找不到这个工具 / Tool not found</h2><p class="lead">返回教程目录，选择一个工具开始学习。</p><div class="actions"><a class="btn primary" href="index.html">返回教程目录 / Back to guides</a></div></section>';
+return;
+}
 
 const [title,icon,cat,desc,free,url,publisher]=t;
-
-const profiles={
-"ChatGPT":["问一个问题并继续追问","Ask a question and refine the answer","请用零基础能看懂的方式解释这个问题，并给我 3 个例子。"],
-"Gemini":["让 AI 理解文字、图片或资料","Ask AI to understand text, images, or files","请总结这份资料，并列出最重要的 5 个要点。"],
-"Claude":["让 AI 分析长文本或代码","Analyze a long document or code","请先解释这段内容，再指出最值得注意的 3 个问题。"],
-"Perplexity":["搜索一个主题并查看来源","Search a topic and inspect sources","请查找这个主题的关键信息，并列出可靠来源。"],
-"NotebookLM":["导入资料后向资料提问","Upload sources and ask questions about them","只根据我提供的资料回答，并告诉我答案来自哪一部分。"],
-"Microsoft Copilot":["让 AI 帮你完成一个办公任务","Ask AI to help with an office task","把下面内容整理成清晰的要点和待办事项。"],
-"GitHub Copilot":["让 AI 辅助写一小段代码","Use AI to write a small piece of code","请解释这段代码，然后给出一个更安全、易读的版本。"],
-"Gemini Code Assist":["在编辑器里获得代码建议","Get coding suggestions inside your editor","请解释这个函数，并指出可能的边界情况。"],
-"Cursor":["让 AI 修改一个小功能","Ask AI to modify one small feature","请阅读这个文件，告诉我它做什么，再提出最小修改方案。"],
-"DeepSeek":["用 AI 做问答、推理或代码任务","Use AI for questions, reasoning, or code","请一步一步解释你的思路，并给出最终答案。"],
-"豆包":["完成一次日常问答或内容创作","Complete a daily Q&A or creation task","帮我把这段内容改得更自然、更容易看懂。"],
-"Kimi":["让 AI 阅读长资料","Ask AI to work through a long document","请总结这份长文，并按“结论、证据、待确认”整理。"],
-"通义千问":["完成一个学习或写作任务","Complete a learning or writing task","请把这个主题讲给完全没基础的人听。"],
-"文心助手":["让 AI 帮你整理信息","Ask AI to organize information","请把下面信息整理成表格，并标出缺失项。"],
-"腾讯元宝":["让 AI 总结资料或处理文件","Summarize material or work with a file","请把这份内容压缩成 5 条重点。"],
-"智谱清言":["完成一次写作、学习或代码任务","Complete a writing, learning, or coding task","请给我 3 个版本，并说明它们的区别。"],
-"秘塔AI搜索":["搜索资料并快速整理","Search and organize information","帮我查这个主题，按“结论、证据、来源”整理。"],
-"Poe":["体验不同 AI 模型","Try different AI models","用同一个问题分别测试两个模型，再比较回答差异。"],
-"HuggingChat":["体验一个开放模型","Try an open model","请解释这个概念，并给一个实际例子。"],
-"Mistral Le Chat":["完成一次研究或写作任务","Complete a research or writing task","请把这个主题整理成一页简明笔记。"],
-"Google AI Studio":["在 Playground 测试模型","Test a model in the playground","请生成一个简短的 JSON 示例，并保持格式有效。"],
-"Groq":["快速调用一个模型","Run a model quickly","请用简洁格式回答这个问题，并给出关键步骤。"],
-"Grammarly":["检查并润色英文","Check and polish English","把这段英文改得自然、清晰、专业，但不要改变原意。"],
-"QuillBot":["改写或总结英文","Paraphrase or summarize English","把这段英文改写得更自然，保留原意。"],
-"DeepL":["翻译一小段文字","Translate a short text","把这段话翻译成自然英文，不要逐字直译。"],
-"Google Translate":["完成文字、图片或语音翻译","Translate text, images, or speech","把这句话翻译成自然的日语。"],
-"Leonardo AI":["生成第一张 AI 图片","Generate your first AI image","生成一张干净、现代、适合手机屏幕的插画。"],
-"Ideogram":["生成带文字的海报","Generate a poster with text","生成一张简洁海报，标题清晰、排版整齐。"],
-"Adobe Firefly":["用文字生成一张图片","Generate an image from text","生成一张适合宣传页使用的现代风格图片。"],
-"Canva":["做一张简单海报","Create a simple poster","做一张手机竖版宣传图，标题醒目，留出二维码区域。"],
-"Microsoft Designer":["快速做一张设计图","Create a quick design","做一张简洁的社交媒体封面图。"],
-"PhotoRoom":["自动抠出主体并换背景","Remove the background and replace it","把主体抠出来，换成干净的浅色背景。"],
-"Jimeng AI":["生成第一张图片","Generate your first image","生成一张适合手机壁纸的简洁风景图。"],
-"SeaArt AI":["选择模型并生成图片","Choose a model and generate an image","生成一张人物插画，主体清晰，背景简洁。"],
-"Tensor.Art":["选择模型并开始生成","Choose a model and generate","用一个适合新手的模型生成简单插画。"],
-"Mage.space":["输入描述生成图片","Generate an image from a prompt","生成一张梦幻但简洁的风景图。"],
-"Craiyon":["用一句话生成图片","Generate an image from one sentence","生成一只可爱的橘猫坐在窗边。"],
-"Playground":["生成并编辑图片","Generate and edit an image","生成一张干净的产品宣传图，再调整背景。"],
-"Clipdrop":["清理或修改图片","Clean up or edit an image","删除图片中不需要的物体，并保持背景自然。"],
-"Cleanup.pictures":["删除照片中的物体","Remove an object from a photo","删除画面里的路人，尽量保持背景连续。"],
-"Remove.bg":["一键移除图片背景","Remove an image background","把主体抠出来并导出透明背景。"],
-"CapCut":["剪一条最简单的短视频","Edit a simple short video","导入素材，剪掉空白部分，再自动生成字幕。"],
-"Pika":["生成一个短视频片段","Generate a short video clip","生成一个 5 秒、主体稳定的创意视频。"],
-"Runway":["生成一段短视频","Generate a short video","把这张图片做成 5 秒的自然镜头。"],
-"Kling AI":["从文字或图片生成视频","Generate video from text or image","生成一个 5 秒、镜头稳定的短视频。"],
-"Luma Dream Machine":["让静态画面动起来","Animate a still image","让画面中的主体自然移动，镜头缓慢推进。"],
-"Hailuo AI":["生成一个短视频","Generate a short video","生成一个 5 秒的电影感镜头。"],
-"OpusClip":["把长视频变成短视频","Turn a long video into shorts","从这段长视频中找出最值得看的片段。"],
-"VEED":["剪辑并自动生成字幕","Edit video and add captions","给视频添加字幕，并删除开头的空白。"],
-"InVideo AI":["从文字生成一条视频","Create a video from text","制作一条 30 秒科普短视频，包含标题和字幕。"],
-"HeyGen":["制作第一条数字人口播","Create your first avatar video","制作一段 20 秒中文口播，语气自然、节奏清晰。"],
-"ElevenLabs":["生成第一段 AI 配音","Generate your first AI voice clip","用自然、清晰的语气朗读这段文字。"],
-"TTSMaker":["把文字转换成语音","Convert text to speech","把这段文字转换成自然的普通话语音。"],
-"PlayHT":["生成一段自然语音","Generate natural speech","用清晰、自然的声音朗读这段文字。"],
-"Suno":["用一句话生成歌曲","Generate a song from one idea","生成一首轻快、温暖、适合学习时播放的歌曲。"],
-"Udio":["生成第一首 AI 音乐","Generate your first AI song","生成一首轻快的电子流行音乐。"],
-"AIVA":["生成一段背景音乐","Generate background music","生成一段温暖、平静、适合视频使用的背景音乐。"],
-"Soundraw":["制作一段可用的背景音乐","Create usable background music","生成一段轻快、无歌词的背景音乐。"],
-"Gamma":["生成第一份演示文稿","Create your first presentation","做一个 8 页的入门演示，面向完全不了解这个主题的人。"],
-"Napkin AI":["把文字变成图表","Turn text into a visual","把这段说明转换成一个清晰的流程图。"],
-"Tome":["生成第一份故事化演示","Create your first story-based presentation","做一个 6 页的简洁介绍，包含标题、重点和结论。"],
-"Beautiful.ai":["制作一份商务演示","Create a business presentation","做一个 6 页的简洁商务介绍。"],
-"Descript":["用文字编辑视频或播客","Edit video or podcasts with text","删除这段转写中的多余句子，并同步更新视频。"],
-"Otter.ai":["把会议录音变成文字和摘要","Turn a meeting into notes","把会议整理成：重点、决定、待办事项。"],
-"Fireflies.ai":["自动整理会议内容","Organize meeting notes automatically","把会议内容整理成重点、决定和待办事项。"],
-"Jan":["在电脑本地运行 AI","Run AI locally on your computer","先选择一个适合你电脑配置的模型，再进行一次简单对话。"],
-"GPT4All":["安装一个本地模型并聊天","Run a local model and chat","选择一个轻量模型，问它一个简单问题。"],
-"Ollama":["在终端运行第一个本地模型","Run your first local model","安装后运行一个适合电脑配置的轻量模型。"],
-"LM Studio":["下载模型并开始本地聊天","Download a model and start chatting","选择一个轻量模型并完成第一次本地对话。"],
-"ComfyUI":["运行第一个节点工作流","Run your first node workflow","加载一个简单工作流，生成第一张图片。"],
-"Fooocus":["用默认设置生成第一张图","Generate your first image with simple settings","先不改高级参数，直接生成一张简单图片。"],
-"Stable Diffusion":["理解模型、提示词和采样","Understand models, prompts, and sampling","用一个简单提示词生成第一张图片。"],
-"CodeGeeX":["让 AI 解释一段代码","Ask AI to explain code","请解释这段代码，并告诉我它可能出现什么问题。"],
-"通义灵码":["在 IDE 里获得代码补全","Get code completion in your IDE","请解释当前函数，并给出最小修改建议。"],
-"Blackbox AI":["生成并解释一小段代码","Generate and explain code","请写一个简单函数，并逐行解释。"],
-"Replit":["在线创建第一个小项目","Create your first small project online","创建一个最简单的网页，并解释文件结构。"],
-"Phind":["搜索一个编程问题","Search a programming problem","帮我解释这个报错，并给出排查步骤。"],
-"Symbolab":["输入第一道数学题","Solve your first math problem","解这道题，并一步一步解释每一步。"]
-};
-
 const fallback={
-"聊天 / 综合":["先提出一个具体问题","Start with one concrete question","请用零基础能看懂的方式解释这个问题，并给我 3 个例子。"],
-"聊天 / 办公":["让 AI 帮你完成一个小任务","Ask AI to complete one small task","把下面内容整理成清晰的要点和待办事项。"],
-"搜索 / 研究":["搜索一个主题并查看来源","Search a topic and inspect sources","请查找这个主题的关键信息，并列出来源。"],
-"学习 / 研究":["让 AI 用你的水平解释知识","Ask AI to explain a concept at your level","请像给零基础的人上课一样解释这个知识点。"],
-"图片":["输入一句描述生成图片","Enter a prompt and generate an image","生成一张简洁、干净、适合手机壁纸的图片。"],
-"图片 / 设计":["先确定用途再设计","Define the purpose, then design","我要做一张宣传图，请给我一个适合手机屏幕的设计方案。"],
-"图片 / 抠图":["上传图片并处理主体","Upload an image and isolate the subject","把主体抠出来，背景透明，边缘自然。"],
-"视频":["先生成一个短片段","Start with a short clip","生成一个 5 秒的短视频，画面稳定，主体清晰。"],
-"视频 / 数字人":["先做一段短口播","Start with a short avatar clip","制作一段 15 秒自然、清晰的口播视频。"],
-"音频 / 配音":["先测试一小段声音","Test a short voice clip","把这段文字转换成自然、清晰的语音。"],
-"音乐":["先确定风格和情绪","Define genre and mood first","生成一段轻快、温暖、适合学习时播放的背景音乐。"],
-"编程":["先解释，再修改，再测试","Explain, edit, then test","请解释这段代码，然后指出可能的错误，不要直接重写全部代码。"],
-"本地 AI":["先选择适合电脑的模型","Choose a model that fits your computer","我电脑配置是……，推荐一个适合本地运行的模型。"],
-"写作 / 办公":["先给目标、对象、语气","Give the goal, audience, and tone","帮我写一封礼貌、简短、150 字以内的邮件。"],
-"翻译":["先翻译，再指定语气","Translate first, then specify tone","把这段话翻译成自然的英文，不要直译。"],
-"演示 / 文档":["先确定主题、受众和页数","Define topic, audience, and slide count","做一个 8 页的入门演示，面向完全不了解这个主题的人。"],
-"图表 / 文档":["先准备一段结构化文字","Start with structured text","把这段内容转换成一个清晰的流程图。"],
-"会议 / 音频":["先测试一段短录音","Start with a short recording","把会议内容整理成：重点、决定、待办事项。"],
-"模型 / 开源":["先在线体验再下载","Try online before downloading","先让我体验这个模型，再告诉我如何继续使用。"],
-"开发 / 模型":["先在 Playground 做小实验","Prototype in the playground first","生成一个最简单的 API 示例，并保持格式有效。"],
-"编程 / 搜索":["先描述报错和环境","Describe the error and environment","帮我解释这个报错，并给出排查步骤。"]
+"聊天 / 综合":{mode:"chat",learn:"先提出一个具体问题，再继续追问。",learnEn:"Start with one concrete question, then refine it.",task:"完成一次真实的小任务。",taskEn:"Complete one small real task.",prompt:"请用零基础能看懂的方式解释这个问题，并给出可执行步骤。",promptEn:"Explain this for a beginner and give actionable steps.",tip:"具体描述目标、对象和限制条件。",tipEn:"State the goal, audience, and constraints.",avoid:"不要一次塞进太多互不相关的要求。",avoidEn:"Do not mix many unrelated tasks in one prompt."},
+"聊天 / 办公":{mode:"office",learn:"从总结、改写或整理开始。",learnEn:"Start with summarizing, rewriting, or organizing.",task:"把一段杂乱内容整理成清晰结果。",taskEn:"Turn messy content into a clear result.",prompt:"把下面内容整理成要点、待办和缺失信息。",promptEn:"Turn the text below into key points, actions, and missing information."},
+"搜索 / 研究":{mode:"search",learn:"搜索一个明确主题，并打开来源核对。",learnEn:"Search one focused topic and inspect the sources.",task:"完成一次小型资料检索。",taskEn:"Complete a small research task.",prompt:"研究这个主题，先给结论，再给来源，并标记需要核实的地方。",promptEn:"Research this topic, give the conclusion first, cite sources, and flag items to verify."},
+"学习 / 研究":{mode:"upload",learn:"先给资料或问题，再要求按你的水平解释。",learnEn:"Provide material or a question, then ask for an explanation at your level.",task:"把一个不会的知识点学到能复述。",taskEn:"Learn one concept well enough to explain it yourself.",prompt:"请像给零基础的人上课一样解释，并给我 3 个例子和 2 道练习。",promptEn:"Explain this like a beginner lesson, with 3 examples and 2 practice questions."},
+"图片":{mode:"image",learn:"先写清主体、风格、画面和用途。",learnEn:"Define the subject, style, composition, and use.",task:"生成第一张简单图片。",taskEn:"Generate a first simple image.",prompt:"生成一张主体明确、背景干净、适合手机屏幕的图片。",promptEn:"Generate a mobile-friendly image with a clear subject and a clean background.",tip:"一次只改一个变量。",tipEn:"Change one variable at a time.",avoid:"不要把十种风格和二十个主体塞进一句话。",avoidEn:"Do not combine too many styles and subjects in one prompt."},
+"图片 / 设计":{mode:"design",learn:"先确定尺寸、用途和文字内容，再排版。",learnEn:"Choose the size, purpose, and copy before designing.",task:"制作一张手机竖版宣传图。",taskEn:"Create one vertical mobile promo graphic.",prompt:"做一张手机竖版宣传图，标题醒目，信息分成 3 块，底部留二维码区域。",promptEn:"Create a vertical mobile promo graphic with a bold title, 3 information blocks, and a QR-code area at the bottom.",tip:"文字内容先整理，再做视觉设计。",tipEn:"Prepare the copy before the visual layout.",avoid:"不要边改文案边大改版式，容易来回返工。",avoidEn:"Avoid changing the copy and layout at the same time."},
+"图片 / 抠图":{mode:"image",learn:"上传主体清晰的图片，再处理背景。",learnEn:"Upload a clear subject image, then work on the background.",task:"完成一次抠图并导出。",taskEn:"Remove the background and export the result.",prompt:"保留主体完整边缘，移除背景，边缘自然。",promptEn:"Keep the subject edges clean, remove the background, and keep the edges natural.",tip:"主体和背景反差明显时更容易处理。",tipEn:"Clear subject/background contrast usually helps."},
+"视频":{mode:"video",learn:"先做一个 5 秒镜头或导入一小段素材。",learnEn:"Start with a 5-second shot or a short source clip.",task:"完成一次生成、剪辑或字幕。",taskEn:"Complete one generation, edit, or captioning task.",prompt:"做一个 5 秒短视频，主体稳定、动作自然、镜头不要突然变化。",promptEn:"Create a 5-second clip with a stable subject, natural motion, and no sudden camera changes.",tip:"先让画面稳定，再堆特效。",tipEn:"Get stable footage first, then add effects.",avoid:"第一次不要同时追求复杂动作、长镜头和大量元素。",avoidEn:"Do not combine complex motion, long shots, and many elements on the first try."},
+"视频 / 数字人":{mode:"video",learn:"先准备 15 到 20 秒口播文案和清晰声音。",learnEn:"Prepare a 15–20 second script and a clean voice sample.",task:"做一段最短的数字人口播。",taskEn:"Create a short avatar video.",prompt:"制作 15 秒中文口播，语气自然、节奏清晰，画面简洁。",promptEn:"Create a 15-second Chinese avatar video with natural delivery, clear pacing, and a simple scene.",tip:"先短后长，方便检查嘴型和语气。",tipEn:"Start short so you can inspect sync and delivery."},
+"音频 / 配音":{mode:"audio",learn:"先输入短文案，试听不同声音。",learnEn:"Enter a short script and preview different voices.",task:"生成一段自然配音。",taskEn:"Generate one natural voice clip.",prompt:"用清晰、自然、略带亲和力的语气朗读，语速适中。",promptEn:"Read this clearly and naturally with a friendly tone and moderate pacing.",tip:"正式发布前确认声音与素材的使用权限。",tipEn:"Before publishing, confirm you have the right to use the voice and material."},
+"音乐":{mode:"music",learn:"先确定风格、情绪和用途。",learnEn:"Define genre, mood, and use.",task:"生成第一段背景音乐或歌曲。",taskEn:"Generate your first background track or song.",prompt:"生成一段轻快、温暖、适合学习时播放的音乐，节奏稳定。",promptEn:"Create light, warm music for studying with a steady rhythm.",tip:"先定情绪，再研究高级控制。",tipEn:"Set the mood first, then explore advanced controls."},
+"演示 / 文档":{mode:"presentation",learn:"先告诉工具主题、受众和页数。",learnEn:"Start with the topic, audience, and slide count.",task:"生成一份 6 到 8 页入门演示。",taskEn:"Create a 6–8 slide beginner presentation.",prompt:"做一个 8 页的入门演示，每页只讲一个重点，最后给出结论。",promptEn:"Create an 8-slide beginner presentation with one key idea per slide and a final conclusion.",tip:"AI 先帮你出结构，人再检查事实和重点。",tipEn:"Let AI build structure first, then verify facts and emphasis."},
+"图表 / 文档":{mode:"presentation",learn:"先提供结构清晰的文字，再让工具视觉化。",learnEn:"Provide structured text, then turn it into a visual.",task:"把文字说明变成流程图。",taskEn:"Turn a text explanation into a flowchart.",prompt:"把这段内容变成“问题→分析→方案→结果”的清晰流程图。",promptEn:"Turn this into a clear problem → analysis → solution → result flowchart."},
+"会议 / 音频":{mode:"upload",learn:"先处理一段短会议录音。",learnEn:"Start with one short meeting recording.",task:"整理会议重点、决定和待办。",taskEn:"Extract highlights, decisions, and action items.",prompt:"只根据会议内容整理重点、决定、待办和未解决问题，不要猜测。",promptEn:"Using only the meeting content, extract highlights, decisions, actions, and unresolved issues. Do not guess."},
+"本地 AI":{mode:"local",learn:"先看电脑配置，再选择合适的小模型。",learnEn:"Check your hardware before choosing a small local model.",task:"完成第一次本地对话。",taskEn:"Complete your first local chat.",prompt:"这是我的电脑配置：……。请推荐适合本地运行的轻量模型，并说明原因。",promptEn:"My computer specs are: … . Recommend a lightweight local model and explain why.",tip:"模型越大不一定越适合你的电脑。",tipEn:"A larger model is not automatically a better fit for your hardware."},
+"编程":{mode:"code",learn:"先解释一个函数，再做局部修改。",learnEn:"Explain one function first, then make a small edit.",task:"完成一次解释→修改→测试。",taskEn:"Complete an explain → edit → test loop.",prompt:"请解释这段代码的作用、输入输出和边界情况，然后只做最小修改。",promptEn:"Explain this code, its inputs/outputs and edge cases, then make only the smallest change.",tip:"AI 生成代码后一定运行测试。",tipEn:"Always run tests after AI-generated code changes.",avoid:"不要未经检查就把整段 AI 代码直接上线。",avoidEn:"Do not ship AI-generated code without review and testing."},
+"编程 / 搜索":{mode:"search",learn:"把报错、环境和目标一起写出来。",learnEn:"Include the error, environment, and intended result.",task:"完成一次真实报错排查。",taskEn:"Troubleshoot one real error.",prompt:"我的环境是……，报错是……，我想实现……。请按排查顺序给解决步骤。",promptEn:"My environment is …, the error is …, and I want to … . Give troubleshooting steps in order."},
+"模型 / 开源":{mode:"chat",learn:"先在线体验模型，再决定是否深入。",learnEn:"Try the model online before going deeper.",task:"测试一次简单问答并观察模型特点。",taskEn:"Run a simple test and observe the model's behavior.",prompt:"请用通俗语言解释这个概念，并给一个真实例子。",promptEn:"Explain this concept in plain language and give one real example."},
+"开发 / 模型":{mode:"code",learn:"先做一个最小模型实验，不急着做完整应用。",learnEn:"Run a minimal model experiment before building a full app.",task:"生成一段结构化输出并检查格式。",taskEn:"Generate a structured response and validate its format.",prompt:"返回合法 JSON，只包含 name、summary、tags 三个字段，不要加 Markdown。",promptEn:"Return valid JSON with only name, summary, and tags. Do not wrap it in Markdown."},
+"写作 / 办公":{mode:"office",learn:"先给目标、对象和语气，再让 AI 改写。",learnEn:"Give the goal, audience, and tone before asking for a rewrite.",task:"完成一封简短、清楚的文本。",taskEn:"Create one short, clear piece of writing.",prompt:"帮我写一封礼貌、简短、150 字以内的邮件，告诉对方……。",promptEn:"Write a polite, concise email under 150 words telling the recipient that … ."},
+"翻译":{mode:"translate",learn:"先翻译短句，再要求语气和场景适配。",learnEn:"Start with a short sentence, then adjust tone and context.",task:"完成一次自然的中英或中日翻译。",taskEn:"Complete one natural Chinese-English or Chinese-Japanese translation.",prompt:"请自然翻译，不要逐字直译；保留数字、人名和语气。",promptEn:"Translate naturally, not word-for-word. Preserve numbers, names, and tone."},
+"学习 / 数学":{mode:"math",learn:"先输入一道简单题，重点看步骤。",learnEn:"Enter a simple problem and focus on the steps.",task:"完成一道带步骤讲解的题。",taskEn:"Solve one problem with step-by-step explanation.",prompt:"请解这道题，并一步一步解释每一步为什么这样做。最后检查答案。",promptEn:"Solve this problem step by step, explain why each step works, and verify the answer."}
 };
-const p=profiles[title]||fallback[cat]||["先完成一次最简单的操作","Complete the simplest task first","我第一次使用这个工具，请用最简单的步骤教我完成一个基础任务。"];
+const p=window.tutorialProfiles?.[title]||fallback[cat]||fallback["聊天 / 综合"];
 
-const visual={
-chat:{title:"对话界面 / Chat screen",html:'<div class="mock"><div class="browser"><div class="browser-bar">● ● ●　 '+esc(title)+'</div><div class="browser-body"><div class="mock-title">'+esc(title)+' · AI assistant</div><div class="message-box">'+esc(p[2])+'</div><div class="reply">② AI 输出 / AI response<br><span>这里会显示回答、步骤或生成结果。</span></div></div></div></div>'},
-search:{title:"搜索与来源 / Search & sources",html:'<div class="mock"><div class="browser"><div class="browser-bar">Search · '+esc(title)+'</div><div class="browser-body"><div class="search-bar">🔎 '+esc(p[2])+'</div><div class="source-row">① 结果 / Results　② 来源 / Sources　③ 摘要 / Summary</div><div class="result-card"><b>重点信息 / Key information</b><br><span>先看结论，再打开来源核对。</span></div></div></div></div>'},
-image:{title:"图片工作区 / Image workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Create · '+esc(title)+'</div><div class="browser-body"><div class="prompt">'+esc(p[2])+'</div><div class="image-placeholder">🖼️<br><b>生成结果 / Generated image</b><br><small>① Prompt → ② Generate → ③ Refine → ④ Export</small></div></div></div></div>'},
-video:{title:"视频工作区 / Video workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Timeline · '+esc(title)+'</div><div class="browser-body"><div class="video-placeholder">▶️　视频预览 / Video preview</div><div class="timeline">① 素材 / Media　② 时间线 / Timeline　③ 字幕 / Captions　④ 导出 / Export</div></div></div></div>'},
-audio:{title:"声音工作区 / Audio workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Audio · '+esc(title)+'</div><div class="browser-body"><div class="prompt">'+esc(p[2])+'</div><div class="wave">▁▂▃▅▇▆▄▂▁▃▆▇▅▃▂</div><div class="source-row">① Voice / 声音　② Preview / 试听　③ Export / 导出</div></div></div></div>'},
-code:{title:"编程工作区 / Coding workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Editor · '+esc(title)+'</div><div class="browser-body"><pre class="codebox">function hello() {\n  // AI suggestion / AI 建议\n  return "Hello";\n}</pre><div class="source-row">① Explain / 解释　② Edit / 修改　③ Run / 运行　④ Test / 测试</div></div></div></div>'},
-local:{title:"本地模型工作区 / Local model workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Local AI · '+esc(title)+'</div><div class="browser-body"><div class="source-row">① Choose model / 选择模型</div><div class="model-card">🧠 Lightweight model<br><small>适合新手先测试 / Good for a first test</small></div><div class="source-row">② Download → ③ Chat → ④ Check resources</div></div></div></div>'},
-office:{title:"文档工作区 / Writing workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Document · '+esc(title)+'</div><div class="browser-body"><div class="prompt">'+esc(p[2])+'</div><div class="result-card"><b>Draft / 草稿</b><br><span>先生成，再检查事实、语气和格式。</span></div></div></div></div>'}
+const visuals={
+chat:{title:"对话示意 / Chat workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">● ● ●　'+esc(title)+'</div><div class="browser-body"><div class="mock-title">💬 '+esc(title)+'</div><div class="message-box">'+esc(p.prompt)+'</div><div class="reply">② AI response / AI 输出<br><span>检查结果 → 继续追问 → 再修改</span></div></div></div></div>'},
+search:{title:"搜索与来源 / Search & sources",html:'<div class="mock"><div class="browser"><div class="browser-bar">Search · '+esc(title)+'</div><div class="browser-body"><div class="search-bar">🔎 '+esc(p.prompt)+'</div><div class="source-row">① Results / 结果　② Sources / 来源　③ Summary / 摘要</div><div class="result-card"><b>先看结论 / Read the takeaway</b><br><span>然后打开来源核对证据。</span></div></div></div></div>'},
+upload:{title:"资料与文件 / Sources & files",html:'<div class="mock"><div class="browser"><div class="browser-bar">Workspace · '+esc(title)+'</div><div class="browser-body"><div class="file-card">📄 sample.pdf <span>Ready / 已添加</span></div><div class="message-box">'+esc(p.prompt)+'</div><div class="source-row">① Add source / 添加资料 → ② Ask / 提问 → ③ Check / 核对</div></div></div></div>'},
+image:{title:"图片生成 / Image workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Create · '+esc(title)+'</div><div class="browser-body"><div class="prompt">'+esc(p.prompt)+'</div><div class="image-placeholder">🖼️<br><b>Generated image / 生成结果</b><br><small>① Prompt → ② Generate → ③ Refine → ④ Export</small></div></div></div></div>'},
+design:{title:"设计画布 / Design canvas",html:'<div class="mock"><div class="browser"><div class="browser-bar">Design · '+esc(title)+'</div><div class="browser-body"><div class="poster"><b>AI 新手入门</b><span>Beginner AI Guide</span><i>QR</i></div><div class="source-row">① Size / 尺寸　② Template / 模板　③ Edit / 编辑　④ Export / 导出</div></div></div></div>'},
+translate:{title:"翻译界面 / Translation workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Translate · '+esc(title)+'</div><div class="browser-body"><div class="translate-grid"><div><small>Source / 原文</small><div class="translate-box">これは例です。</div></div><div><small>Target / 译文</small><div class="translate-box">这是一个例子。</div></div></div><div class="source-row">① Choose language / 选择语言 → ② Translate / 翻译 → ③ Compare / 对照</div></div></div></div>'},
+video:{title:"视频工作区 / Video workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Editor · '+esc(title)+'</div><div class="browser-body"><div class="video-placeholder">▶️　Video preview / 视频预览</div><div class="timeline">① Media / 素材　② Timeline / 时间线　③ Captions / 字幕　④ Export / 导出</div></div></div></div>'},
+audio:{title:"声音工作区 / Audio workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Audio · '+esc(title)+'</div><div class="browser-body"><div class="prompt">'+esc(p.prompt)+'</div><div class="wave">▁▂▃▅▇▆▄▂▁▃▆▇▅▃▂</div><div class="source-row">① Voice / 声音　② Preview / 试听　③ Export / 导出</div></div></div></div>'},
+music:{title:"音乐生成 / Music workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Create music · '+esc(title)+'</div><div class="browser-body"><div class="prompt">'+esc(p.prompt)+'</div><div class="wave">♪ ▂▅▇▆▃▂▅▇ ♪</div><div class="source-row">① Style / 风格　② Generate / 生成　③ Listen / 试听　④ Save / 保存</div></div></div></div>'},
+presentation:{title:"演示文稿 / Presentation workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Slides · '+esc(title)+'</div><div class="browser-body"><div class="slides"><div><b>01</b><span>问题 / Problem</span></div><div><b>02</b><span>方案 / Solution</span></div><div><b>03</b><span>结论 / Takeaway</span></div></div><div class="source-row">① Outline / 大纲 → ② Generate / 生成 → ③ Edit / 编辑 → ④ Present / 演示</div></div></div></div>'},
+code:{title:"编程工作区 / Coding workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Editor · '+esc(title)+'</div><div class="browser-body"><pre class="codebox">function hello(name) {\\n  return \`Hello, \${name}\`;\\n}</pre><div class="source-row">① Explain / 解释　② Edit / 修改　③ Run / 运行　④ Test / 测试</div></div></div></div>'},
+local:{title:"本地模型 / Local AI workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Local AI · '+esc(title)+'</div><div class="browser-body"><div class="source-row">① Hardware / 配置</div><div class="model-card">🧠 Lightweight model<br><small>先选能跑得动的 / Start with a model your PC can handle</small></div><div class="source-row">② Download / 下载 → ③ Chat / 对话 → ④ Check resources / 查看资源</div></div></div></div>'},
+math:{title:"数学步骤 / Math workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Solve · '+esc(title)+'</div><div class="browser-body"><div class="equation">2x + 6 = 14</div><div class="result-card"><b>Step 1 / 第一步</b><br><span>2x = 8 → x = 4</span></div><div class="source-row">不要只看答案 / Focus on why each step works.</div></div></div></div>'},
+office:{title:"写作与办公 / Writing workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Write · '+esc(title)+'</div><div class="browser-body"><div class="prompt">'+esc(p.prompt)+'</div><div class="result-card"><b>Draft / 草稿</b><br><span>先生成，再检查事实、语气和格式。</span></div></div></div></div>'}
 };
-let v=visual.chat;
-if(/搜索|研究/.test(cat))v=visual.search;
-else if(/图片|设计|抠图|图表/.test(cat))v=visual.image;
-else if(/视频/.test(cat))v=visual.video;
-else if(/音频|配音|音乐|会议/.test(cat))v=visual.audio;
-else if(/编程|开发/.test(cat))v=visual.code;
-else if(/本地/.test(cat))v=visual.local;
-else if(/写作|办公|演示|文档|翻译/.test(cat))v=visual.office;
+const v=visuals[p.mode]||visuals.chat;
 
 document.title=title+" 新手教程 · AI Starter Hub";
 document.querySelector("#app").innerHTML=
-'<header class="hero"><div class="wrap"><div class="eyebrow">'+esc(title).toUpperCase()+' · VISUAL BEGINNER GUIDE</div><h1>'+esc(icon)+' '+esc(title)+' 新手图文教程</h1><p>'+esc(desc)+'</p><small>'+esc(p[1])+'</small><div class="tool-badges"><span class="pill">'+esc(cat)+'</span><span class="pill">'+esc(free)+'</span><span class="pill">'+esc(publisher)+'</span></div></div></header>'+
-'<nav class="toc"><strong>本页内容 / On this page</strong><a href="#start">① 打开 / Open</a><a href="#do">② 操作 / Do</a><a href="#task">③ 任务 / Task</a><a href="#notes">④ 注意 / Notes</a></nav>'+
-'<section class="section" id="start"><h2>01｜打开并认识界面 <span>Open and understand</span></h2><p class="lead">不用背按钮。先找到最核心的输入区、生成区和导出区。<br>Do not memorize every button. Find the main input, result, and export areas first.</p><div class="step"><h3>第 1 步：打开官方入口 <span>Step 1: Open the official site</span></h3><p>本网站负责导航和教程，实际功能由 '+esc(publisher)+' 官方网站提供。</p><p>This hub provides guidance. The actual service is provided by '+esc(publisher)+'.</p><div class="actions"><a class="btn primary" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">打开官网 / Open official site ↗</a></div></div><div class="visual"><div class="visual-head">'+esc(v.title)+'</div>'+v.html+'</div></section>'+
-'<section class="section" id="do"><h2>02｜跟着图做一次 <span>Follow the visual steps</span></h2><div class="step"><h3>第 2 步：输入或上传 <span>Step 2: Type or upload</span></h3><p>'+esc(p[0])+'。把任务说清楚，越具体越容易得到可用结果。</p><p>'+esc(p[1])+'. Be specific about the task so the result is easier to use.</p><div class="visual"><div class="visual-head">① Input / 输入</div><div class="mock"><div class="browser"><div class="browser-body"><div class="message-box">'+esc(p[2])+'</div></div></div></div></div></div><div class="step"><h3>第 3 步：看结果并修改 <span>Step 3: Review and refine</span></h3><p>第一次结果不用完美。继续告诉工具：哪里需要改、保留什么、删掉什么。</p><p>The first result does not need to be perfect. Tell the tool what to change, keep, or remove.</p><div class="tip"><strong>万能补充 / Useful follow-ups:</strong> “再简单一点” · “给我 3 个版本” · “保留原意” · “再检查一次”<br>“Make it simpler” · “Give me 3 versions” · “Keep the original meaning” · “Check it again”</div></div></section>'+
-'<section class="section" id="task"><h2>03｜你的第一次任务 <span>Your first task</span></h2><p class="lead">'+esc(p[1])+'</p><div class="prompt">'+esc(p[2])+'</div><div class="done">🎯 <strong>新手原则 / Beginner rule</strong><br>先完成一次，再研究高级功能。第一次成功比一次学完所有按钮更重要。<br>Complete one successful task first. Advanced features can come later.</div></section>'+
-'<section class="section" id="notes"><h2>04｜免费与注意事项 <span>Free access & notes</span></h2><p class="lead"><strong>当前标记 / Current label:</strong> '+esc(free)+'</p><p>免费额度、模型、功能、地区限制和界面可能变化。我们不会把一次性试用包装成“永久免费”，实际使用前请以官方页面为准。</p><p>Free quotas, models, features, regional availability, and interfaces can change. Check the official site for current terms.</p><div class="source">官方入口 / Official site：<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+esc(url)+'</a><br>教程更新时间 / Guide update: 2026-10-03 · UI may change.</div><div class="actions"><a class="btn primary" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">现在试试 / Try it ↗</a><a class="btn secondary" href="index.html">返回教程目录 / Back to guides</a></div></section>'+
+'<header class="hero"><div class="wrap"><div class="eyebrow">'+esc(title).toUpperCase()+' · TOOL-SPECIFIC GUIDE</div><h1>'+esc(icon)+' '+esc(title)+' 新手图文教程</h1><p>'+esc(desc)+'</p><small>'+esc(p.learnEn)+'</small><div class="tool-badges"><span class="pill">'+esc(cat)+'</span><span class="pill">'+esc(free)+'</span><span class="pill">'+esc(publisher)+'</span></div><div class="hero-task"><b>🎯 第一次任务 / First task</b><span>'+esc(p.task)+'</span><small>'+esc(p.taskEn)+'</small></div></div></header>'+
+'<nav class="toc"><strong>本页内容 / On this page</strong><a href="#start">① 认识 / Understand</a><a href="#do">② 操作 / Practice</a><a href="#task">③ 任务 / First task</a><a href="#notes">④ 注意 / Notes</a></nav>'+
+'<section class="section" id="start"><h2>01｜先认识它是干什么的 <span>Understand the tool</span></h2><p class="lead">'+esc(p.learn)+'<br>'+esc(p.learnEn)+'</p><div class="step"><h3>第 1 步：打开官方入口 <span>Step 1: Open the official site</span></h3><p>教程负责“教你怎么开始”，实际服务由 '+esc(publisher)+' 官方网站提供。</p><p>This guide shows you how to start. The actual service is provided by '+esc(publisher)+'.</p><div class="actions"><a class="btn primary" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">打开官网 / Open official site ↗</a></div></div><div class="visual"><div class="visual-head">'+esc(v.title)+'</div>'+v.html+'</div><div class="visual-note">🖼️ 操作示意 / Visual guide: 这是原创的界面示意图，不是官方截图。实际按钮和界面可能不同。</div></section>'+
+'<section class="section" id="do"><h2>02｜跟着图做一次 <span>Practice with the visual steps</span></h2><div class="step"><h3>第 2 步：准备输入 <span>Step 2: Prepare your input</span></h3><p>'+esc(p.learn)+'。先完成最小任务，不追求一次学会全部功能。</p><p>'+esc(p.learnEn)+'. Start with the smallest useful task instead of learning every feature at once.</p><div class="visual"><div class="visual-head">① Input / 输入</div><div class="mock"><div class="browser"><div class="browser-body"><div class="message-box">'+esc(p.prompt)+'</div></div></div></div></div></div><div class="step"><h3>第 3 步：检查结果并继续 <span>Step 3: Review and refine</span></h3><p>第一次结果不满意很正常。告诉工具哪里要改、保留什么、删掉什么。</p><p>It is normal for the first result to need changes. Say what to keep, change, or remove.</p><div class="tip"><strong>万能补充 / Useful follow-ups:</strong> “再简单一点” · “给我 3 个版本” · “只修改这一部分” · “再检查一次”<br>“Make it simpler” · “Give me 3 versions” · “Change only this part” · “Check it again”</div></div></section>'+
+'<section class="section" id="task"><h2>03｜直接复制，完成第一次任务 <span>Your first task</span></h2><p class="lead">'+esc(p.task)+'<br>'+esc(p.taskEn)+'</p><div class="prompt-wrap"><div class="prompt" id="promptText">'+esc(p.prompt)+'</div><button class="copy-btn" id="copyPrompt" type="button">复制提示词 / Copy prompt</button></div><div class="task-en"><b>English prompt / 英文提示词</b><div class="prompt">'+esc(p.promptEn)+'</div></div><div class="done">🎯 <strong>新手原则 / Beginner rule</strong><br>'+esc(p.tip)+'<br>'+esc(p.tipEn)+'</div></section>'+
+'<section class="section" id="notes"><h2>04｜常见坑 & 免费说明 <span>Common mistakes & access notes</span></h2><div class="warning"><b>⚠️ 常见坑 / Common pitfall</b><br>'+esc(p.avoid)+'<br>'+esc(p.avoidEn)+'</div><p class="lead"><strong>当前标记 / Current label:</strong> '+esc(free)+'</p><p>免费额度、模型、功能、地区限制和界面都会变化。我们不会把一次性试用包装成“永久免费”，实际使用前请以官方页面为准。</p><p>Free quotas, models, features, regional availability, and interfaces can change. Check the official site for current terms.</p><div class="source">官方入口 / Official site：<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+esc(url)+'</a><br>教程更新时间 / Guide update: 2026-10-03 · UI may change.</div><div class="actions"><a class="btn primary" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">现在试试 / Try it ↗</a><a class="btn secondary" href="index.html">返回教程目录 / Back to guides</a></div></section>'+
 '<div class="footer">🧭 AI 新手导航 · Discover → Understand → Learn → Use<br>本教程用于入门导航，不代表第三方工具的官方说明。</div>';
-})().catch(e=>{document.querySelector("#app").innerHTML='<section class="section"><h2>教程加载失败 / Guide failed to load</h2><p class="lead">请刷新页面后再试。</p></section>';});
+
+const copy=document.querySelector("#copyPrompt");
+copy?.addEventListener("click",async()=>{
+try{
+await navigator.clipboard.writeText(p.prompt);
+copy.textContent="已复制 / Copied ✓";
+setTimeout(()=>copy.textContent="复制提示词 / Copy prompt",1500);
+}catch(e){
+const ta=document.createElement("textarea");ta.value=p.prompt;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();
+copy.textContent="已复制 / Copied ✓";setTimeout(()=>copy.textContent="复制提示词 / Copy prompt",1500);
+}
+});
+})().catch(e=>{console.error(e);document.querySelector("#app").innerHTML='<section class="section"><h2>教程加载失败 / Guide failed to load</h2><p class="lead">请刷新页面后再试。</p></section>';});
 </script>
 </body></html>

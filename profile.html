@@ -87,6 +87,24 @@
       </div>
     </section>
 
+    <section class="panel recent-panel" aria-labelledby="recentTitle">
+      <div class="panel-heading">
+        <div>
+          <span class="panel-label">RECENT / 最近</span>
+          <h2 id="recentTitle">最近看过</h2>
+        </div>
+        <div class="panel-heading-actions">
+          <span id="recentSummary" class="building-tag">0 个工具</span>
+          <button id="clearRecentButton" class="secondary-button" type="button">清空记录</button>
+        </div>
+      </div>
+      <div id="recentList" class="recent-list"></div>
+      <div id="recentEmpty" class="favorites-empty" hidden>
+        <strong>还没有最近使用记录。</strong>
+        <span>回到首页打开一个工具，之后会自动出现在这里。</span>
+      </div>
+    </section>
+
     <section class="panel roadmap-panel">
       <div class="panel-heading">
         <div>
@@ -111,6 +129,6 @@
   </div>
 </footer>
 
-<script src="icons.js?v=20261003-3"></script><script src="favorites.js?v=20261003-1"></script><script type="module" src="profile.js?v=20261003-2"></script>
+<script src="icons.js?v=20261003-3"></script><script src="tool-id.js?v=20261004-1"></script><script src="favorites.js?v=20261004-2"></script><script src="recent.js?v=20261004-1"></script><script type="module" src="profile.js?v=20261004-1"></script>
 </body>
 </html>

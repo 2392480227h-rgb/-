@@ -56,7 +56,6 @@ box.hidden=false;
 ["input","keyup","change","compositionend","search","paste"].forEach(e=>input.addEventListener(e,draw));
 input.addEventListener("focus",draw);
 input.addEventListener("blur",function(){setTimeout(function(){box.hidden=true},180)});
-draw();
 var lastSuggestionValue=input.value||"";
 setInterval(function(){var v=input.value||"";if(v!==lastSuggestionValue){lastSuggestionValue=v;draw()}},300);
 })();

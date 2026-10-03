@@ -91,5 +91,9 @@
     return '<span class="brand-icon" aria-hidden="true"><img src="'+src+'" alt="" loading="lazy" referrerpolicy="no-referrer"'+fallbackAttr+' onerror="'+handler+'"><span class="brand-fallback">'+svg("info")+'</span></span>';
   }
 
+  document.querySelectorAll(".category-brand[data-brand-name]").forEach(el => {
+    el.innerHTML = brand(el.dataset.brandName, el.dataset.brandUrl);
+  });
+
   window.ASHIcons = { svg, brand, brandUrl };
 })();

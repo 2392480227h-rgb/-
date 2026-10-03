@@ -31,12 +31,10 @@
   };
 
   const brandSlugs = {
-    "ChatGPT":"openai",
     "Gemini":"googlegemini",
-    "Claude":"anthropic",
+    "Claude":"claude",
     "Perplexity":"perplexity",
     "NotebookLM":"notebooklm",
-    "Microsoft Copilot":"microsoftcopilot",
     "GitHub Copilot":"githubcopilot",
     "Gemini Code Assist":"googlegemini",
     "Cursor":"cursor",
@@ -54,7 +52,6 @@
     "Runway":"runway",
     "Kling AI":"klingai",
     "Luma Dream Machine":"luma",
-    "Hailuo AI":"minimax",
     "ElevenLabs":"elevenlabs",
     "Suno":"suno",
     "Udio":"udio",
@@ -62,23 +59,17 @@
     "Napkin AI":"napkin",
     "Descript":"descript",
     "DeepSeek":"deepseek",
-    "豆包":"bytedance",
-    "Kimi":"moonshot",
-    "通义千问":"alibabacloud",
-    "文心助手":"baidu",
+    "Kimi":"kimi",
     "腾讯元宝":"tencentqq",
     "智谱清言":"zhipuai",
     "秘塔AI搜索":"metaso",
     "Poe":"poe",
     "HuggingChat":"huggingface",
-    "Mistral Le Chat":"mistralai",
-    "Google AI Studio":"google",
     "Groq":"groq",
     "Grammarly":"grammarly",
     "QuillBot":"quillbot",
     "DeepL":"deepl",
     "Google Translate":"googletranslate",
-    "Jimeng AI":"bytedance",
     "SeaArt AI":"seaart",
     "Tensor.Art":"tensorart",
     "Mage.space":"mage",
@@ -105,21 +96,26 @@
     "Fooocus":"stable-diffusion",
     "Stable Diffusion":"stability",
     "CodeGeeX":"zhipuai",
-    "通义灵码":"alibabacloud",
     "Blackbox AI":"blackboxai",
     "Replit":"replit",
     "Phind":"phind",
     "Symbolab":"symbolab"
   };
 
-  const verifiedSimpleIconSlugs = new Set(["googlegemini","anthropic","perplexity","notebooklm","githubcopilot","cursor","huggingface","ollama","lmstudio","minimax","elevenlabs","suno","deepseek","bytedance","alibabacloud","baidu","poe","mistralai","google","grammarly","deepl","googletranslate","veed","replit","symbolab"]);
+  const verifiedSimpleIconSlugs = new Set(["googlegemini","claude","perplexity","notebooklm","githubcopilot","cursor","huggingface","ollama","lmstudio","elevenlabs","suno","deepseek","poe","grammarly","deepl","googletranslate","veed","kimi","replit","symbolab"]);
 
   function svg(name, className = "") {
     const paths = uiPaths[name] || uiPaths.info;
     return '<svg class="ui-svg '+className+'" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+paths+'</svg>';
   }
 
+  const brandImageUrls = {
+    "GPT4All":"https://raw.githubusercontent.com/nomic-ai/gpt4all/main/gpt4all-chat/icons/gpt4all.svg",
+    "Fooocus":"https://github.com/lllyasviel/Fooocus/assets/19834515/483fb86d-c9a2-4c20-997c-46dafc124f25"
+  };
+
   function brandUrl(name, websiteUrl) {
+    if (brandImageUrls[name]) return brandImageUrls[name];
     const slug = brandSlugs[name];
     if (slug && verifiedSimpleIconSlugs.has(slug)) return 'https://cdn.simpleicons.org/' + slug;
     try {
@@ -128,7 +124,9 @@
     } catch {
       return '';
     }
-  }  function brand(name, websiteUrl) {
+  }
+
+  function brand(name, websiteUrl) {
     const src = brandUrl(name, websiteUrl);
     let fallback = '';
     try {
@@ -138,5 +136,7 @@
     const fallbackAttr = fallback ? ' data-fallback="'+fallback+'"' : '';
     const handler = "if(this.dataset.fallback){const next=this.dataset.fallback;this.dataset.fallback='';this.src=next;return;}this.closest('.brand-icon').dataset.broken='1'";
     return '<span class="brand-icon" aria-hidden="true"><img src="'+src+'" alt="" loading="lazy" referrerpolicy="no-referrer"'+fallbackAttr+' onerror="'+handler+'"><span class="brand-fallback">'+svg("info")+'</span></span>';
-  }  window.ASHIcons = { svg, brand, brandUrl };
+  }
+
+  window.ASHIcons = { svg, brand, brandUrl };
 })();

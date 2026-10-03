@@ -65,3 +65,20 @@ html,body,#suggestions,#suggestions *{-webkit-text-size-adjust:none!important;te
 .starter-guide-logo .ui-svg{width:21px!important;height:21px!important}
 .starter-guide>span:nth-child(2){min-width:0}
 @media(max-width:520px){.starter-guide-logo{width:36px!important;height:36px!important;min-width:36px}.starter-guide-logo .ui-svg{width:20px!important;height:20px!important}}
+
+/* Favorite controls and lightweight heat index */
+.card-top-actions{display:flex;align-items:center;gap:7px}
+.favorite-button{display:inline-flex;align-items:center;gap:4px;border:1px solid #dfe4ed;background:#fff;border-radius:9px;padding:5px 7px;color:#7b8699;font-size:10px;font-weight:800;cursor:pointer;transition:.18s;white-space:nowrap}
+.favorite-button:hover{border-color:#c2cbdb;background:#f8f9fc;color:#4e5c75}
+.favorite-button .favorite-star{font-size:16px;line-height:1}
+.favorite-button.is-favorite{border-color:#d8dee9;background:#f5f7fb;color:#26314a}
+.favorite-button.is-favorite:hover{background:#eef2f8}
+.card-signal{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;min-height:24px}
+.popularity{display:inline-flex;align-items:center;padding:4px 7px;border-radius:7px;background:#f7f8fb;color:#5f6c83;font-size:10px;font-weight:800}
+.signal-note{color:#a0a9b8;font-size:9px}
+.favorite-button:focus-visible{outline:2px solid #9da9bf;outline-offset:2px}
+@media(max-width:520px){
+  .favorite-button{padding:5px 6px}
+  .favorite-button .favorite-label{display:none}
+  .card-signal{margin-top:10px}
+}

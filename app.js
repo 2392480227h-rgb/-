@@ -1,3 +1,4 @@
+const taskMap={"聊天":"聊天 / 综合","学习":"学习 / 研究","写作":"聊天 / 综合","图片":"图片","视频":"视频","编程":"编程"};
 const tools=[
 ["ChatGPT","💬","聊天 / 综合","通用 AI 助手，可聊天、搜索、分析文件与生成图片。","免费入口","https://chatgpt.com/","OpenAI"],
 ["Gemini","✨","聊天 / 综合","Google 的多模态 AI 助手，适合搜索、写作与图片理解。","免费入口","https://gemini.google.com/","Google"],
@@ -36,3 +37,5 @@ function renderCats(){ $("#cats").innerHTML=cats.map(c=>`<button class="cat ${c=
 function esc(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function render(){const q=$("#search").value.trim().toLowerCase();let a=tools.filter(x=>(active==="全部"||x[2]===active)&&(!q||x.join(" ").toLowerCase().includes(q)));if($("#sort").value==="name")a.sort((x,y)=>x[0].localeCompare(y[0]));if($("#sort").value==="free")a.sort((x,y)=>x[4].localeCompare(y[4]));$("#count").textContent=tools.length;$("#summary").textContent=`当前显示 ${a.length} 个`;$("#empty").hidden=a.length>0;$("#grid").innerHTML=a.map(x=>`<article class="card"><div class="top"><span class="icon">${x[1]}</span><span class="badge">${esc(x[4])}</span></div><h2>${esc(x[0])}</h2><div class="desc">${esc(x[3])}</div><div class="meta"><span class="tag">${esc(x[2])}</span><span class="tag">${esc(x[6])}</span></div><a class="open" href="${x[5]}" target="_blank" rel="noopener noreferrer">打开官网 ↗</a></article>`).join("")}
 $("#search").oninput=render;$("#sort").onchange=render;renderCats();render();
+function pickTask(task){const c=taskMap[task];if(c){active=c;renderCats();render()}$("#tools").scrollIntoView({behavior:"smooth",block:"start"})}
+document.querySelectorAll(".starter-card").forEach(b=>b.onclick=()=>pickTask(b.dataset.task));

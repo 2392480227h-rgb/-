@@ -101,3 +101,9 @@
 #favorites .favorite-count{letter-spacing:.01em}
 .favorite-button:not(.is-favorite) .favorite-star{color:#a7afbd}
 @media(max-width:520px){.favorite-wrap{gap:2px}.favorite-count{font-size:8px}}
+
+
+/* Recommended sort control sizing */
+.toolbar select{min-width:150px;height:38px;padding:0 12px;font-size:11px;line-height:36px}
+@media(max-width:760px){.toolbar select{width:auto;min-width:150px}}
+@media(max-width:520px){.toolbar select{width:150px;max-width:100%}}

@@ -7,3 +7,36 @@
 .guide-icon .brand-icon .brand-fallback{width:70%!important;height:70%!important;display:none!important;place-items:center!important}
 .guide-icon .brand-icon[data-broken="1"] .brand-fallback{display:grid!important}
 .guide-icon .brand-icon[data-broken="1"] img{display:none!important}
+
+
+/* Inline tutorial video samples */
+.guide-video-section{scroll-margin-top:18px}
+.guide-video-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:8px}
+.guide-video-heading h2{margin:4px 0 0}
+.guide-video-list{display:grid;gap:16px;margin-top:20px}
+.guide-video-card{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);gap:18px;padding:14px;border:1px solid #dfe4ed;border-radius:16px;background:#fbfcff;overflow:hidden}
+.guide-video-media{min-width:0}
+.guide-video-preview{position:relative;display:block;width:100%;aspect-ratio:16/9;padding:0;border:0;border-radius:12px;overflow:hidden;background:#e9edf5;cursor:pointer}
+.guide-video-preview img{display:block;width:100%;height:100%;object-fit:cover}
+.guide-video-preview:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(12,18,32,.48))}
+.guide-video-play{position:absolute;z-index:1;left:50%;top:50%;transform:translate(-50%,-54%);width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#172033;font-size:24px;box-shadow:0 10px 30px rgba(0,0,0,.18);padding-left:4px}
+.guide-video-preview-label{position:absolute;z-index:1;left:14px;bottom:12px;color:#fff;font-size:11px;font-weight:800;letter-spacing:.02em;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+.guide-video-copy{display:flex;flex-direction:column;justify-content:center;padding:4px 4px 4px 0}
+.guide-video-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.guide-video-meta span{display:inline-flex;align-items:center;min-height:24px;padding:0 8px;border-radius:999px;background:#eef1f7;color:#344055;font-size:10px;font-weight:850}
+.guide-video-meta small{color:#7a8599;font-size:11px}
+.guide-video-copy h3{margin:10px 0 7px;font-size:20px;line-height:1.25;color:#1c273d}
+.guide-video-copy p{margin:0;color:#647087;line-height:1.75;font-size:13px}
+.guide-video-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.guide-video-actions .btn{font-size:12px}
+.guide-video-footnote{margin:14px 0 0;color:#8792a6;font-size:11px;line-height:1.65}
+.guide-video-card.is-playing .guide-video-copy{padding-top:4px}
+.guide-video-player{display:block;width:100%;height:100%;min-height:100%;border:0;background:#10141f;border-radius:12px;aspect-ratio:16/9}
+.guide-video-preview:focus-visible,.guide-video-actions .btn:focus-visible{outline:3px solid #8aa3ff;outline-offset:2px}
+@media(max-width:720px){
+.guide-video-heading{align-items:flex-start;flex-direction:column}
+.guide-video-card{grid-template-columns:1fr;padding:12px}
+.guide-video-copy{padding:2px}
+.guide-video-copy h3{font-size:18px}
+.guide-video-actions{grid-template-columns:1fr}
+}

@@ -1,97 +1,65 @@
 (() => {
-  const KEY = "aiStarterHub:favorites:v1";
-
+  const KEY = "aiStarterHub:favorites:v2";
+  const LEGACY_KEY = "aiStarterHub:favorites:v1";
+  function makeId(item) {
+    if (item?.toolId) return String(item.toolId);
+    return window.ASHToolId?.fromUrl(item?.url) || String(item?.name || "").trim();
+  }
   function normalizeItem(item) {
     if (typeof item === "string") {
       const name = item.trim();
-      return name ? { name, url: "", category: "", company: "", icon: "⭐" } : null;
+      return name ? { toolId: makeId({ name }), name, url: "", category: "", company: "", icon: "⭐" } : null;
     }
     if (!item || typeof item.name !== "string") return null;
     const name = item.name.trim();
     if (!name) return null;
-    return {
-      name,
-      url: String(item.url || "").trim(),
-      category: String(item.category || "").trim(),
-      company: String(item.company || "").trim(),
-      icon: String(item.icon || "⭐")
-    };
+    return { toolId: makeId(item), name, url: String(item.url || "").trim(), category: String(item.category || "").trim(), company: String(item.company || "").trim(), icon: String(item.icon || "⭐") };
   }
-
-  function read() {
+  function readKey(key) {
     try {
-      const raw = localStorage.getItem(KEY);
-      const parsed = raw ? JSON.parse(raw) : [];
-      if (!Array.isArray(parsed)) return [];
-      const result = [];
-      const seen = new Set();
-      for (const item of parsed) {
-        const normalized = normalizeItem(item);
-        if (normalized && !seen.has(normalized.name)) {
-          seen.add(normalized.name);
-          result.push(normalized);
-        }
-      }
-      return result;
-    } catch (error) {
-      console.warn("Favorites read failed:", error);
-      return [];
-    }
+      const raw = localStorage.getItem(key), parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) { console.warn("Favorites read failed:", error); return []; }
   }
-
-  function emit(favorites) {
-    window.dispatchEvent(new CustomEvent("ash:favorites-changed", {
-      detail: { favorites }
-    }));
-  }
-
-  function write(favorites) {
-    const clean = [];
-    const seen = new Set();
-    for (const item of favorites) {
+  function clean(items) {
+    const result = [], seen = new Set();
+    for (const item of items) {
       const normalized = normalizeItem(item);
-      if (normalized && !seen.has(normalized.name)) {
-        seen.add(normalized.name);
-        clean.push(normalized);
-      }
+      if (normalized && !seen.has(normalized.toolId)) { seen.add(normalized.toolId); result.push(normalized); }
     }
-
-    try {
-      localStorage.setItem(KEY, JSON.stringify(clean));
-    } catch (error) {
-      console.warn("Favorites write failed:", error);
+    return result;
+  }
+  function read() {
+    const current = clean(readKey(KEY));
+    if (current.length) return current;
+    const migrated = clean(readKey(LEGACY_KEY));
+    if (migrated.length) {
+      try { localStorage.setItem(KEY, JSON.stringify(migrated)); } catch (error) { console.warn("Favorites migration failed:", error); }
     }
-    emit(clean);
-    return clean;
+    return migrated;
   }
-
-  function has(name) {
-    return read().some(item => item.name === String(name));
+  function emit(favorites) { window.dispatchEvent(new CustomEvent("ash:favorites-changed", { detail: { favorites } })); }
+  function write(favorites) {
+    const cleanItems = clean(favorites);
+    try { localStorage.setItem(KEY, JSON.stringify(cleanItems)); } catch (error) { console.warn("Favorites write failed:", error); }
+    emit(cleanItems);
+    return cleanItems;
   }
-
+  function has(idOrItem) {
+    const id = typeof idOrItem === "string" ? idOrItem : makeId(idOrItem);
+    return read().some(item => item.toolId === id || item.name === id);
+  }
   function toggle(item) {
     const normalized = normalizeItem(item);
     if (!normalized) return { favorite: false, favorites: read() };
-
     const current = read();
-    const index = current.findIndex(entry => entry.name === normalized.name);
-
-    if (index >= 0) {
-      const next = current.filter(entry => entry.name !== normalized.name);
-      return { favorite: false, favorites: write(next) };
+    if (current.some(entry => entry.toolId === normalized.toolId)) {
+      return { favorite: false, favorites: write(current.filter(entry => entry.toolId !== normalized.toolId)) };
     }
-
     return { favorite: true, favorites: write([normalized, ...current]) };
   }
-
   window.addEventListener("storage", event => {
-    if (event.key === KEY) emit(read());
+    if (event.key === KEY || event.key === LEGACY_KEY) emit(read());
   });
-
-  window.ASHFavorites = {
-    KEY,
-    getAll: read,
-    has,
-    toggle
-  };
+  window.ASHFavorites = { KEY, getAll: read, has, toggle };
 })();

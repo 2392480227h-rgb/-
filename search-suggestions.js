@@ -34,7 +34,7 @@ function matches(q){
 function draw(){
   const q=input.value||"", list=matches(q);
   if(!q.trim()){
-    box.innerHTML='<div class="suggest-title">不知道怎么搜？试试 / Try asking</div><div class="suggest-chips"><button class="suggest-chip" data-q="做图片"><span class="chip-brands">${chipBrandIcons("做图片")}</span><span>做图片 / Images</span></button><button class="suggest-chip" data-q="做视频"><span class="chip-brands">${chipBrandIcons("做视频")}</span><span>做视频 / Video</span></button><button class="suggest-chip" data-q="写文章"><span class="chip-brands">${chipBrandIcons("写文章")}</span><span>写东西 / Write</span></button><button class="suggest-chip" data-q="学习资料"><span class="chip-brands">${chipBrandIcons("学习资料")}</span><span>学习 / Learn</span></button></div>';
+    box.innerHTML=`<div class="suggest-title">不知道怎么搜？试试 / Try asking</div><div class="suggest-chips"><button class="suggest-chip" data-q="做图片"><span class="chip-brands">${chipBrandIcons("做图片")}</span><span>做图片 / Images</span></button><button class="suggest-chip" data-q="做视频"><span class="chip-brands">${chipBrandIcons("做视频")}</span><span>做视频 / Video</span></button><button class="suggest-chip" data-q="写文章"><span class="chip-brands">${chipBrandIcons("写文章")}</span><span>写东西 / Write</span></button><button class="suggest-chip" data-q="学习资料"><span class="chip-brands">${chipBrandIcons("学习资料")}</span><span>学习 / Learn</span></button></div>`;
   }else if(list.length){
     box.innerHTML='<div class="suggest-title">你可能在找 / You may be looking for</div>'+list.map(t=>'<button class="suggest-item" data-name="'+t[0]+'"><span class="suggest-icon">'+(window.ASHIcons?ASHIcons.brand(t[0],t[5]):t[1])+'</span><span><strong>'+t[0]+'</strong><small>'+t[2]+' · '+t[3]+'</small></span><b>›</b></button>').join("");
   }else{

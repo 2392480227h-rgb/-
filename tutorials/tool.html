@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 工具新手教程 · AI Starter Hub</title>
+<meta name="description" content="AI 工具新手图文教程，中英双语，帮助第一次使用 AI 的人快速上手。">
+<link rel="stylesheet" href="../style.css?v=20261003-9"><link rel="stylesheet" href="tutorial.css?v=20261003-1">
+</head><body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../">🧭 AI 新手导航</a><a class="back" href="index.html">📖 教程目录 / Guides</a></div></header>
+<main class="wrap content" id="app"><section class="section"><h2>正在加载教程 / Loading guide…</h2></section></main>
+<script>
+(async()=>{
+const params=new URLSearchParams(location.search), name=params.get("tool");
+const app=await fetch("../app.js?v=20261003-9").then(r=>r.text());
+const body=app.match(/const tools=\[(.*?)\n\];/s)?.[1];
+const tools=body?Function("return ["+body+"]")():[];
+const t=tools.find(x=>x[0]===name);
+const esc=s=>String(s||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+if(!t){document.title="教程未找到 · AI Starter Hub";document.querySelector("#app").innerHTML='<section class="section"><h2>找不到这个工具 / Tool not found</h2><p class="lead">返回教程目录，选择一个工具开始学习。</p><div class="actions"><a class="btn primary" href="index.html">返回教程目录</a></div></section>';return}
+const [title,icon,cat,desc,free,url,publisher]=t;
+const tips={
+"聊天 / 综合":["先从一个具体问题开始，不要追求复杂 Prompt。","Start with one concrete task. You do not need a complicated prompt.","请用简单的话解释一下这个问题，并给我 3 个例子。"],
+"搜索 / 研究":["先说清楚你要找什么，再要求来源或整理成表格。","State what you need to find, then ask for sources or a table.","帮我查找这个主题的关键信息，并列出来源。"],
+"学习 / 研究":["把不会的概念直接交给 AI，让它用你能看懂的方式解释。","Ask the AI to explain difficult ideas at your level.","请像给零基础的人上课一样解释这个知识点。"],
+"图片":["先描述主体、场景、风格和画面比例，再生成。","Describe the subject, scene, style, and aspect ratio before generating.","生成一张简洁、干净、适合手机壁纸的图片。"],
+"图片 / 设计":["先确定用途，再让 AI 给出构图或设计方案。","Start with the purpose, then ask for a layout or design concept.","我要做一张宣传图，请给我一个适合手机屏幕的设计方案。"],
+"图片 / 抠图":["上传清晰图片，先完成背景处理，再做后续设计。","Use a clear image, remove the background first, then continue editing.","把人物主体抠出来，背景透明，边缘自然。"],
+"视频":["先从 5 到 10 秒的小片段开始，熟悉生成和导出流程。","Start with a short 5–10 second clip to learn the workflow.","生成一个 8 秒的短视频，画面稳定，主体清晰。"],
+"音频 / 配音":["先输入一小段文字测试声音和语速，再制作完整内容。","Test a short sentence first, then produce the full audio.","把这段文字转换成自然、清晰的普通话语音。"],
+"音乐":["先确定风格、情绪、乐器和用途，再生成。","Describe genre, mood, instruments, and intended use.","生成一段轻快、温暖、适合学习时播放的背景音乐。"],
+"编程":["先让 AI 解释代码，再让它修改，最后自己运行验证。","Ask for an explanation first, then edits, and finally test the result yourself.","请解释这段代码，然后指出可能的错误，不要直接重写全部代码。"],
+"本地 AI":["先安装软件，再下载一个适合自己电脑配置的模型。","Install the app first, then choose a model that fits your computer.","我电脑配置是……，推荐一个适合本地运行的模型。"],
+"写作 / 办公":["先给目标、对象、语气和长度，再让 AI 起草。","Give the goal, audience, tone, and length before drafting.","帮我写一封礼貌、简短、150 字以内的邮件。"],
+"翻译":["先直接翻译，再告诉 AI 你需要正式、口语或自然表达。","Translate first, then specify whether you want formal, casual, or natural wording.","把这段话翻译成自然的英文，不要直译。"],
+"演示 / 文档":["先告诉 AI 主题、受众和页数，再生成初稿。","Give the topic, audience, and slide count before generating.","做一个 8 页的入门演示，面向完全不了解这个主题的人。"],
+"会议 / 音频":["先上传或录制一段短会议，再检查转写和摘要是否准确。","Start with a short meeting recording and verify the transcript and summary.","把会议内容整理成：重点、决定、待办事项。"],
+"模型 / 开源":["先体验在线 Demo，再决定是否下载模型或自己部署。","Try the online demo first before downloading or self-hosting a model."],
+"开发 / 模型":["先用在线 Playground 做小实验，再复制到代码项目。","Prototype in the online playground before adding it to your codebase."]
+};
+const d=tips[cat]||["先完成一次最简单的操作，再逐步尝试高级功能。","Complete the simplest task first, then explore advanced features.","我第一次使用这个工具，请用最简单的步骤教我完成一个基础任务。"];
+document.title=title+" 新手教程 · AI Starter Hub";
+document.querySelector("#app").innerHTML=
+'<header class="hero"><div class="wrap"><div class="eyebrow">'+esc(title).toUpperCase()+' · BEGINNER GUIDE</div><h1>'+esc(icon)+' '+esc(title)+' 新手教程</h1><p>'+esc(desc)+'</p><small>'+esc(d[1])+'</small><div class="tool-badges"><span class="pill">'+esc(cat)+'</span><span class="pill">'+esc(free)+'</span><span class="pill">'+esc(publisher)+'</span></div></div></header>'+
+'<nav class="toc"><strong>本页内容 / On this page</strong><a href="#start">第一次使用</a><a href="#tips">使用技巧</a><a href="#example">第一次任务</a><a href="#notes">免费与注意事项</a></nav>'+
+'<section class="section" id="start"><h2>01｜第一次使用 <span>First steps</span></h2><div class="step"><h3>第 1 步：打开工具 <span>Step 1: Open the tool</span></h3><p>点击下面的官方入口。我们只提供导航和教程，实际功能由 '+esc(publisher)+' 官方网站提供。</p><p>Open the official site below. This hub provides guidance; the actual service is provided by '+esc(publisher)+'.</p><div class="actions"><a class="btn primary" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">打开官网 / Open official site ↗</a></div></div>'+
+'<div class="step"><h3>第 2 步：完成最简单的动作 <span>Step 2: Do one simple task</span></h3><p>'+esc(d[0])+'</p><p>'+esc(d[1])+'</p><div class="done">🎯 <strong>新手原则 / Beginner rule</strong><br>先会用，再研究高级功能。第一次成功比一次学完所有按钮更重要。</div></div></section>'+
+'<section class="section" id="tips"><h2>02｜使用技巧 <span>Practical tips</span></h2><div class="tip"><strong>中文：</strong>'+esc(d[0])+'<br><strong>English:</strong> '+esc(d[1])+'</div><div class="step"><h3>如果结果不对怎么办？ <span>What if the result is wrong?</span></h3><p>不要急着退出。直接告诉工具：哪里不对、你想要什么、有什么限制。</p><p>Do not restart immediately. Tell the tool what is wrong, what you want, and any constraints.</p></div></section>'+
+'<section class="section" id="example"><h2>03｜第一次任务 <span>Your first task</span></h2><div class="prompt">'+esc(d[2])+'</div><p class="lead">把上面的示例直接复制进去，然后根据结果继续修改。<br>Copy the example above, try it, then refine the result.</p><div class="tip"><strong>万能补充：</strong>“再简单一点”“给我 3 个版本”“用表格整理”“告诉我哪里可能出错”。</div></section>'+
+'<section class="section" id="notes"><h2>04｜免费与注意事项 <span>Free access & notes</span></h2><p class="lead"><strong>当前标记：</strong> '+esc(free)+'</p><p>免费额度、模型、功能、地区限制和界面都可能变化。我们不会把一次性试用包装成“永久免费”，实际使用前请以官方页面显示为准。</p><p>Free quotas, models, features, regional availability, and interfaces can change. Check the official site for the current terms.</p><div class="actions"><a class="btn primary" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">现在试试 / Try it ↗</a><a class="btn secondary" href="index.html">返回教程目录</a></div></section>';
+})().catch(e=>{document.querySelector("#app").innerHTML='<section class="section"><h2>教程加载失败 / Guide failed to load</h2><p class="lead">请刷新页面后再试。</p></section>';});
+</script></body></html>

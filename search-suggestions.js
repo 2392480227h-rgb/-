@@ -68,4 +68,6 @@ function draw(){
 input.addEventListener("focus",draw);
 input.addEventListener("blur",function(){setTimeout(function(){box.hidden=true},180)});
 draw();
+var lastSuggestionValue=input.value||"";
+setInterval(function(){var v=input.value||"";if(v!==lastSuggestionValue){lastSuggestionValue=v;draw()}},300);
 })();

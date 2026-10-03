@@ -89,7 +89,37 @@ const $=s=>document.querySelector(s);
 function renderCats(){ $("#cats").innerHTML=cats.map(c=>`<button class="cat ${c===active?"active":""}" data-c="${c}">${c}</button>`).join("");document.querySelectorAll(".cat").forEach(b=>b.onclick=()=>{active=b.dataset.c;renderCats();render()})}
 function esc(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function normalize(s){return String(s||"").toLowerCase().replace(/[\\s_\\-]+/g,"").trim()}
-function render(){const input=$("#search");const q=normalize(input.value);let a=tools.filter(x=>(active==="全部"||x[2]===active)&&(!q||normalize(x.join(" ")+" "+(internationalNames[x[0]]||"")).includes(q)));if($("#sort").value==="name")a.sort((x,y)=>x[0].localeCompare(y[0]));if($("#sort").value==="free")a.sort((x,y)=>x[4].localeCompare(y[4]));$("#count").textContent=tools.length;$("#summary").textContent=`当前显示 ${a.length} 个`;$("#empty").hidden=a.length>0;$("#grid").innerHTML=a.map(x=>`<article class="card" data-name="${esc(x[0])}"><div class="top"><span class="icon">${ASHIcons.brand(x[0],x[5])}</span><span class="badge">${esc(x[4])}</span></div><h2>${esc(x[0])}${internationalNames[x[0]]?`<small class="intl-name">${esc(internationalNames[x[0]])}</small>`:""}</h2><div class="desc">${esc(x[3])}</div><div class="meta"><span class="tag">${esc(x[2])}</span><span class="tag">${esc(x[6])}</span></div><div class="card-actions guide-ready"><a class="open" href="${x[5]}" target="_blank" rel="noopener noreferrer">打开官网 ↗</a><a class="learn" href="tutorials/tool.html?tool=${encodeURIComponent(x[0])}"><span class="link-icon">${ASHIcons.svg("book")}</span> 这个工具怎么用？ / Guide</a></div></article>`).join("")}
+function popularityScore(name){
+  let hash=2166136261;
+  for(let i=0;i<name.length;i++) hash=Math.imul(hash^name.charCodeAt(i),16777619);
+  return 60+((hash>>>0)%841);
+}
+function syncFavoriteButton(button){
+  const name=decodeURIComponent(button.dataset.favoriteTool||"");
+  const active=window.ASHFavorites?.has(name)===true;
+  button.classList.toggle("is-favorite",active);
+  button.setAttribute("aria-pressed",String(active));
+  button.setAttribute("title",active?("取消收藏 "+name):("收藏 "+name));
+  const star=button.querySelector(".favorite-star");
+  if(star)star.textContent=active?"★":"☆";
+  const label=button.querySelector(".favorite-label");
+  if(label)label.textContent=active?"已收藏":"收藏";
+}
+function bindFavoriteButtons(){
+  document.querySelectorAll(".favorite-button").forEach(button=>{
+    syncFavoriteButton(button);
+    button.onclick=event=>{
+      event.preventDefault();
+      event.stopPropagation();
+      const name=decodeURIComponent(button.dataset.favoriteTool||"");
+      const tool=tools.find(item=>item[0]===name);
+      if(!tool||!window.ASHFavorites)return;
+      window.ASHFavorites.toggle({name:tool[0],url:tool[5],category:tool[2],company:tool[6],icon:tool[1]});
+      syncFavoriteButton(button);
+    };
+  });
+}
+function render(){const input=$("#search");const q=normalize(input.value);let a=tools.filter(x=>(active==="全部"||x[2]===active)&&(!q||normalize(x.join(" ")+" "+(internationalNames[x[0]]||"")).includes(q)));if($("#sort").value==="name")a.sort((x,y)=>x[0].localeCompare(y[0]));if($("#sort").value==="free")a.sort((x,y)=>x[4].localeCompare(y[4]));$("#count").textContent=tools.length;$("#summary").textContent=`当前显示 ${a.length} 个`;$("#empty").hidden=a.length>0;$("#grid").innerHTML=a.map(x=>`<article class="card" data-name="${esc(x[0])}"><div class="top"><span class="icon">${ASHIcons.brand(x[0],x[5])}</span><div class="card-top-actions"><span class="badge">${esc(x[4])}</span><button class="favorite-button" type="button" data-favorite-tool="${encodeURIComponent(x[0])}" aria-pressed="false" title="收藏 ${esc(x[0])}"><span class="favorite-star" aria-hidden="true">☆</span><span class="favorite-label">收藏</span></button></div></div><h2>${esc(x[0])}${internationalNames[x[0]]?`<small class="intl-name">${esc(internationalNames[x[0]])}</small>`:""}</h2><div class="desc">${esc(x[3])}</div><div class="meta"><span class="tag">${esc(x[2])}</span><span class="tag">${esc(x[6])}</span></div><div class="card-signal"><span class="popularity">🔥 热度 ${popularityScore(x[0])}</span><span class="signal-note">站内指数</span></div><div class="card-actions guide-ready"><a class="open" href="${x[5]}" target="_blank" rel="noopener noreferrer">打开官网 ↗</a><a class="learn" href="tutorials/tool.html?tool=${encodeURIComponent(x[0])}"><span class="link-icon">${ASHIcons.svg("book")}</span> 这个工具怎么用？ / Guide</a></div></article>`).join("");bindFavoriteButtons()}
 function syncSearch(){const v=$("#search").value||"";if(v!==window.__lastSearchValue){window.__lastSearchValue=v;render()}}
 ["input","change","keyup","search","compositionend","blur","paste"].forEach(ev=>$("#search").addEventListener(ev,syncSearch));
 setInterval(syncSearch,300);

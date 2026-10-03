@@ -84,7 +84,7 @@ function renderFavorites() {
     }
     const copy = document.createElement("div"); copy.className = "favorite-item-copy";
     const name = document.createElement("strong"); name.textContent = item.name;
-    const meta = document.createElement("small"); meta.textContent = [item.category, item.company].filter(Boolean).join(" · ");
+    const meta = document.createElement("small"); meta.textContent = [window.ASHCategories?.main(item.category) || item.category, item.company].filter(Boolean).join(" · ");
     copy.append(name, meta);
     const actions = document.createElement("div"); actions.className = "favorite-item-actions";
     if (item.url) {
@@ -110,7 +110,7 @@ function renderRecent() {
     const icon = document.createElement("div"); icon.className = "recent-item-icon"; icon.textContent = item.icon || "⭐";
     const copy = document.createElement("div"); copy.className = "recent-item-copy";
     const name = document.createElement("strong"); name.textContent = item.name;
-    const meta = document.createElement("small"); meta.textContent = [relativeTime(item.visitedAt), item.category, item.company].filter(Boolean).join(" · ");
+    const meta = document.createElement("small"); meta.textContent = [relativeTime(item.visitedAt), window.ASHCategories?.main(item.category) || item.category, item.company].filter(Boolean).join(" · ");
     copy.append(name, meta);
     const actions = document.createElement("div"); actions.className = "recent-item-actions";
     if (item.url) {

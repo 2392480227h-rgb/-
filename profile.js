@@ -105,7 +105,34 @@ function renderRecent() {
   empty.hidden = recent.length > 0;
   for (const item of recent) {
     const article = document.createElement("article"); article.className = "recent-item";
-    const icon = document.createElement("div"); icon.className = "recent-item-icon"; icon.textContent = item.icon || "⭐";
+    const icon = document.createElement("div"); icon.className = "recent-item-icon";
+    const logoUrl = window.ASHIcons?.brandUrl?.(item.name, item.url) || "";
+    const faviconUrl = (() => {
+      try {
+        const host = new URL(item.url).hostname;
+        return "https://www.google.com/s2/favicons?domain=" + encodeURIComponent(host) + "&sz=128";
+      } catch {
+        return "";
+      }
+    })();
+    if (logoUrl) {
+      const img = document.createElement("img");
+      img.src = logoUrl;
+      img.alt = "";
+      img.loading = "lazy";
+      img.referrerPolicy = "no-referrer";
+      img.onerror = () => {
+        if (faviconUrl && img.src !== faviconUrl) {
+          img.src = faviconUrl;
+          return;
+        }
+        img.remove();
+        if (!icon.childNodes.length) icon.textContent = item.icon || "⭐";
+      };
+      icon.append(img);
+    } else {
+      icon.textContent = item.icon || "⭐";
+    }
     const copy = document.createElement("div"); copy.className = "recent-item-copy";
     const name = document.createElement("strong"); name.textContent = item.name;
     const meta = document.createElement("small"); meta.textContent = [relativeTime(item.visitedAt), window.ASHCategories?.main(item.category) || item.category, item.company].filter(Boolean).join(" · ");

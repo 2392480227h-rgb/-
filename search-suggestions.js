@@ -6,9 +6,9 @@ if(!input||!box||typeof tools==="undefined") return;
 const groups=[
   [["做图片","图片","画图","海报","设计","抠图","image","photo","poster"],["图片","图片 / 设计","设计 / 图片","图片 / 抠图"]],
   [["做视频","视频","剪辑","字幕","短视频","video","edit"],["视频","视频 / 音频"]],
-  [["写文章","写作","作文","邮件","文案","改写","润色","write","writing"],["聊天 / 综合"]],
-  [["学习","学习资料","资料","总结","研究","论文","study","learn","research"],["学习 / 研究","搜索 / 研究"]],
-  [["编程","代码","开发","debug","coding","code"],["编程"]]
+  [["写文章","写作","作文","邮件","文案","改写","润色","write","writing"],["写作 / 办公","聊天 / 助手"]],
+  [["学习","学习资料","资料","总结","研究","论文","study","learn","research"],["搜索 / 研究"]],
+  [["编程","代码","开发","debug","coding","code"],["编程 / 开发"]]
 ];
 function norm(s){return String(s||"").toLowerCase().replace(/[\s_\-]+/g,"").trim()}
 const chipBrands={"做图片":["Midjourney","Leonardo AI","Ideogram"],"做视频":["Runway","Kling AI","Pika"],"写文章":["ChatGPT","Claude","Gemini"],"学习资料":["NotebookLM","ChatGPT","Gemini"]};
@@ -21,7 +21,7 @@ function score(t,q){
   if(desc.includes(n))v+=80;
   if(all.includes(n))v+=30;
   groups.forEach(g=>{
-    if(g[0].some(k=>n.includes(norm(k)))&&g[1].indexOf(t[2])>-1)v+=100;
+    if(g[0].some(k=>n.includes(norm(k)))&&g[1].indexOf(window.ASHCategories?.main(t)||t[2])>-1)v+=100;
   });
   return v;
 }

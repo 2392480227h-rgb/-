@@ -103,6 +103,7 @@ function getToolId(tool){return window.ASHToolId?.fromUrl(tool?.[5])||""}
 function syncFavoriteButton(button){
   const toolId=decodeURIComponent(button.dataset.favoriteToolId||"");
   const active=window.ASHFavorites?.has(toolId)===true;
+  const name=button.dataset.favoriteToolName ? decodeURIComponent(button.dataset.favoriteToolName) : "";
   button.classList.toggle("is-favorite",active);
   button.setAttribute("aria-pressed",String(active));
   button.setAttribute("title",active?("取消收藏 "+name):("收藏 "+name));

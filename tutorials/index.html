@@ -14,5 +14,5 @@ document.querySelector("#guide-count").textContent="· "+tools.length+" tools";
 document.querySelector("#guide-grid").innerHTML=tools.map(t=>'<a class="guide-card" href="tool.html?tool='+encodeURIComponent(t[0])+'"><div class="guide-icon">'+ASHIcons.brand(t[0],t[5])+'</div><div><strong>'+esc(t[0])+'</strong><span>'+esc(t[2])+'</span><small>'+esc(t[4])+' · '+esc(t[6])+'</small></div><b>'+ASHIcons.svg("arrow")+'</b></a>').join("");
 })().catch(()=>{document.querySelector("#guide-grid").innerHTML='<div class="tip">目录加载失败，请返回首页。 / Failed to load the guide list.</div>';});
 </script>
-</body></html>
 <script>document.querySelectorAll("[data-icon]").forEach(el=>{el.innerHTML=ASHIcons.svg(el.dataset.icon);});</script>
+</body></html>

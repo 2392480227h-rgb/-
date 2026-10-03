@@ -1,3 +1,5 @@
+const internationalNames={"豆包":"Doubao","通义千问":"Qwen","文心助手":"ERNIE Assistant","腾讯元宝":"Yuanbao","智谱清言":"ChatGLM","秘塔AI搜索":"Metaso","即梦AI":"Jimeng AI","通义灵码":"Qoder CN"};
+
 const taskMap={"聊天":"聊天 / 综合","学习":"学习 / 研究","写作":"聊天 / 综合","图片":"图片","视频":"视频","编程":"编程"};
 
 const tools=[
@@ -48,7 +50,7 @@ const tools=[
 ["QuillBot","🪶","写作 / 办公","英文改写、总结、语法检查和翻译工具。","免费入口","https://quillbot.com/","QuillBot"],
 ["DeepL","🌐","翻译","高质量文本与文档翻译工具。","免费入口","https://www.deepl.com/","DeepL"],
 ["Google Translate","🗺️","翻译","支持文字、图片、语音和网页翻译。","免费使用","https://translate.google.com/","Google"],
-["Jimeng AI","🎨","图片","字节跳动即梦 AI，适合图片创作与视觉设计。","免费额度","https://jimeng.jianying.com/","ByteDance"],
+["即梦AI","🎨","图片","字节跳动即梦 AI，适合图片创作与视觉设计。","免费额度","https://jimeng.jianying.com/","ByteDance"],
 ["SeaArt AI","🖌️","图片","AI 绘画与模型社区，提供大量创作模型。","免费额度","https://www.seaart.ai/","SeaArt"],
 ["Tensor.Art","🧰","图片","在线 AI 绘画与模型工作台，支持多种开源模型。","免费额度","https://tensor.art/","Tensor.Art"],
 ["Mage.space","🧙","图片","在线 AI 图像生成平台，提供免费体验入口。","免费额度","https://www.mage.space/","Mage"],
@@ -87,7 +89,7 @@ const $=s=>document.querySelector(s);
 function renderCats(){ $("#cats").innerHTML=cats.map(c=>`<button class="cat ${c===active?"active":""}" data-c="${c}">${c}</button>`).join("");document.querySelectorAll(".cat").forEach(b=>b.onclick=()=>{active=b.dataset.c;renderCats();render()})}
 function esc(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function normalize(s){return String(s||"").toLowerCase().replace(/[\\s_\\-]+/g,"").trim()}
-function render(){const input=$("#search");const q=normalize(input.value);let a=tools.filter(x=>(active==="全部"||x[2]===active)&&(!q||normalize(x.join(" ")).includes(q)));if($("#sort").value==="name")a.sort((x,y)=>x[0].localeCompare(y[0]));if($("#sort").value==="free")a.sort((x,y)=>x[4].localeCompare(y[4]));$("#count").textContent=tools.length;$("#summary").textContent=`当前显示 ${a.length} 个`;$("#empty").hidden=a.length>0;$("#grid").innerHTML=a.map(x=>`<article class="card"><div class="top"><span class="icon">${x[1]}</span><span class="badge">${esc(x[4])}</span></div><h2>${esc(x[0])}</h2><div class="desc">${esc(x[3])}</div><div class="meta"><span class="tag">${esc(x[2])}</span><span class="tag">${esc(x[6])}</span></div><div class="card-actions"><a class="open" href="${x[5]}" target="_blank" rel="noopener noreferrer">打开官网 ↗</a><a class="learn" href="tutorials/tool.html?tool=${encodeURIComponent(x[0])}">📖 这个工具怎么用？ / Guide</a></div></article>`).join("")}
+function render(){const input=$("#search");const q=normalize(input.value);let a=tools.filter(x=>(active==="全部"||x[2]===active)&&(!q||normalize(x.join(" ")+" "+(internationalNames[x[0]]||"")).includes(q)));if($("#sort").value==="name")a.sort((x,y)=>x[0].localeCompare(y[0]));if($("#sort").value==="free")a.sort((x,y)=>x[4].localeCompare(y[4]));$("#count").textContent=tools.length;$("#summary").textContent=`当前显示 ${a.length} 个`;$("#empty").hidden=a.length>0;$("#grid").innerHTML=a.map(x=>`<article class="card"><div class="top"><span class="icon">${x[1]}</span><span class="badge">${esc(x[4])}</span></div><h2>${esc(x[0])}${internationalNames[x[0]]?`<small class="intl-name">${esc(internationalNames[x[0]])}</small>`:""}</h2><div class="desc">${esc(x[3])}</div><div class="meta"><span class="tag">${esc(x[2])}</span><span class="tag">${esc(x[6])}</span></div><div class="card-actions"><a class="open" href="${x[5]}" target="_blank" rel="noopener noreferrer">打开官网 ↗</a><a class="learn" href="tutorials/tool.html?tool=${encodeURIComponent(x[0])}">📖 这个工具怎么用？ / Guide</a></div></article>`).join("")}
 function syncSearch(){const v=$("#search").value||"";if(v!==window.__lastSearchValue){window.__lastSearchValue=v;render()}}
 ["input","change","keyup","search","compositionend","blur","paste"].forEach(ev=>$("#search").addEventListener(ev,syncSearch));
 setInterval(syncSearch,300);

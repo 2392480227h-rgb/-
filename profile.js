@@ -45,10 +45,9 @@ function relativeTime(timestamp) {
 }
 
 function renderFavorites() {
-  const list = $("favoritesList"), empty = $("favoritesEmpty"), count = $("favoriteCount"), summary = $("favoriteSummary");
+  const list = $("favoritesList"), empty = $("favoritesEmpty"), summary = $("favoriteSummary");
   if (!list || !empty) return;
   const favorites = window.ASHFavorites?.getAll?.() || [];
-  if (count) count.textContent = String(favorites.length);
   if (summary) summary.textContent = `${favorites.length} 个工具`;
   list.replaceChildren();
   empty.hidden = favorites.length > 0;
@@ -97,10 +96,9 @@ function renderFavorites() {
 }
 
 function renderRecent() {
-  const list = $("recentList"), empty = $("recentEmpty"), count = $("recentCount"), summary = $("recentSummary"), clearButton = $("clearRecentButton");
+  const list = $("recentList"), empty = $("recentEmpty"), summary = $("recentSummary"), clearButton = $("clearRecentButton");
   if (!list || !empty) return;
   const recent = window.ASHRecent?.getAll?.() || [];
-  if (count) count.textContent = String(recent.length);
   if (summary) summary.textContent = `${recent.length} 个工具`;
   if (clearButton) clearButton.disabled = recent.length === 0;
   list.replaceChildren();

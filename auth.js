@@ -8,59 +8,88 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const SUPABASE_URL = "https://rebwsnahwpyqahmuycri.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_TVRAm1r1Er3xBfrtA6Q8DA_eeCYqQZk";
 
-const button = document.getElementById("authButton");
-if (!button) {
-  console.warn("Auth UI not found.");
-} else if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-  button.classList.add("auth-unconfigured");
-  button.title = "Google 登录尚未配置";
-  button.addEventListener("click", () => {
-    window.alert("Google 登录正在配置中，请稍后再试。");
-  });
-} else {
-  const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true
-    }
-  });
+export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true
+  }
+});
 
-  const label = (name) => {
-    const value = String(name || "").trim();
-    if (!value) return "已登录";
-    return value.length > 12 ? value.slice(0, 12) + "…" : value;
+export async function signInWithGoogle({ redirectTo, prompt } = {}) {
+  const options = {
+    redirectTo: redirectTo || (window.location.origin + window.location.pathname)
   };
+  if (prompt) options.queryParams = { prompt };
 
-  function renderUser(user) {
-    if (!user) {
-      button.className = "auth-button";
-      button.innerHTML = '<span class="google-mark" aria-hidden="true">G</span><span>使用 Google 登录</span>';
-      button.title = "使用 Google 账号登录";
-      button.onclick = async () => {
-        const redirectTo = window.location.origin + window.location.pathname;
-        const { error } = await supabase.auth.signInWithOAuth({
-          provider: "google",
-          options: { redirectTo }
-        });
-        if (error) window.alert("Google 登录失败：" + error.message);
-      };
-      return;
-    }
+  return supabase.auth.signInWithOAuth({
+    provider: "google",
+    options
+  });
+}
 
-    const name = label(user.user_metadata?.full_name || user.user_metadata?.name || user.email);
-    const avatar = user.user_metadata?.avatar_url;
-    button.className = "auth-button auth-user";
-    button.title = "点击退出登录";
-    button.innerHTML = avatar
-      ? '<img src="' + String(avatar).replace(/"/g, "&quot;") + '" alt=""><span>' + name + '</span><b>退出</b>'
-      : '<span class="avatar-fallback">●</span><span>' + name + '</span><b>退出</b>';
+const button = document.getElementById("authButton");
+
+function label(name) {
+  const value = String(name || "").trim();
+  if (!value) return "已登录";
+  return value.length > 12 ? value.slice(0, 12) + "…" : value;
+}
+
+function makeText(tag, text, className) {
+  const el = document.createElement(tag);
+  el.textContent = text;
+  if (className) el.className = className;
+  return el;
+}
+
+function renderUser(user) {
+  if (!button) return;
+
+  button.replaceChildren();
+
+  if (!user) {
+    button.className = "auth-button";
+    button.title = "使用 Google 账号登录";
+
+    const mark = makeText("span", "G", "google-mark");
+    mark.setAttribute("aria-hidden", "true");
+    button.append(mark, makeText("span", "使用 Google 登录"));
+
     button.onclick = async () => {
-      const { error } = await supabase.auth.signOut();
-      if (error) window.alert("退出登录失败：" + error.message);
+      const { error } = await signInWithGoogle();
+      if (error) window.alert("Google 登录失败：" + error.message);
     };
+    return;
   }
 
+  const name = label(user.user_metadata?.full_name || user.user_metadata?.name || user.email);
+  const avatar = String(user.user_metadata?.avatar_url || "").trim();
+
+  button.className = "auth-button auth-user";
+  button.title = "打开个人主页";
+
+  if (avatar) {
+    const img = document.createElement("img");
+    img.src = avatar;
+    img.alt = "";
+    img.referrerPolicy = "no-referrer";
+    button.append(img);
+  } else {
+    button.append(makeText("span", "●", "avatar-fallback"));
+  }
+
+  button.append(
+    makeText("span", name),
+    makeText("b", "我的")
+  );
+
+  button.onclick = () => {
+    window.location.href = new URL("./profile.html", window.location.href).href;
+  };
+}
+
+if (SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY) {
   supabase.auth.onAuthStateChange((_event, session) => {
     renderUser(session?.user || null);
   });
@@ -71,5 +100,11 @@ if (!button) {
       return;
     }
     renderUser(data.session?.user || null);
+  });
+} else if (button) {
+  button.classList.add("auth-unconfigured");
+  button.title = "Google 登录尚未配置";
+  button.addEventListener("click", () => {
+    window.alert("Google 登录正在配置中，请稍后再试。");
   });
 }

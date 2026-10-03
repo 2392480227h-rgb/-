@@ -1,0 +1,78 @@
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#f6f7fb;color:#172033;font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+button,a{font:inherit}
+.profile-wrap{width:min(1060px,calc(100% - 32px));margin:auto}
+.profile-sitebar{height:64px;background:#fff;border-bottom:1px solid #e8ebf2;position:sticky;top:0;z-index:10}
+.profile-nav{height:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.profile-brand{display:flex;align-items:baseline;gap:8px;color:#151b2c;text-decoration:none;font-size:18px}
+.profile-brand span{font-size:25px}
+.profile-brand em{font-size:11px;color:#8a94a8;font-style:normal}
+.back-home{color:#667085;text-decoration:none;border:1px solid #dfe4ed;background:#fff;border-radius:10px;padding:7px 11px;font-weight:700;font-size:12px}
+.back-home:hover{background:#f8f9fc;border-color:#c6cfdf;color:#172033}
+.profile-main{padding:44px 0 80px}
+.profile-hero{display:flex;align-items:end;justify-content:space-between;gap:24px;padding:12px 0 28px}
+.eyebrow,.panel-label{display:block;color:#8490a7;font-size:11px;letter-spacing:.14em;font-weight:800}
+.profile-hero h1{font-size:clamp(34px,5vw,48px);line-height:1.1;margin:8px 0}
+.profile-hero p{margin:0;color:#737e92;max-width:650px}
+.status-pill{padding:7px 11px;border:1px solid #dfe4ed;background:#fff;border-radius:999px;color:#69758d;font-size:11px;font-weight:800;white-space:nowrap}
+.panel,.account-panel,.feature-card{background:#fff;border:1px solid #e2e7ef;border-radius:18px;box-shadow:0 8px 26px #17203309}
+.panel{padding:28px}
+.signed-out{text-align:center;padding:62px 24px}
+.empty-icon{width:60px;height:60px;border-radius:18px;background:#f0f3f9;display:grid;place-items:center;font-size:28px;margin:0 auto 16px}
+.signed-out h2{margin:0 0 7px;font-size:21px}
+.signed-out p{max-width:560px;margin:0 auto 20px;color:#778196}
+.primary-button,.secondary-button,.danger-button{border-radius:10px;padding:9px 13px;font-weight:800;font-size:12px;cursor:pointer;transition:.18s}
+.primary-button{border:1px solid #172033;background:#172033;color:#fff}
+.primary-button:hover{background:#293855}
+.secondary-button{border:1px solid #dfe4ed;background:#f8f9fc;color:#172033}
+.secondary-button:hover{background:#eef2f8}
+.danger-button{border:1px solid #eadfe0;background:#fff7f7;color:#8a4d53}
+.danger-button:hover{background:#fff0f0;border-color:#e3cfd1}
+.account-panel{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:24px}
+.account-main{display:flex;align-items:center;gap:16px;min-width:0}
+.profile-avatar{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;background:#eef2f8;border:1px solid #e3e7ef;color:#738098;font-size:20px;font-weight:800;overflow:hidden}
+.profile-avatar img{width:100%;height:100%;border:0;border-radius:inherit;object-fit:cover;display:block}
+.account-copy{min-width:0}
+.account-copy h2{margin:3px 0 1px;font-size:23px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.account-copy p{margin:0;color:#778196;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.provider-tag,.building-tag{display:inline-flex;align-items:center;padding:4px 8px;border-radius:7px;background:#f0f3f9;color:#65728a;font-size:10px;font-weight:800;margin-top:8px}
+.account-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:14px}
+.feature-card{position:relative;display:grid;grid-template-columns:44px 1fr auto;gap:13px;align-items:start;padding:20px;min-height:148px}
+.feature-icon{width:42px;height:42px;border-radius:12px;background:#f0f3f9;display:grid;place-items:center;font-size:21px}
+.feature-card h2{margin:3px 0 5px;font-size:19px}
+.feature-card p{margin:0;color:#7a8599;font-size:12px;line-height:1.6}
+.feature-count{font-size:24px;color:#a1a9b8;font-weight:800}
+.roadmap-panel{margin-top:14px}
+.panel-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.panel-heading h2{margin:5px 0 0;font-size:20px}
+.roadmap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.roadmap-grid>div{display:grid;grid-template-columns:30px 1fr;column-gap:8px;align-items:center;padding:13px;border:1px solid #e8ebf1;background:#fafbfc;border-radius:12px}
+.roadmap-grid span{grid-row:span 2;font-size:20px}
+.roadmap-grid strong{font-size:13px}
+.roadmap-grid small{color:#8993a6;font-size:10px}
+.profile-footer{background:#111827;color:#9aa5ba}
+.profile-footer .profile-wrap{min-height:130px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.profile-footer span{color:#fff;font-weight:800}
+.profile-footer small{color:#77839a}
+@media(max-width:760px){
+  .profile-hero,.account-panel,.panel-heading{align-items:flex-start;flex-direction:column}
+  .account-actions{justify-content:flex-start}
+  .feature-grid,.roadmap-grid{grid-template-columns:1fr}
+  .profile-hero{gap:14px}
+  .status-pill{white-space:normal}
+}
+@media(max-width:520px){
+  .profile-wrap{width:min(100% - 22px,1060px)}
+  .profile-brand em{display:none}
+  .profile-nav{gap:10px}
+  .back-home{padding:6px 9px}
+  .profile-main{padding-top:30px}
+  .account-main{align-items:flex-start}
+  .profile-avatar{width:58px;height:58px}
+  .account-copy h2{font-size:20px}
+  .account-actions{width:100%;display:grid;grid-template-columns:1fr}
+  .secondary-button,.danger-button{width:100%}
+  .profile-footer .profile-wrap{padding:25px 0;flex-direction:column;align-items:flex-start}
+}

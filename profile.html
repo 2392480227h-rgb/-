@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f6f7fb">
+<title>我的 · AI Starter Hub</title>
+<meta name="description" content="AI Starter Hub 用户个人空间。">
+<link rel="stylesheet" href="profile.css?v=20261003-1">
+</head>
+<body>
+<header class="profile-sitebar">
+  <div class="profile-wrap profile-nav">
+    <a class="profile-brand" href="./"><span>🧭</span><strong>AI 新手导航</strong><em>AI Starter Hub</em></a>
+    <a class="back-home" href="./">← 返回首页</a>
+  </div>
+</header>
+
+<main class="profile-main profile-wrap">
+  <section class="profile-hero">
+    <div>
+      <small class="eyebrow">MY SPACE / 我的空间</small>
+      <h1>个人主页</h1>
+      <p>管理你的账号，收藏喜欢的 AI 工具，并查看最近使用过的工具。</p>
+    </div>
+    <div id="profileStatus" class="status-pill">检查登录状态…</div>
+  </section>
+
+  <section id="signedOut" class="panel signed-out" hidden>
+    <div class="empty-icon">👤</div>
+    <h2>先登录，开启你的个人空间</h2>
+    <p>登录后才能保存收藏和最近看过的工具。账号入口与退出登录会保持分开。</p>
+    <button id="signInButton" class="primary-button" type="button">使用 Google 登录</button>
+  </section>
+
+  <div id="signedIn" hidden>
+    <section class="account-panel">
+      <div class="account-main">
+        <div id="profileAvatar" class="profile-avatar" aria-label="用户头像"></div>
+        <div class="account-copy">
+          <span class="panel-label">ACCOUNT / 账号</span>
+          <h2 id="profileName">已登录用户</h2>
+          <p id="profileEmail">—</p>
+          <span id="profileProvider" class="provider-tag">Google</span>
+        </div>
+      </div>
+      <div class="account-actions">
+        <button id="switchAccountButton" class="secondary-button" type="button">🔄 切换账号</button>
+        <button id="signOutButton" class="danger-button" type="button">🚪 退出登录</button>
+      </div>
+    </section>
+
+    <section class="feature-grid">
+      <article class="feature-card">
+        <div class="feature-icon">⭐</div>
+        <div>
+          <span class="panel-label">FAVORITES / 收藏</span>
+          <h2>我的收藏</h2>
+          <p>把常用的 AI 工具留下来，之后可以直接从这里进入。</p>
+        </div>
+        <strong id="favoriteCount" class="feature-count">0</strong>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">🕘</div>
+        <div>
+          <span class="panel-label">RECENT / 最近</span>
+          <h2>最近看过</h2>
+          <p>自动记住你最近访问过的工具，减少“刚才那个网站叫什么”的瞬间。</p>
+        </div>
+        <strong id="recentCount" class="feature-count">0</strong>
+      </article>
+    </section>
+
+    <section class="panel roadmap-panel">
+      <div class="panel-heading">
+        <div>
+          <span class="panel-label">YOUR SPACE / 个人空间</span>
+          <h2>这里以后会越来越像“你的 AI 工具箱”</h2>
+        </div>
+        <span class="building-tag">正在搭建</span>
+      </div>
+      <div class="roadmap-grid">
+        <div><span>⭐</span><strong>收藏</strong><small>即将接入 Supabase</small></div>
+        <div><span>🕘</span><strong>最近看过</strong><small>自动记录访问时间</small></div>
+        <div><span>👤</span><strong>账号资料</strong><small>当前版本已支持</small></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="profile-footer">
+  <div class="profile-wrap">
+    <span>🧭 AI 新手导航 · AI Starter Hub</span>
+    <small>账号数据和个人功能会逐步完善。</small>
+  </div>
+</footer>
+
+<script type="module" src="profile.js"></script>
+</body>
+</html>

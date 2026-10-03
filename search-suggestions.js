@@ -40,8 +40,7 @@ function draw(){
   }else{
     box.innerHTML='<div class="suggest-empty">没找到完全匹配的工具。试试直接描述需求：<strong>做图片 / 写文章 / 学习 / 视频</strong><br><small>Describe what you want to do instead of remembering a tool name.</small></div>';
   }
-  box.querySelectorAll(".suggest-chip").forEach(function(b){b.style.setProperty("display","inline-flex","important");b.style.setProperty("align-items","center","important");b.style.setProperty("justify-content","center","important");b.style.setProperty("box-sizing","border-box","important");b.style.setProperty("height","34px","important");b.style.setProperty("max-height","34px","important");b.style.setProperty("min-width","0","important");b.style.setProperty("min-height","0","important");b.style.setProperty("padding","6px 10px","important");b.style.setProperty("font-family","-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif","important");b.style.setProperty("font-size","13px","important");b.style.setProperty("line-height","18px","important");b.style.setProperty("font-weight","400","important");b.style.setProperty("letter-spacing","normal","important");b.style.setProperty("white-space","nowrap","important");b.style.setProperty("-webkit-text-size-adjust","100%","important");b.style.setProperty("text-size-adjust","100%","important");b.style.setProperty("appearance","none","important");b.style.setProperty("-webkit-appearance","none","important")});
-box.hidden=false;
+  box.hidden=false;
   box.querySelectorAll("[data-q]").forEach(b=>b.onclick=function(){input.value=this.dataset.q;draw();input.focus()});
   box.querySelectorAll("[data-name]").forEach(b=>b.onclick=function(){
     input.value=this.dataset.name;

@@ -71,7 +71,7 @@ button,a{font:inherit}
   .profile-main{padding-top:30px}
   .account-main{align-items:flex-start}
   .profile-avatar{width:58px;height:58px}
-  .account-copy h2{font-size:20px}
+  .account-copy h2{font-size:20px;white-space:normal;overflow:hidden;text-overflow:ellipsis;overflow-wrap:anywhere;line-height:1.25}
   .account-actions{width:100%;display:grid;grid-template-columns:1fr}
   .secondary-button,.danger-button{width:100%}
   .profile-footer .profile-wrap{padding:25px 0;flex-direction:column;align-items:flex-start}

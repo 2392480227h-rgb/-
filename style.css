@@ -24,3 +24,7 @@
 
 /* International brand names */
 .card h2{display:flex;flex-direction:column;align-items:flex-start;gap:2px}.intl-name{display:block;font-size:11px;line-height:1.25;font-weight:700;letter-spacing:.02em;color:#8a94a8}@media(max-width:520px){.intl-name{font-size:10px}}
+
+/* Search suggestion brand icons */
+.suggest-icon .brand-icon{width:34px;height:34px;border:0;background:#f0f3f9}
+.suggest-icon .brand-icon img{width:72%;height:72%}

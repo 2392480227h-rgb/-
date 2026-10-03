@@ -1,4 +1,4 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>新手教程 / Beginner Guides · AI Starter Hub</title><link rel="stylesheet" href="../style.css?v=20261004-2"><link rel="stylesheet" href="tutorial.css?v=20261004-1"></head><body>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>新手教程 / Beginner Guides · AI Starter Hub</title><link rel="stylesheet" href="../style.css?v=20261004-3"><link rel="stylesheet" href="tutorial.css?v=20261004-1"></head><body>
 <header class="topbar"><div class="wrap"><a class="brand" href="../"><span data-icon="compass"></span> AI 新手导航 · AI Starter Hub</a><a class="back" href="../"><span data-icon="arrowLeft"></span> 返回首页 / Home</a></div></header>
 <header class="hero"><div class="wrap"><div class="eyebrow">BEGINNER GUIDES · 图文教程 / BILINGUAL</div><h1>不会用 AI？<br><span>跟着图一步一步来。</span></h1><p>现在工具库里的每个工具都有对应的新手教程入口。教程采用截图式操作示意、中英双语、第一次任务和免费说明，帮助完全没接触过 AI 的人从“打开”走到“会用”。</p><small>Every listed tool has a beginner guide with visual steps, Chinese-English instructions, a first task, and access notes.</small><div class="tool-badges"><span class="pill"><span data-icon="mobile"></span> Mobile-friendly</span><span class="pill"><span data-icon="globe"></span> 中文 / English</span><span class="pill"><span data-icon="image"></span> Visual steps</span><span class="pill"><span data-icon="star"></span> Beginner first</span></div></div></header>
 <main class="wrap content"><section class="section"><h2>全部教程 / All guides <span id="guide-count"></span></h2><p class="lead">按工具分类浏览。点击任意工具，就能进入对应的图文教程。</p><div id="guide-grid" class="guide-grid"><div class="tip"><span data-icon="book"></span> 正在加载教程目录 / Loading guides…</div></div><div class="tip" style="margin-top:18px"><strong>阅读提示 / Tip:</strong> 官网会持续更新界面。这里的视觉图是操作示意，不是第三方产品的官方截图。按钮名称会尽量使用常见的中英文字样；实际页面如果略有不同，请以官网当前界面为准。</div></section></main>
@@ -6,7 +6,7 @@
 <script src="../icons.js?v=20261004-1"></script>
 <script>
 (async()=>{
-const res=await fetch("../app.js?v=20261004-2"), app=await res.text();
+const res=await fetch("../app.js?v=20261004-3"), app=await res.text();
 const body=app.match(/const tools=\[(.*?)\n\];/s)?.[1];
 const tools=body?Function("return ["+body+"]")():[];
 const esc=s=>String(s||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));

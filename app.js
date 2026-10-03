@@ -37,7 +37,9 @@ function renderCats(){ $("#cats").innerHTML=cats.map(c=>`<button class="cat ${c=
 function esc(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function normalize(s){return String(s||"").toLowerCase().replace(/[\\s_\\-]+/g,"").trim()}
 function render(){const input=$("#search");const q=normalize(input.value);let a=tools.filter(x=>(active==="全部"||x[2]===active)&&(!q||normalize(x.join(" ")).includes(q)));if($("#sort").value==="name")a.sort((x,y)=>x[0].localeCompare(y[0]));if($("#sort").value==="free")a.sort((x,y)=>x[4].localeCompare(y[4]));$("#count").textContent=tools.length;$("#summary").textContent=`当前显示 ${a.length} 个`;$("#empty").hidden=a.length>0;$("#grid").innerHTML=a.map(x=>`<article class="card"><div class="top"><span class="icon">${x[1]}</span><span class="badge">${esc(x[4])}</span></div><h2>${esc(x[0])}</h2><div class="desc">${esc(x[3])}</div><div class="meta"><span class="tag">${esc(x[2])}</span><span class="tag">${esc(x[6])}</span></div><a class="open" href="${x[5]}" target="_blank" rel="noopener noreferrer">打开官网 ↗</a></article>`).join("")}
-["input","change","keyup","search","compositionend","paste"].forEach(ev=>$("#search").addEventListener(ev,()=>setTimeout(render,0)));
+function syncSearch(){const v=$("#search").value||"";if(v!==window.__lastSearchValue){window.__lastSearchValue=v;render()}}
+["input","change","keyup","search","compositionend","blur","paste"].forEach(ev=>$("#search").addEventListener(ev,syncSearch));
+setInterval(syncSearch,300);
 $("#sort").onchange=render;renderCats();render();
 function pickTask(task){const c=taskMap[task];if(c){active=c;renderCats();render()}$("#tools").scrollIntoView({behavior:"smooth",block:"start"})}
 document.querySelectorAll(".starter-card").forEach(b=>b.onclick=()=>pickTask(b.dataset.task));

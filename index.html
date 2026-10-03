@@ -8,24 +8,24 @@
 <link rel="stylesheet" href="style.css?v=20261003-9">
 </head>
 <body>
-<header class="sitebar"><div class="wrap nav"><a class="brand" href="./"><span>🧭</span><strong>AI 新手导航</strong><em>AI Starter Hub</em></a><div class="navlinks"><a href="#start">新手入口 / Start</a><a href="#tools">工具 / Tools</a><a href="#about">关于 / About</a></div><button id="authButton" class="auth-button" type="button"><span class="google-mark" aria-hidden="true">G</span><span>使用 Google 登录</span></button></div></header>
+<header class="sitebar"><div class="wrap nav"><a class="brand" href="./"><span class="icon-slot" data-icon="compass"></span><strong>AI 新手导航</strong><em>AI Starter Hub</em></a><div class="navlinks"><a href="#start">新手入口 / Start</a><a href="#tools">工具 / Tools</a><a href="#about">关于 / About</a></div><button id="authButton" class="auth-button" type="button"><span class="google-mark" aria-hidden="true">G</span><span>使用 Google 登录</span></button></div></header>
 <header class="hero" id="start"><div class="wrap">
   <div class="eyebrow">AI STARTER HUB · 中英双语 / BILINGUAL</div>
   <h1>第一次用 AI？<br><span>从这里开始。</span></h1>
   <p>不用懂专业术语。告诉我们你想做什么，就能找到适合你的 AI 工具。<br><small>No jargon required. Tell us what you want to do, and find an AI tool that fits.</small></p>
-  <div class="searchbox"><span>⌕</span><input id="search" type="search" enterkeyhint="search" aria-label="搜索 AI 工具 / Search AI tools" placeholder="试试：做图片、写文章、学习资料 / Try: images, writing, study…" autocomplete="off"><div id="suggestions" class="suggestions" hidden></div></div>
+  <div class="searchbox"><span class="search-icon icon-slot" data-icon="search"></span><input id="search" type="search" enterkeyhint="search" aria-label="搜索 AI 工具 / Search AI tools" placeholder="试试：做图片、写文章、学习资料 / Try: images, writing, study…" autocomplete="off"><div id="suggestions" class="suggestions" hidden></div></div>
   <div class="stats"><b id="count">0</b><span>个工具 / tools</span><i>·</i><span id="summary">加载中 / Loading</span></div>
 </div></header>
 <main class="wrap">
 <section class="starter" aria-labelledby="starter-title">
-  <div class="sectionhead"><div><small>START HERE / 从这里开始</small><h2 id="starter-title">你想让 AI 帮你做什么？</h2><p class="section-sub">What do you want AI to do?</p></div><a class="starter-guide" href="tutorials/index.html"><span>📖</span><span><strong>新手教程 / Guides</strong><small>不会用？先学一步</small></span><b>→</b></a></div>
+  <div class="sectionhead"><div><small>START HERE / 从这里开始</small><h2 id="starter-title">你想让 AI 帮你做什么？</h2><p class="section-sub">What do you want AI to do?</p></div><a class="starter-guide" href="tutorials/index.html"><span class="icon-slot" data-icon="book"></span><span><strong>新手教程 / Guides</strong><small>不会用？先学一步</small></span><b>→</b></a></div>
   <div class="starter-grid">
-    <button class="starter-card" data-task="聊天"><span>💬</span><strong>聊天 / Chat</strong><small>问问题、头脑风暴、日常助手<br>Questions, ideas, everyday help</small></button>
-    <button class="starter-card" data-task="学习"><span>📚</span><strong>学习 / Learn</strong><small>总结资料、解释知识、做研究<br>Study, summarize, research</small></button>
-    <button class="starter-card" data-task="写作"><span>✍️</span><strong>写东西 / Write</strong><small>文章、邮件、文案、改写<br>Writing, emails, rewriting</small></button>
-    <button class="starter-card" data-task="图片"><span>🎨</span><strong>做图片 / Images</strong><small>生成图片、海报、设计<br>Create images and designs</small></button>
-    <button class="starter-card" data-task="视频"><span>🎬</span><strong>做视频 / Video</strong><small>生成视频、剪辑、字幕<br>Generate, edit, caption</small></button>
-    <button class="starter-card" data-task="编程"><span>💻</span><strong>写代码 / Code</strong><small>学习编程、写代码、调试<br>Code, learn, debug</small></button>
+    <button class="starter-card" data-task="聊天"><span class="icon-slot" data-icon="message"></span><strong>聊天 / Chat</strong><small>问问题、头脑风暴、日常助手<br>Questions, ideas, everyday help</small></button>
+    <button class="starter-card" data-task="学习"><span class="icon-slot" data-icon="learn"></span><strong>学习 / Learn</strong><small>总结资料、解释知识、做研究<br>Study, summarize, research</small></button>
+    <button class="starter-card" data-task="写作"><span class="icon-slot" data-icon="pen"></span><strong>写东西 / Write</strong><small>文章、邮件、文案、改写<br>Writing, emails, rewriting</small></button>
+    <button class="starter-card" data-task="图片"><span class="icon-slot" data-icon="image"></span><strong>做图片 / Images</strong><small>生成图片、海报、设计<br>Create images and designs</small></button>
+    <button class="starter-card" data-task="视频"><span class="icon-slot" data-icon="video"></span><strong>做视频 / Video</strong><small>生成视频、剪辑、字幕<br>Generate, edit, caption</small></button>
+    <button class="starter-card" data-task="编程"><span class="icon-slot" data-icon="code"></span><strong>写代码 / Code</strong><small>学习编程、写代码、调试<br>Code, learn, debug</small></button>
   </div>
 </section>
 <section id="tools">
@@ -33,10 +33,10 @@
 <nav id="cats" class="cats"></nav>
 <section class="sectionhead resultshead"><div><small>DIRECTORY / 导航</small><h2>工具列表 / Tools</h2></div></section>
 <section id="grid" class="grid"></section>
-<div id="empty" class="empty" hidden>🗿 没找到匹配的网站。<br>Nothing found. Try another keyword.</div>
+<div id="empty" class="empty" hidden><span class="icon-slot" data-icon="info"></span> 没找到匹配的网站。<br>Nothing found. Try another keyword.</div>
 </section>
 </main>
-<footer id="about" class="footer"><div class="wrap footgrid"><div><strong>🧭 AI 新手导航 · AI Starter Hub</strong><p>让第一次接触 AI 的人，也能轻松找到入口。<br>Made for beginners, with simple bilingual descriptions.</p><small>免费额度和服务政策可能变化，请以官方页面为准。 / Pricing and free quotas may change.</small></div><div><span>🌏 中英双语 / Bilingual</span><span>🧭 新手友好 / Beginner-friendly</span><span>📱 移动端 / Mobile-ready</span></div></div></footer>
-<script src="app.js"></script>
+<footer id="about" class="footer"><div class="wrap footgrid"><div><strong><span class="icon-slot" data-icon="compass"></span> AI 新手导航 · AI Starter Hub</strong><p>让第一次接触 AI 的人，也能轻松找到入口。<br>Made for beginners, with simple bilingual descriptions.</p><small>免费额度和服务政策可能变化，请以官方页面为准。 / Pricing and free quotas may change.</small></div><div><span><span class="icon-slot" data-icon="globe"></span> 中英双语 / Bilingual</span><span><span class="icon-slot" data-icon="compass"></span> 新手友好 / Beginner-friendly</span><span><span class="icon-slot" data-icon="mobile"></span> 移动端 / Mobile-ready</span></div></div></footer>
+<script src="icons.js?v=20261003-1"></script><script src="app.js"></script>
 <script src="search-suggestions.js?v=20261003-3"></script><script type="module" src="auth.js?v=20261003-2"></script>
 </body></html>

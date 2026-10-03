@@ -31,33 +31,41 @@
 
 
 /* Search prompt brand chips, preserve the original compact UI */
-.suggest-chips .suggest-chip{display:inline-flex !important;align-items:center !important;justify-content:center !important;gap:5px !important;width:auto !important;min-width:0 !important;min-height:0 !important;padding:7px 10px !important;margin:0 !important;font:13px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif !important;font-weight:400 !important;white-space:nowrap !important}
-.chip-brands{display:inline-flex;align-items:center;gap:2px;flex:0 0 auto}
-.chip-brands .brand-icon{width:17px;height:17px;border:0;background:transparent;border-radius:4px}
-.chip-brands .brand-icon img{width:86%;height:86%;object-fit:contain}
-.chip-brands .brand-fallback{width:86%;height:86%}
-@media(max-width:520px){.suggest-chips .suggest-chip{gap:5px !important;font-size:13px !important;padding:7px 9px !important}.suggest-chips{gap:8px}.chip-brands .brand-icon{width:16px;height:16px}}
-
-/* Search prompt chips: hard-lock compact rendering across desktop/mobile browsers */
-html,body{-webkit-text-size-adjust:100%;text-size-adjust:100%}
-#suggestions .suggest-chips>.suggest-chip{display:inline-flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;width:auto!important;min-width:0!important;min-height:0!important;height:34px!important;max-height:34px!important;padding:6px 10px!important;margin:0!important;border:1px solid #e1e6ef!important;border-radius:9px!important;background:#f7f8fb!important;color:#4d586c!important;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif!important;font-size:13px!important;line-height:18px!important;font-weight:400!important;letter-spacing:normal!important;white-space:nowrap!important;-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important;appearance:none!important;-webkit-appearance:none!important}
-#suggestions .suggest-chips>.suggest-chip .chip-brands{display:inline-flex!important;align-items:center!important;gap:2px!important;flex:0 0 auto!important}
-#suggestions .suggest-chips>.suggest-chip .chip-brands .brand-icon{width:16px!important;height:16px!important;min-width:16px!important;min-height:16px!important;max-width:16px!important;max-height:16px!important}
-@media(max-width:520px){#suggestions .suggest-chips>.suggest-chip{height:34px!important;max-height:34px!important;padding:6px 9px!important;font-size:13px!important;line-height:18px!important}#suggestions .suggest-chips>.suggest-chip .chip-brands .brand-icon{width:16px!important;height:16px!important}}
-
-/* Final mobile font inflation guard for search prompt chips */
-html,body,#suggestions,#suggestions *{-webkit-text-size-adjust:none!important;text-size-adjust:none!important}
-#suggestions .suggest-chips>.suggest-chip,#suggestions .suggest-chips>.suggest-chip>span{font-size:13px!important;line-height:18px!important}
-#suggestions .suggest-chips>.suggest-chip{height:34px!important;max-height:34px!important;padding:6px 10px!important}
-@media(max-width:520px){#suggestions .suggest-chips>.suggest-chip{height:34px!important;max-height:34px!important;padding:6px 9px!important}}
-
-/* Search prompt layout polish */
-#suggestions .suggest-chips{align-items:stretch}
-#suggestions .suggest-chips>.suggest-chip .chip-brands{gap:2px}
-#suggestions .suggest-chips>.suggest-chip .chip-brands .brand-icon{width:15px!important;height:15px!important;min-width:15px!important;min-height:15px!important;max-width:15px!important;max-height:15px!important;border-radius:4px!important}
-#suggestions .suggest-chips>.suggest-chip .chip-brands .brand-icon img{width:84%!important;height:84%!important}
-@media(min-width:521px){#suggestions .suggest-chips{display:flex;flex-wrap:wrap;gap:8px!important}}
-@media(max-width:520px){#suggestions .suggest-chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important;padding:6px 12px 12px!important}#suggestions .suggest-chips>.suggest-chip{width:100%!important;height:34px!important;max-height:34px!important;padding:6px 8px!important;gap:4px!important;justify-content:center!important}#suggestions .suggest-chips>.suggest-chip .chip-brands .brand-icon{width:15px!important;height:15px!important;min-width:15px!important;min-height:15px!important;max-width:15px!important;max-height:15px!important}}
+.suggest-chips .suggest-chip{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  box-sizing:border-box;
+  width:auto;
+  min-width:0;
+  min-height:34px;
+  height:34px;
+  padding:6px 10px;
+  margin:0;
+  border:1px solid #e1e6ef;
+  border-radius:9px;
+  background:#f7f8fb;
+  color:#4d586c;
+  font:400 13px/18px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  letter-spacing:normal;
+  white-space:nowrap;
+  text-size-adjust:100%;
+  -webkit-text-size-adjust:100%;
+  appearance:none;
+  -webkit-appearance:none;
+}
+.suggest-chips .suggest-chip:hover{background:#eef2f8;border-color:#cfd7e5}
+.suggest-chips .chip-brands{display:inline-flex;align-items:center;gap:2px;flex:0 0 auto}
+.suggest-chips .chip-brands .brand-icon{width:15px;height:15px;min-width:15px;min-height:15px;border-radius:4px}
+.suggest-chips .chip-brands .brand-icon img{width:84%;height:84%}
+@media(max-width:520px){
+  .suggest-chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:6px 12px 12px}
+  .suggest-chips .suggest-chip{width:100%;height:34px;padding:6px 8px;gap:4px;font-size:13px;line-height:18px}
+}
+@media(min-width:521px){
+  .suggest-chips{display:flex;flex-wrap:wrap;gap:8px}
+}
 
 /* Beginner guide entry logo */
 .starter-guide{gap:11px}

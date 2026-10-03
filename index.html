@@ -38,5 +38,23 @@
 </main>
 <footer id="about" class="footer"><div class="wrap footgrid"><div><strong>🧭 AI 新手导航 · AI Starter Hub</strong><p>让第一次接触 AI 的人，也能轻松找到入口。<br>Made for beginners, with simple bilingual descriptions.</p><small>免费额度和服务政策可能变化，请以官方页面为准。 / Pricing and free quotas may change.</small></div><div><span>🌏 中英双语 / Bilingual</span><span>🧭 新手友好 / Beginner-friendly</span><span>📱 移动端 / Mobile-ready</span></div></div></footer>
 <script src="app-final.js"></script>
-<script src="search-suggestions.js?v=20261003-1"></script>
+<script src="search-suggestions.js?v=20261003-1"></script><script>
+(function(){
+  function ensureGuideLinks(){
+    document.querySelectorAll('#grid .card').forEach(function(card){
+      if(card.querySelector('.learn')) return;
+      var title = card.querySelector('h2');
+      var actions = card.querySelector('.card-actions');
+      if(!title || !actions) return;
+      var a = document.createElement('a');
+      a.className = 'learn';
+      a.href = 'tutorials/tool.html?tool=' + encodeURIComponent(title.textContent.trim());
+      a.textContent = '📖 这个工具怎么用？ / Guide';
+      actions.appendChild(a);
+    });
+  }
+  ensureGuideLinks();
+  new MutationObserver(ensureGuideLinks).observe(document.getElementById('grid'), {childList:true,subtree:true});
+})();
+</script>
 </body></html>

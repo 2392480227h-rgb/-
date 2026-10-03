@@ -1,6 +1,35 @@
 const internationalNames={"豆包":"Doubao","通义千问":"Qwen","文心助手":"ERNIE Assistant","腾讯元宝":"Yuanbao","智谱清言":"ChatGLM","秘塔AI搜索":"Metaso","即梦AI":"Jimeng AI","通义灵码":"Qoder CN"};
 
-const taskMap={"聊天":"聊天 / 综合","学习":"学习 / 研究","写作":"聊天 / 综合","图片":"图片","视频":"视频","编程":"编程"};
+const categoryMap={
+  "聊天 / 综合":"聊天 / 助手",
+  "搜索 / 研究":"搜索 / 研究",
+  "学习 / 研究":"搜索 / 研究",
+  "聊天 / 办公":"写作 / 办公",
+  "写作 / 办公":"写作 / 办公",
+  "翻译":"写作 / 办公",
+  "会议 / 音频":"写作 / 办公",
+  "演示 / 文档":"写作 / 办公",
+  "图表 / 文档":"写作 / 办公",
+  "图片":"图片 / 设计",
+  "图片 / 设计":"图片 / 设计",
+  "设计":"图片 / 设计",
+  "图片 / 抠图":"图片 / 设计",
+  "视频":"视频 / 音频",
+  "视频 / 音频":"视频 / 音频",
+  "视频 / 数字人":"视频 / 音频",
+  "音频 / 配音":"视频 / 音频",
+  "音乐":"视频 / 音频",
+  "编程":"编程 / 开发",
+  "编程 / 搜索":"编程 / 开发",
+  "开发 / 模型":"编程 / 开发",
+  "模型 / 开源":"模型 / 开源",
+  "本地 AI":"本地 AI"
+};
+function mainCategory(toolOrCategory){
+  const raw=Array.isArray(toolOrCategory)?toolOrCategory[2]:toolOrCategory;
+  return categoryMap[raw]||raw||"其他";
+}
+const taskMap={"聊天":"聊天 / 助手","学习":"搜索 / 研究","写作":"写作 / 办公","图片":"图片 / 设计","视频":"视频 / 音频","编程":"编程 / 开发"};
 
 const tools=[
 ["ChatGPT","💬","聊天 / 综合","通用 AI 助手，可聊天、搜索、分析文件与生成图片。","免费入口","https://chatgpt.com/","OpenAI"],
@@ -84,7 +113,7 @@ const tools=[
 ["Phind","🔎","编程 / 搜索","面向开发者的 AI 搜索与编程助手。","免费入口","https://www.phind.com/","Phind"],
 ["Symbolab","🧮","学习 / 研究","数学题求解与步骤讲解工具，适合学习。","免费入口","https://www.symbolab.com/","Symbolab"]
 ];
-const cats=["全部",...new Set(tools.map(x=>x[2]))];let active="全部";
+const cats=["全部","聊天 / 助手","搜索 / 研究","写作 / 办公","图片 / 设计","视频 / 音频","编程 / 开发","模型 / 开源","本地 AI"];let active="全部";
 const $=s=>document.querySelector(s);
 function renderCats(){ $("#cats").innerHTML=cats.map(c=>`<button class="cat ${c===active?"active":""}" data-c="${c}">${c}</button>`).join("");document.querySelectorAll(".cat").forEach(b=>b.onclick=()=>{active=b.dataset.c;renderCats();render()})}
 function esc(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
@@ -137,7 +166,7 @@ function bindFavoriteButtons(){
     };
   });
 }
-function render(){const input=$("#search");const q=normalize(input.value);let a=tools.filter(x=>(active==="全部"||x[2]===active)&&(!q||normalize(x.join(" ")+" "+(internationalNames[x[0]]||"")).includes(q)));if($("#sort").value==="name")a.sort((x,y)=>x[0].localeCompare(y[0]));if($("#sort").value==="free")a.sort((x,y)=>x[4].localeCompare(y[4]));$("#count").textContent=tools.length;$("#summary").textContent=`当前显示 ${a.length} 个`;$("#empty").hidden=a.length>0;$("#grid").innerHTML=a.map(x=>`<article class="card" data-name="${esc(x[0])}"><div class="top"><span class="icon">${ASHIcons.brand(x[0],x[5])}</span><div class="card-top-actions"><span class="badge">${esc(x[4])}</span><div class="favorite-wrap"><button class="favorite-button" type="button" data-favorite-tool-id="${encodeURIComponent(getToolId(x))}" data-favorite-tool-name="${encodeURIComponent(x[0])}" aria-pressed="false" title="收藏 ${esc(x[0])}"><span class="favorite-star" aria-hidden="true">☆</span><span class="favorite-label">收藏</span></button><span class="favorite-count" title="轻量参考指标，并非实时用户统计">收藏热度 ${favoriteCount(x[0])}</span></div></div></div><h2>${esc(x[0])}${internationalNames[x[0]]?`<small class="intl-name">${esc(internationalNames[x[0]])}</small>`:""}</h2><div class="desc">${esc(x[3])}</div><div class="meta"><span class="tag">${esc(x[2])}</span><span class="tag">${esc(x[6])}</span></div><div class="card-signal"><span class="popularity">🔥 热度 ${popularityScore(x[0])}</span><span class="signal-note">站内指数</span></div><div class="card-actions guide-ready"><a class="open" href="${x[5]}" target="_blank" rel="noopener noreferrer">打开官网 ↗</a><a class="learn" href="tutorials/tool.html?tool=${encodeURIComponent(x[0])}"><span class="link-icon">${ASHIcons.svg("book")}</span> 这个工具怎么用？ / Guide</a></div></article>`).join("");bindFavoriteButtons();bindRecentLinks()}
+function render(){const input=$("#search");const q=normalize(input.value);let a=tools.filter(x=>(active==="全部"||mainCategory(x)===active)&&(!q||normalize(x.join(" ")+" "+(internationalNames[x[0]]||"")).includes(q)));if($("#sort").value==="name")a.sort((x,y)=>x[0].localeCompare(y[0]));if($("#sort").value==="free")a.sort((x,y)=>x[4].localeCompare(y[4]));$("#count").textContent=tools.length;$("#summary").textContent=`当前显示 ${a.length} 个`;$("#empty").hidden=a.length>0;$("#grid").innerHTML=a.map(x=>`<article class="card" data-name="${esc(x[0])}"><div class="top"><span class="icon">${ASHIcons.brand(x[0],x[5])}</span><div class="card-top-actions"><span class="badge">${esc(x[4])}</span><div class="favorite-wrap"><button class="favorite-button" type="button" data-favorite-tool-id="${encodeURIComponent(getToolId(x))}" data-favorite-tool-name="${encodeURIComponent(x[0])}" aria-pressed="false" title="收藏 ${esc(x[0])}"><span class="favorite-star" aria-hidden="true">☆</span><span class="favorite-label">收藏</span></button><span class="favorite-count" title="轻量参考指标，并非实时用户统计">收藏热度 ${favoriteCount(x[0])}</span></div></div></div><h2>${esc(x[0])}${internationalNames[x[0]]?`<small class="intl-name">${esc(internationalNames[x[0]])}</small>`:""}</h2><div class="desc">${esc(x[3])}</div><div class="meta"><span class="tag">${esc(mainCategory(x))}</span><span class="tag">${esc(x[6])}</span></div><div class="card-signal"><span class="popularity">🔥 热度 ${popularityScore(x[0])}</span><span class="signal-note">站内指数</span></div><div class="card-actions guide-ready"><a class="open" href="${x[5]}" target="_blank" rel="noopener noreferrer">打开官网 ↗</a><a class="learn" href="tutorials/tool.html?tool=${encodeURIComponent(x[0])}"><span class="link-icon">${ASHIcons.svg("book")}</span> 这个工具怎么用？ / Guide</a></div></article>`).join("");bindFavoriteButtons();bindRecentLinks()}
 function syncSearch(){const v=$("#search").value||"";if(v!==window.__lastSearchValue){window.__lastSearchValue=v;render()}}
 ["input","change","keyup","search","compositionend","blur","paste"].forEach(ev=>$("#search").addEventListener(ev,syncSearch));
 window.addEventListener("ash:favorites-changed",()=>document.querySelectorAll(".favorite-button").forEach(syncFavoriteButton));

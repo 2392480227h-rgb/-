@@ -136,5 +136,6 @@ button,a{font:inherit}
 .favorite-item-icon .brand-icon img{width:72%;height:72%;object-fit:contain;display:block}
 .favorite-item-icon .brand-icon[data-broken="1"] img{display:none}
 .favorite-item-icon .brand-icon[data-broken="1"] .brand-fallback{display:grid;place-items:center}
-.favorite-item-icon .brand-fallback{width:100%;height:100%;align-items:center;justify-content:center}
+.favorite-item-icon .brand-fallback{display:none;width:100%;height:100%;align-items:center;justify-content:center}
+.favorite-item-icon .brand-icon[data-broken="1"] .brand-fallback{display:grid}
 .favorite-item-icon .brand-fallback .ui-svg{width:20px;height:20px;color:#7b879c}

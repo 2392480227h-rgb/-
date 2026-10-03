@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1020">
+<title>AI 新手导航 · AI Starter Hub</title>
+<meta name="description" content="给 AI 新手的小白导航。中英双语整理聊天、搜索、学习、写作、图片、视频、编程等 AI 工具。">
+<link rel="stylesheet" href="../style.css?v=12">
+</head>
+<body>
+<header class="sitebar"><div class="wrap nav"><a class="brand" href="../"><span>🧭</span><strong>AI 新手导航</strong><em>AI Starter Hub</em></a><div class="navlinks"><a href="#start">新手入口 / Start</a><a href="#tools">工具 / Tools</a><a href="#about">关于 / About</a></div></div></header>
+<header class="hero" id="start"><div class="wrap">
+<div class="eyebrow">AI STARTER HUB · 中英双语 / BILINGUAL</div>
+<h1>第一次用 AI？<br><span>从这里开始。</span></h1>
+<p>不用懂专业术语。告诉我们你想做什么，就能找到适合你的 AI 工具。<br><small>No jargon required. Tell us what you want to do, and find an AI tool that fits.</small></p>
+<div class="searchbox"><span>⌕</span><input id="search" type="search" enterkeyhint="search" aria-label="搜索 AI 工具 / Search AI tools" placeholder="试试：做图片、写文章、学习资料 / Try: images, writing, study…" autocomplete="off"><div id="suggestions" class="suggestions" hidden></div></div>
+<div class="stats"><b id="count">0</b><span>个工具 / tools</span><i>·</i><span id="summary">加载中 / Loading</span></div>
+</div></header>
+<main class="wrap">
+<section class="starter" aria-labelledby="starter-title">
+<div class="sectionhead"><div><small>START HERE / 从这里开始</small><h2 id="starter-title">你想让 AI 帮你做什么？</h2><p class="section-sub">What do you want AI to do?</p></div><a class="starter-guide" href="../tutorials/index.html"><span>📖</span><span><strong>新手教程 / Guides</strong><small>不会用？先学一步</small></span><b>→</b></a></div>
+<div class="starter-grid">
+<button class="starter-card" data-task="聊天"><span>💬</span><strong>聊天 / Chat</strong><small>问问题、头脑风暴、日常助手<br>Questions, ideas, everyday help</small></button>
+<button class="starter-card" data-task="学习"><span>📚</span><strong>学习 / Learn</strong><small>总结资料、解释知识、做研究<br>Study, summarize, research</small></button>
+<button class="starter-card" data-task="写作"><span>✍️</span><strong>写东西 / Write</strong><small>文章、邮件、文案、改写<br>Writing, emails, rewriting</small></button>
+<button class="starter-card" data-task="图片"><span>🎨</span><strong>做图片 / Images</strong><small>生成图片、海报、设计<br>Create images and designs</small></button>
+<button class="starter-card" data-task="视频"><span>🎬</span><strong>做视频 / Video</strong><small>生成视频、剪辑、字幕<br>Generate, edit, caption</small></button>
+<button class="starter-card" data-task="编程"><span>💻</span><strong>写代码 / Code</strong><small>学习编程、写代码、调试<br>Code, learn, debug</small></button>
+</div></section>
+<section id="tools">
+<section id="categories" class="sectionhead"><div><small>EXPLORE / 探索</small><h2>工具分类 / Categories</h2></div><div class="toolbar"><select id="sort"><option value="default">推荐顺序 / Recommended</option><option value="name">名称 A-Z / Name</option><option value="free">免费程度 / Free access</option></select></div></section>
+<nav id="cats" class="cats"></nav>
+<section class="sectionhead resultshead"><div><small>DIRECTORY / 导航</small><h2>工具列表 / Tools</h2></div></section>
+<section id="grid" class="grid"></section>
+<div id="empty" class="empty" hidden>🗿 没找到匹配的网站。<br>Nothing found. Try another keyword.</div>
+</section></main>
+<footer id="about" class="footer"><div class="wrap footgrid"><div><strong>🧭 AI 新手导航 · AI Starter Hub</strong><p>让第一次接触 AI 的人，也能轻松找到入口。<br>Made for beginners, with simple bilingual descriptions.</p><small>免费额度和服务政策可能变化，请以官方页面为准。 / Pricing and free quotas may change.</small></div><div><span>🌏 中英双语 / Bilingual</span><span>🧭 新手友好 / Beginner-friendly</span><span>📱 移动端 / Mobile-ready</span></div></div></footer>
+<script src="../app-v12.js"></script>
+<script src="../search-suggestions.js?v=12"></script>
+</body></html>

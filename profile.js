@@ -32,11 +32,74 @@ function renderAvatar(user) {
   box.textContent = fallbackAvatar(user);
 }
 
+function renderFavorites() {
+  const list = $("favoritesList");
+  const empty = $("favoritesEmpty");
+  const count = $("favoriteCount");
+  const summary = $("favoriteSummary");
+  if (!list || !empty) return;
+
+  const favorites = window.ASHFavorites?.getAll?.() || [];
+  if (count) count.textContent = String(favorites.length);
+  if (summary) summary.textContent = `${favorites.length} 个工具`;
+
+  list.replaceChildren();
+  empty.hidden = favorites.length > 0;
+
+  for (const item of favorites) {
+    const article = document.createElement("article");
+    article.className = "favorite-item";
+
+    const icon = document.createElement("div");
+    icon.className = "favorite-item-icon";
+    icon.textContent = item.icon || "⭐";
+
+    const copy = document.createElement("div");
+    copy.className = "favorite-item-copy";
+
+    const name = document.createElement("strong");
+    name.textContent = item.name;
+
+    const meta = document.createElement("small");
+    meta.textContent = [item.category, item.company].filter(Boolean).join(" · ");
+
+    copy.append(name, meta);
+
+    const actions = document.createElement("div");
+    actions.className = "favorite-item-actions";
+
+    if (item.url) {
+      const open = document.createElement("a");
+      open.className = "secondary-button favorite-open";
+      open.href = item.url;
+      open.target = "_blank";
+      open.rel = "noopener noreferrer";
+      open.textContent = "打开";
+      actions.append(open);
+    }
+
+    const remove = document.createElement("button");
+    remove.className = "danger-button favorite-remove";
+    remove.type = "button";
+    remove.textContent = "取消收藏";
+    remove.addEventListener("click", () => {
+      if (!window.ASHFavorites) return;
+      window.ASHFavorites.toggle(item);
+    });
+    actions.append(remove);
+
+    article.append(icon, copy, actions);
+    list.append(article);
+  }
+}
+
 function renderSession(session) {
   const user = session?.user || null;
   const loggedIn = Boolean(user);
   signedOut.hidden = loggedIn;
   signedIn.hidden = !loggedIn;
+
+  renderFavorites();
 
   if (!loggedIn) {
     setStatus("未登录");
@@ -66,6 +129,8 @@ $("signOutButton")?.addEventListener("click", async () => {
   const { error } = await supabase.auth.signOut();
   if (error) window.alert("退出登录失败：" + error.message);
 });
+
+window.addEventListener("ash:favorites-changed", renderFavorites);
 
 supabase.auth.onAuthStateChange((_event, session) => renderSession(session));
 

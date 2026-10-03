@@ -31,6 +31,7 @@
   };
 
   const brandSlugs = {
+    "ChatGPT":"openai",
     "Gemini":"googlegemini",
     "Claude":"claude",
     "Perplexity":"perplexity",
@@ -55,7 +56,7 @@
     "Symbolab":"symbolab"
   };
 
-  const verifiedSimpleIconSlugs = new Set(["googlegemini","claude","perplexity","notebooklm","githubcopilot","cursor","huggingface","ollama","lmstudio","elevenlabs","suno","deepseek","poe","grammarly","deepl","googletranslate","veed","kimi","replit","symbolab"]);
+  const verifiedSimpleIconSlugs = new Set(["openai","googlegemini","claude","perplexity","notebooklm","githubcopilot","cursor","huggingface","ollama","lmstudio","elevenlabs","suno","deepseek","poe","grammarly","deepl","googletranslate","veed","kimi","replit","symbolab"]);
 
   function svg(name, className = "") {
     const paths = uiPaths[name] || uiPaths.info;

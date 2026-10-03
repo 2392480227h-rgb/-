@@ -30,11 +30,10 @@
 .suggest-icon .brand-icon img{width:72%;height:72%}
 
 
-/* Search prompt brand chips, keep original compact proportions */
-.suggest-chip{display:inline-flex;align-items:center;gap:7px;font:inherit;font-size:13px;line-height:1.2;white-space:nowrap}
+/* Search prompt brand chips, preserve the original compact UI */
+.suggest-chips .suggest-chip{display:inline-flex !important;align-items:center !important;justify-content:center !important;gap:5px !important;width:auto !important;min-width:0 !important;min-height:0 !important;padding:7px 10px !important;margin:0 !important;font:13px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif !important;font-weight:400 !important;white-space:nowrap !important}
 .chip-brands{display:inline-flex;align-items:center;gap:2px;flex:0 0 auto}
-.chip-brands .brand-icon{width:18px;height:18px;border:0;background:transparent;border-radius:5px}
+.chip-brands .brand-icon{width:17px;height:17px;border:0;background:transparent;border-radius:4px}
 .chip-brands .brand-icon img{width:86%;height:86%;object-fit:contain}
 .chip-brands .brand-fallback{width:86%;height:86%}
-.suggest-chips .suggest-chip{padding:8px 10px}
-@media(max-width:520px){.suggest-chip{gap:5px;font-size:13px}.suggest-chips{gap:8px}.chip-brands .brand-icon{width:17px;height:17px}}
+@media(max-width:520px){.suggest-chips .suggest-chip{gap:5px !important;font-size:13px !important;padding:7px 9px !important}.suggest-chips{gap:8px}.chip-brands .brand-icon{width:16px;height:16px}}

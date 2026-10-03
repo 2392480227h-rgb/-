@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1020">
+<title>AI 白嫖工具箱</title>
+<meta name="description" content="免费与免费额度 AI 工具导航，按聊天、搜索、编程、图片、视频、音频、办公等分类整理。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">🧰 AI TOOLBOX · $0 FIRST</div>
+    <h1>AI 白嫖工具箱</h1>
+    <p>能免费用的先收进来。免费额度、试用、开源、自托管工具分开标注，不把“免费”三个字玩文字游戏。</p>
+    <div class="searchbox"><span>⌕</span><input id="search" placeholder="搜索工具、用途、分类……" autocomplete="off"></div>
+    <div class="stats"><b id="count">0</b><span>个工具</span><span>·</span><span>持续扩充中</span></div>
+  </div>
+</header>
+<main class="wrap">
+  <nav id="cats" class="cats"></nav>
+  <section class="toolbar">
+    <div id="summary"></div>
+    <select id="sort"><option value="default">默认排序</option><option value="name">名称 A-Z</option><option value="free">免费程度</option></select>
+  </section>
+  <section id="grid" class="grid"></section>
+  <div id="empty" class="empty" hidden>🗿 没搜到。换个关键词，别让 AI 工具躲猫猫。</div>
+</main>
+<footer class="wrap footer">
+  <span>AI 白嫖工具箱</span><span>信息会变化，使用前请以官方页面显示的免费额度与条款为准。</span>
+</footer>
+<script src="app.js?v=20261003-1"></script>
+</body>
+</html>

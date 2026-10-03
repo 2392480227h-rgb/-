@@ -28,20 +28,6 @@ function matches(q){
   if(!n)return [];
   return tools.map(t=>({t,v:score(t,q)})).filter(x=>x.v>0).sort((a,b)=>b.v-a.v).slice(0,6).map(x=>x.t);
 }
-function renderBeginner(){
-  const q=input.value||"", n=norm(q);
-  let list=tools.filter(t=>(typeof active==="undefined"||active==="全部"||t[2]===active));
-  if(n) list=list.map(t=>({t:t,v:score(t,q)})).filter(x=>x.v>0).sort((a,b)=>b.v-a.v).map(x=>x.t);
-  const sort=document.getElementById("sort");
-  if(sort&&sort.value==="name")list.sort((a,b)=>a[0].localeCompare(b[0]));
-  if(sort&&sort.value==="free")list.sort((a,b)=>a[4].localeCompare(b[4]));
-  const grid=document.getElementById("grid"), empty=document.getElementById("empty");
-  document.getElementById("count").textContent=tools.length;
-  document.getElementById("summary").textContent="当前显示 "+list.length+" 个";
-  empty.hidden=list.length>0;
-  grid.innerHTML=list.map(t=>'<article class="card" data-name="'+t[0]+'"><div class="top"><span class="icon">'+t[1]+'</span><span class="badge">'+t[4]+'</span></div><h2>'+t[0]+'</h2><div class="desc">'+t[3]+'</div><div class="meta"><span class="tag">'+t[2]+'</span><span class="tag">'+t[6]+'</span></div><a class="open" href="'+t[5]+'" target="_blank" rel="noopener noreferrer">打开官网 ↗</a></article>').join("");
-}
-window.render=renderBeginner;
 
 function draw(){
   const q=input.value||"", list=matches(q);

@@ -107,3 +107,61 @@
 .toolbar select{min-width:150px;height:38px;padding:0 12px;font-size:11px;line-height:36px}
 @media(max-width:760px){.toolbar select{width:auto;min-width:150px}}
 @media(max-width:520px){.toolbar select{width:150px;max-width:100%}}
+
+
+/* Mobile compact pass 2 */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+@media(max-width:520px){
+  .hero h1{font-size:34px}
+  .hero p{font-size:14px;line-height:1.5}
+  .hero p small{font-size:11px}
+  .searchbox{margin-top:20px;padding:0 12px;border-radius:12px}
+  .searchbox input{font-size:13px;padding:13px 0}
+  .searchbox .search-icon{font-size:17px}
+  .suggestions{top:calc(100% + 6px);border-radius:12px}
+  .suggest-title{padding:9px 11px 5px;font-size:9px}
+  .suggest-chips{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:5px 9px 9px}
+  .suggest-chips .suggest-chip{
+    width:100%;
+    min-height:0;
+    height:29px;
+    padding:4px 6px;
+    gap:3px;
+    border-radius:7px;
+    font-size:10px!important;
+    line-height:14px!important;
+    font-weight:500;
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+  }
+  .suggest-chips .chip-brands .brand-icon{
+    width:12px;height:12px;min-width:12px;min-height:12px;border-radius:3px;
+  }
+  .sectionhead h2{font-size:21px}
+  .section-sub{font-size:11px}
+  .starter{padding-top:24px}
+  .starter-grid{gap:6px;margin-top:10px}
+  .starter-card{
+    padding:8px 9px;
+    min-height:72px;
+    border-radius:10px;
+    grid-template-columns:1fr;
+  }
+  .starter-card>span{
+    width:28px;height:28px;
+    border-radius:8px;
+    margin-bottom:4px;
+  }
+  .starter-card>.icon-slot .brand-icon{width:28px;height:28px}
+  .starter-card>.icon-slot .ui-svg{width:17px;height:17px}
+  .starter-card strong{font-size:11.5px;line-height:1.2}
+  .starter-card small{font-size:8.5px;line-height:1.25}
+  .starter-guide{max-width:205px;padding:7px 8px;gap:7px}
+  .starter-guide strong{font-size:10px}
+  .starter-guide small{font-size:8px}
+  .starter-guide b{font-size:14px}
+  .starter-guide-logo{width:30px!important;height:30px!important;min-width:30px}
+  .starter-guide-logo .ui-svg{width:17px!important;height:17px!important}
+  .cats{gap:6px}
+  .cat{padding:6px 9px;font-size:9px;border-radius:8px}
+}

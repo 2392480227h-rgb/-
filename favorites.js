@@ -31,10 +31,18 @@
   }
   function read() {
     const current = clean(readKey(KEY));
-    if (current.length) return current;
+    let hasCurrent = false;
+    try { hasCurrent = localStorage.getItem(KEY) !== null; } catch (error) { console.warn("Favorites storage check failed:", error); }
+    if (hasCurrent) return current;
+
     const migrated = clean(readKey(LEGACY_KEY));
     if (migrated.length) {
-      try { localStorage.setItem(KEY, JSON.stringify(migrated)); } catch (error) { console.warn("Favorites migration failed:", error); }
+      try {
+        localStorage.setItem(KEY, JSON.stringify(migrated));
+        localStorage.removeItem(LEGACY_KEY);
+      } catch (error) {
+        console.warn("Favorites migration failed:", error);
+      }
     }
     return migrated;
   }

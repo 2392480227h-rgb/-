@@ -210,3 +210,78 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
     line-height:12px !important;
   }
 }
+
+
+/* Search chips global compact v4 */
+.suggestions .suggest-chips{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  gap:5px !important;
+  padding:5px 10px 9px !important;
+}
+.suggestions .suggest-chips .suggest-chip{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:3px !important;
+  width:auto !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  height:24px !important;
+  padding:3px 7px !important;
+  margin:0 !important;
+  border-radius:7px !important;
+  border:1px solid #e1e6ef !important;
+  font:500 8px/10px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif !important;
+  letter-spacing:0 !important;
+  white-space:nowrap !important;
+  text-size-adjust:none !important;
+  -webkit-text-size-adjust:none !important;
+}
+.suggestions .suggest-chips .suggest-chip > span:last-child{
+  font-size:8px !important;
+  line-height:10px !important;
+  white-space:nowrap !important;
+}
+.suggestions .suggest-chips .chip-brands{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:1px !important;
+}
+.suggestions .suggest-chips .chip-brands .brand-icon{
+  width:10px !important;
+  height:10px !important;
+  min-width:10px !important;
+  min-height:10px !important;
+  border-radius:3px !important;
+}
+.suggestions .suggest-title{
+  padding:8px 12px 4px !important;
+  font-size:8px !important;
+  line-height:11px !important;
+}
+@media(max-width:520px){
+  .suggestions .suggest-chips{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:4px !important;
+    padding:4px 8px 7px !important;
+  }
+  .suggestions .suggest-chips .suggest-chip{
+    width:100% !important;
+    height:22px !important;
+    padding:2px 5px !important;
+    font-size:8px !important;
+    line-height:9px !important;
+  }
+  .suggestions .suggest-chips .suggest-chip > span:last-child{
+    font-size:8px !important;
+    line-height:9px !important;
+  }
+  .suggestions .suggest-chips .chip-brands .brand-icon{
+    width:9px !important;
+    height:9px !important;
+    min-width:9px !important;
+    min-height:9px !important;
+  }
+}

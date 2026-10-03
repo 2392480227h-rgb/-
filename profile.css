@@ -76,3 +76,17 @@ button,a{font:inherit}
   .secondary-button,.danger-button{width:100%}
   .profile-footer .profile-wrap{padding:25px 0;flex-direction:column;align-items:flex-start}
 }
+
+/* Icon system */
+[data-icon]{display:inline-grid;place-items:center}
+[data-icon] .ui-svg{width:1em;height:1em}
+.profile-brand-icon{width:24px;height:24px;font-size:24px;color:#59677f;vertical-align:-5px}
+.back-home [data-icon]{width:14px;height:14px;vertical-align:-2px;margin-right:3px}
+.empty-icon{color:#64748b}
+.empty-icon .ui-svg{width:28px;height:28px}
+.secondary-button [data-icon],.danger-button [data-icon]{width:15px;height:15px;vertical-align:-3px;margin-right:4px}
+.feature-icon{color:#58667e}
+.feature-icon .ui-svg{width:21px;height:21px}
+.roadmap-grid>div>span[data-icon]{width:24px;height:24px;color:#68758c}
+.roadmap-grid>div>span[data-icon] .ui-svg{width:20px;height:20px}
+.profile-footer [data-icon]{width:16px;height:16px;vertical-align:-3px;margin-right:3px}

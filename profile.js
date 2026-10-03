@@ -58,6 +58,8 @@ async function startLogin(forceAccountSelect = false) {
   if (result?.error) window.alert("Google 登录失败：" + result.error.message);
 }
 
+document.querySelectorAll("[data-icon]").forEach(el => { el.innerHTML = window.ASHIcons.svg(el.dataset.icon); });
+
 $("signInButton")?.addEventListener("click", () => startLogin(false));
 $("switchAccountButton")?.addEventListener("click", () => startLogin(true));
 $("signOutButton")?.addEventListener("click", async () => {

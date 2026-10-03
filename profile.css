@@ -31,7 +31,8 @@ button,a{font:inherit}
 .danger-button:hover{background:#fff0f0;border-color:#e3cfd1}
 .account-panel{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:24px}
 .account-main{display:flex;align-items:center;gap:16px;min-width:0}
-.profile-avatar{width:68px;height:68px;border-radius:50%;object-fit:cover;background:#eef2f8;border:1px solid #e3e7ef}
+.profile-avatar{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;background:#eef2f8;border:1px solid #e3e7ef;color:#738098;font-size:20px;font-weight:800;overflow:hidden}
+.profile-avatar img{width:100%;height:100%;border:0;border-radius:inherit;object-fit:cover;display:block}
 .account-copy{min-width:0}
 .account-copy h2{margin:3px 0 1px;font-size:23px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .account-copy p{margin:0;color:#778196;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

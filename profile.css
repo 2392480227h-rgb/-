@@ -15,7 +15,7 @@ button,a{font:inherit}
 .eyebrow,.panel-label{display:block;color:#8490a7;font-size:11px;letter-spacing:.14em;font-weight:800}
 .profile-hero h1{font-size:clamp(34px,5vw,48px);line-height:1.1;margin:8px 0}
 .profile-hero p{margin:0;color:#737e92;max-width:650px}
-.status-pill{padding:7px 11px;border:1px solid #dfe4ed;background:#fff;border-radius:999px;color:#69758d;font-size:11px;font-weight:800;white-space:nowrap}
+.status-pill{padding:7px 11px;border:1px solid #dfe4ed;background:#fff;border-radius:999px;color:#69758d;font-size:11px;font-weight:800;white-space:nowrap}.status-pill.is-logged-in{border-color:#b8e0c2;background:#f0fbf3;color:#258443}
 .panel,.account-panel,.feature-card{background:#fff;border:1px solid #e2e7ef;border-radius:18px;box-shadow:0 8px 26px #17203309}
 .panel{padding:28px}
 .signed-out{text-align:center;padding:62px 24px}
@@ -33,10 +33,10 @@ button,a{font:inherit}
 .account-main{display:flex;align-items:center;gap:16px;min-width:0}
 .profile-avatar{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;background:#eef2f8;border:1px solid #e3e7ef;color:#738098;font-size:20px;font-weight:800;overflow:hidden}
 .profile-avatar img{width:100%;height:100%;border:0;border-radius:inherit;object-fit:cover;display:block}
-.account-copy{min-width:0}
-.account-copy h2{margin:3px 0 1px;font-size:23px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.account-copy{min-width:0;max-width:100%}
+.account-copy h2{margin:3px 0 1px;font-size:23px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .account-copy p{margin:0;color:#778196;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.provider-tag,.building-tag{display:inline-flex;align-items:center;padding:4px 8px;border-radius:7px;background:#f0f3f9;color:#65728a;font-size:10px;font-weight:800;margin-top:8px}
+.provider-tag,.building-tag{display:inline-flex;align-items:center;padding:4px 8px;border-radius:7px;background:#f0f3f9;color:#65728a;font-size:10px;font-weight:800;margin-top:8px}.provider-tag{gap:5px}.google-logo{width:14px;height:14px;display:block;flex:none}
 .account-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
 .feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:14px}
 .feature-card{position:relative;display:grid;grid-template-columns:44px 1fr auto;gap:13px;align-items:start;padding:20px;min-height:148px}

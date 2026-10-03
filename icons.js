@@ -130,7 +130,13 @@
 
   function brand(name, websiteUrl) {
     const src = brandUrl(name, websiteUrl);
-    return '<span class="brand-icon" aria-hidden="true"><img src="'+src+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest(\'.brand-icon\').dataset.broken=\'1\'"><span class="brand-fallback">'+svg("info")+'</span></span>';
+    let fallback = '';
+    try {
+      fallback = 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(new URL(websiteUrl).hostname) + '&sz=128';
+    } catch {}
+    const fallbackAttr = fallback ? ' data-fallback="'+fallback+'"' : '';
+    const handler = "if(this.dataset.fallback){const next=this.dataset.fallback;this.dataset.fallback='';this.src=next;return;}this.closest('.brand-icon').dataset.broken='1'";
+    return '<span class="brand-icon" aria-hidden="true"><img src="'+src+'" alt="" loading="lazy" referrerpolicy="no-referrer"'+fallbackAttr+' onerror="'+handler+'"><span class="brand-fallback">'+svg("info")+'</span></span>';
   }
 
   window.ASHIcons = { svg, brand, brandUrl };

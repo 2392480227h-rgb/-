@@ -110,3 +110,23 @@ button,a{font:inherit}
   .favorite-item-actions{grid-column:2;justify-content:flex-start;margin-top:2px}
   .favorite-item-actions .secondary-button,.favorite-item-actions .danger-button{width:auto}
 }
+
+/* Recent history */
+.panel-heading-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.recent-panel{margin-top:14px}
+.recent-list{display:grid;gap:10px;margin-top:18px}
+.recent-item{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:12px;padding:13px;border:1px solid #e8ebf1;background:#fafbfc;border-radius:12px}
+.recent-item-icon{width:44px;height:44px;border-radius:12px;background:#f0f3f9;display:grid;place-items:center;font-size:22px}
+.recent-item-copy{min-width:0}
+.recent-item-copy strong{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recent-item-copy small{display:block;margin-top:2px;color:#8993a6;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recent-item-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.recent-item-actions .secondary-button,.recent-item-actions .danger-button{margin:0}
+#clearRecentButton:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:520px){
+  .panel-heading-actions{width:100%;justify-content:flex-start}
+  .recent-item{grid-template-columns:42px minmax(0,1fr);align-items:start}
+  .recent-item-icon{width:42px;height:42px}
+  .recent-item-actions{grid-column:2;justify-content:flex-start;margin-top:2px}
+  .recent-item-actions .secondary-button,.recent-item-actions .danger-button{width:auto}
+}

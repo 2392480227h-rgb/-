@@ -38,12 +38,6 @@ button,a{font:inherit}
 .account-copy p{margin:0;color:#778196;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .provider-tag,.building-tag{display:inline-flex;align-items:center;padding:4px 8px;border-radius:7px;background:#f0f3f9;color:#65728a;font-size:10px;font-weight:800;margin-top:8px}.provider-tag{gap:5px}.google-logo{width:14px;height:14px;display:block;flex:none}
 .account-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
-.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:14px}
-.feature-card{position:relative;display:grid;grid-template-columns:44px 1fr auto;gap:13px;align-items:start;padding:20px;min-height:148px}
-.feature-icon{width:42px;height:42px;border-radius:12px;background:#f0f3f9;display:grid;place-items:center;font-size:21px}
-.feature-card h2{margin:3px 0 5px;font-size:19px}
-.feature-card p{margin:0;color:#7a8599;font-size:12px;line-height:1.6}
-.feature-count{font-size:24px;color:#a1a9b8;font-weight:800}
 .roadmap-panel{margin-top:14px}
 .panel-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
 .panel-heading h2{margin:5px 0 0;font-size:20px}
@@ -59,7 +53,6 @@ button,a{font:inherit}
 @media(max-width:760px){
   .profile-hero,.account-panel,.panel-heading{align-items:flex-start;flex-direction:column}
   .account-actions{justify-content:flex-start}
-  .feature-grid,.roadmap-grid{grid-template-columns:1fr}
   .profile-hero{gap:14px}
   .status-pill{white-space:normal}
 }
@@ -85,8 +78,6 @@ button,a{font:inherit}
 .empty-icon{color:#64748b}
 .empty-icon .ui-svg{width:28px;height:28px}
 .secondary-button [data-icon],.danger-button [data-icon]{width:15px;height:15px;vertical-align:-3px;margin-right:4px}
-.feature-icon{color:#58667e}
-.feature-icon .ui-svg{width:21px;height:21px}
 .roadmap-grid>div>span[data-icon]{width:24px;height:24px;color:#68758c}
 .roadmap-grid>div>span[data-icon] .ui-svg{width:20px;height:20px}
 .profile-footer [data-icon]{width:16px;height:16px;vertical-align:-3px;margin-right:3px}
@@ -132,13 +123,6 @@ button,a{font:inherit}
 }
 
 /* Favorite brand logos */
-.favorite-item-icon .brand-icon{width:44px;height:44px;border-radius:12px;background:#f0f3f9;border:0;display:grid;place-items:center;overflow:hidden}
-.favorite-item-icon .brand-icon img{width:72%;height:72%;object-fit:contain;display:block}
-.favorite-item-icon .brand-icon[data-broken="1"] img{display:none}
-.favorite-item-icon .brand-icon[data-broken="1"] .brand-fallback{display:grid;place-items:center}
-.favorite-item-icon .brand-fallback{display:none;width:100%;height:100%;align-items:center;justify-content:center}
-.favorite-item-icon .brand-icon[data-broken="1"] .brand-fallback{display:grid}
-.favorite-item-icon .brand-fallback .ui-svg{width:20px;height:20px;color:#7b879c}
-
+/* Favorite logos */
 /* Favorite logos */
 .favorite-item-icon img{width:72%;height:72%;object-fit:contain;display:block}

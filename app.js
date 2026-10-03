@@ -69,7 +69,7 @@ const tools=[
 ["Beautiful.ai","✨","演示 / 文档","AI 辅助制作演示文稿和商务幻灯片。","免费试用","https://www.beautiful.ai/","Beautiful.ai"],
 ["Otter.ai","🦦","会议 / 音频","会议录音、转写、摘要和行动项整理工具。","免费额度","https://otter.ai/","Otter.ai"],
 ["Fireflies.ai","🔥","会议 / 音频","AI 会议记录、转写、摘要和搜索工具。","免费额度","https://fireflies.ai/","Fireflies.ai"],
-["Gamma","📊","演示 / 文档","AI 生成演示文稿、文档和网页。","免费入口","https://gamma.app/","Gamma"],
+
 ["Jan","🖥️","本地 AI","开源桌面 AI 助手，可在本地运行模型。","免费 / 开源","https://jan.ai/","Jan"],
 ["GPT4All","🧠","本地 AI","桌面端本地运行和聊天的开源 AI 软件。","免费 / 开源","https://www.nomic.ai/gpt4all","Nomic"],
 ["ComfyUI","🧱","本地 AI","节点式开源生成式 AI 工作流工具。","免费 / 开源","https://www.comfy.org/","Comfy"],

@@ -56,7 +56,7 @@
     "Symbolab":"symbolab"
   };
 
-  const verifiedSimpleIconSlugs = new Set(["openai","googlegemini","claude","perplexity","notebooklm","githubcopilot","cursor","huggingface","ollama","lmstudio","elevenlabs","suno","deepseek","poe","grammarly","deepl","googletranslate","veed","kimi","replit","symbolab"]);
+  const verifiedSimpleIconSlugs = new Set(["googlegemini","claude","perplexity","notebooklm","githubcopilot","cursor","huggingface","ollama","lmstudio","elevenlabs","suno","deepseek","poe","grammarly","deepl","googletranslate","veed","kimi","replit","symbolab"]);
 
   function svg(name, className = "") {
     const paths = uiPaths[name] || uiPaths.info;
@@ -64,6 +64,7 @@
   }
 
   const brandImageUrls = {
+    "ChatGPT":"https://chatgpt.com/favicon.ico",
     "GPT4All":"https://raw.githubusercontent.com/nomic-ai/gpt4all/main/gpt4all-chat/icons/gpt4all.svg",
     "Fooocus":"https://github.com/lllyasviel/Fooocus/assets/19834515/483fb86d-c9a2-4c20-997c-46dafc124f25"
   };

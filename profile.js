@@ -15,16 +15,21 @@ function fallbackAvatar(user) {
 }
 
 function renderAvatar(user) {
-  const img = $("profileAvatar");
-  if (!img) return;
+  const box = $("profileAvatar");
+  if (!box) return;
   const avatar = String(user?.user_metadata?.avatar_url || "").trim();
+  box.replaceChildren();
+
   if (avatar) {
+    const img = document.createElement("img");
     img.src = avatar;
-    img.alt = String(user?.user_metadata?.full_name || user?.user_metadata?.name || "用户头像");
+    img.alt = "";
+    img.referrerPolicy = "no-referrer";
+    box.append(img);
     return;
   }
-  img.removeAttribute("src");
-  img.alt = fallbackAvatar(user);
+
+  box.textContent = fallbackAvatar(user);
 }
 
 function renderSession(session) {

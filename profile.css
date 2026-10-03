@@ -130,3 +130,11 @@ button,a{font:inherit}
   .recent-item-actions{grid-column:2;justify-content:flex-start;margin-top:2px}
   .recent-item-actions .secondary-button,.recent-item-actions .danger-button{width:auto}
 }
+
+/* Favorite brand logos */
+.favorite-item-icon .brand-icon{width:44px;height:44px;border-radius:12px;background:#f0f3f9;border:0;display:grid;place-items:center;overflow:hidden}
+.favorite-item-icon .brand-icon img{width:72%;height:72%;object-fit:contain;display:block}
+.favorite-item-icon .brand-icon[data-broken="1"] img{display:none}
+.favorite-item-icon .brand-icon[data-broken="1"] .brand-fallback{display:grid;place-items:center}
+.favorite-item-icon .brand-fallback{width:100%;height:100%;align-items:center;justify-content:center}
+.favorite-item-icon .brand-fallback .ui-svg{width:20px;height:20px;color:#7b879c}

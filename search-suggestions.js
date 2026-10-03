@@ -34,7 +34,7 @@ function draw(){
   if(!q.trim()){
     box.innerHTML='<div class="suggest-title">不知道怎么搜？试试 / Try asking</div><div class="suggest-chips"><button data-q="做图片">🎨 做图片 / Images</button><button data-q="做视频">🎬 做视频 / Video</button><button data-q="写文章">✍️ 写东西 / Write</button><button data-q="学习资料">📚 学习 / Learn</button></div>';
   }else if(list.length){
-    box.innerHTML='<div class="suggest-title">你可能在找 / You may be looking for</div>'+list.map(t=>'<button class="suggest-item" data-name="'+t[0]+'"><span class="suggest-icon">'+t[1]+'</span><span><strong>'+t[0]+'</strong><small>'+t[2]+' · '+t[3]+'</small></span><b>›</b></button>').join("");
+    box.innerHTML='<div class="suggest-title">你可能在找 / You may be looking for</div>'+list.map(t=>'<button class="suggest-item" data-name="'+t[0]+'"><span class="suggest-icon">'+(window.ASHIcons?ASHIcons.brand(t[0],t[5]):t[1])+'</span><span><strong>'+t[0]+'</strong><small>'+t[2]+' · '+t[3]+'</small></span><b>›</b></button>').join("");
   }else{
     box.innerHTML='<div class="suggest-empty">没找到完全匹配的工具。试试直接描述需求：<strong>做图片 / 写文章 / 学习 / 视频</strong><br><small>Describe what you want to do instead of remembering a tool name.</small></div>';
   }

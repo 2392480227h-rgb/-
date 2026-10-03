@@ -21,3 +21,6 @@
 /* Category leader brands */
 .starter-card>.category-brand .brand-icon{width:42px;height:42px;border:0;background:transparent}
 .starter-card>.category-brand .brand-icon img{width:76%;height:76%}
+
+/* International brand names */
+.card h2{display:flex;flex-direction:column;align-items:flex-start;gap:2px}.intl-name{display:block;font-size:11px;line-height:1.25;font-weight:700;letter-spacing:.02em;color:#8a94a8}@media(max-width:520px){.intl-name{font-size:10px}}

@@ -48,15 +48,27 @@
     "Kimi":"kimi",
     "Poe":"poe",
     "HuggingChat":"huggingface",
+    "Mistral Le Chat":"mistralai",
     "Grammarly":"grammarly",
     "DeepL":"deepl",
     "Google Translate":"googletranslate",
     "VEED":"veed",
     "Replit":"replit",
-    "Symbolab":"symbolab"
+    "Symbolab":"symbolab",
+    "Meta AI":"metaai",
+    "Monica":"monica",
+    "Freepik AI":"freepik",
+    "Pixlr AI":"pixlr",
+    "Windsurf":"windsurf",
+    "v0":"v0",
+    "Cline":"cline",
+    "OpenRouter":"openrouter",
+    "Replicate":"replicate",
+    "ModelScope":"modelscope",
+    "vLLM":"vllm"
   };
 
-  const verifiedSimpleIconSlugs = new Set(["googlegemini","claude","perplexity","notebooklm","githubcopilot","cursor","huggingface","ollama","lmstudio","elevenlabs","suno","deepseek","poe","grammarly","deepl","googletranslate","veed","kimi","replit","symbolab"]);
+  const verifiedSimpleIconSlugs = new Set(["openai","googlegemini","claude","perplexity","notebooklm","githubcopilot","cursor","huggingface","ollama","lmstudio","elevenlabs","suno","deepseek","kimi","poe","huggingface","mistralai","grammarly","deepl","googletranslate","veed","replit","symbolab","metaai","monica","freepik","pixlr","windsurf","v0","cline","openrouter","replicate","modelscope","vllm"]);
 
   function svg(name, className = "") {
     const paths = uiPaths[name] || uiPaths.info;
@@ -69,32 +81,42 @@
     "Fooocus":"https://github.com/lllyasviel/Fooocus/assets/19834515/483fb86d-c9a2-4c20-997c-46dafc124f25"
   };
 
-  function brandUrl(name, websiteUrl) {
-    if (brandImageUrls[name]) return brandImageUrls[name];
-    const slug = brandSlugs[name];
-    if (slug && verifiedSimpleIconSlugs.has(slug)) return 'https://cdn.simpleicons.org/' + slug;
+  function firstPartyFaviconUrl(websiteUrl) {
     try {
       const host = new URL(websiteUrl).hostname;
-      // Prefer the brand's own favicon so every new tool gets an official, first-party mark.
       return 'https://' + host + '/favicon.ico';
     } catch {
       return '';
     }
   }
 
-  function brand(name, websiteUrl) {
-    const src = brandUrl(name, websiteUrl);
-    let fallback = '';
+  function googleFaviconUrl(websiteUrl) {
     try {
       const host = new URL(websiteUrl).hostname;
-      fallback = 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(host) + '&sz=128';
-    } catch {}
-    const fallbackAttr = fallback ? ' data-fallback="'+fallback+'"' : '';
+      return 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(host) + '&sz=128';
+    } catch {
+      return '';
+    }
+  }
+
+  function brandUrl(name, websiteUrl) {
+    if (brandImageUrls[name]) return brandImageUrls[name];
+    const slug = brandSlugs[name];
+    if (slug && verifiedSimpleIconSlugs.has(slug)) return 'https://cdn.simpleicons.org/' + slug;
+    // Domain-based favicon resolution is more reliable than assuming /favicon.ico is the correct icon.
+    return googleFaviconUrl(websiteUrl) || firstPartyFaviconUrl(websiteUrl);
+  }
+
+  function brand(name, websiteUrl) {
+    const src = brandUrl(name, websiteUrl);
+    const simpleOrCustom = Boolean(brandImageUrls[name] || (brandSlugs[name] && verifiedSimpleIconSlugs.has(brandSlugs[name])));
+    const fallback = simpleOrCustom ? googleFaviconUrl(websiteUrl) : firstPartyFaviconUrl(websiteUrl);
+    const fallbackAttr = fallback && fallback !== src ? ' data-fallback="'+fallback+'"' : '';
     const handler = "if(this.dataset.fallback){const next=this.dataset.fallback;this.dataset.fallback='';this.src=next;return;}this.closest('.brand-icon').dataset.broken='1'";
     return '<span class="brand-icon" aria-hidden="true"><img src="'+src+'" alt="" loading="lazy" referrerpolicy="no-referrer"'+fallbackAttr+' onerror="'+handler+'"><span class="brand-fallback">'+svg("info")+'</span></span>';
   }
 
-  document.querySelectorAll(".category-brand[data-brand-name]").forEach(el => {
+  document.querySelectorAll(".category-brand[data-brand-name], .seo-logo[data-brand-name]").forEach(el => {
     el.innerHTML = brand(el.dataset.brandName, el.dataset.brandUrl);
   });
 

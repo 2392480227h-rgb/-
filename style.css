@@ -55,11 +55,9 @@
 .favorite-button.is-favorite{border-color:#f0d36a;background:#fffaf0;color:#8a6500}
 .favorite-button.is-favorite .favorite-star{color:#f2b900}
 .favorite-button.is-favorite:hover{border-color:#e7c34b;background:#fff7df}
-.favorite-count{color:#a0a9b8;font-size:9px;line-height:1.2;white-space:nowrap}
-.favorite-button.is-favorite + .favorite-count{color:#a27b13;font-weight:700}
-#favorites .favorite-count{letter-spacing:.01em}
 .favorite-button:not(.is-favorite) .favorite-star{color:#a7afbd}
-@media(max-width:520px){.favorite-wrap{gap:2px}.favorite-count{font-size:8px}}
+.popularity.is-hot{background:#fff7e6;border-color:#f3dfac;color:#9b6900}
+@media(max-width:520px){.favorite-wrap{gap:2px}.popularity{font-size:9px;padding:3px 6px}.signal-note{font-size:8px}}
 
 /* Recommended sort control sizing */
 .toolbar select{min-width:150px;height:38px;padding:0 12px;font-size:11px;line-height:36px}

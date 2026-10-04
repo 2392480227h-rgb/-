@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { readFile } from "node:fs/promises";
 
-const file = new URL("../../data/ai-news.json", import.meta.url);
+const file = "data/ai-news.json";
 const raw = await readFile(file, "utf8");
 const feed = JSON.parse(raw);
 

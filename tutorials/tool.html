@@ -10,11 +10,11 @@
 <body>
 <header class="topbar"><div class="wrap"><a class="brand" href="../"><span data-icon="compass"></span> AI 新手导航</a><a class="back" href="index.html"><span data-icon="book"></span> 教程目录 / Guides</a></div></header>
 <main class="wrap content" id="app"><section class="section"><h2>正在加载教程 / Loading guide…</h2></section></main>
-<script src="../icons.js?v=20261004-2"></script><script>document.querySelectorAll("[data-icon]").forEach(el=>{el.innerHTML=ASHIcons.svg(el.dataset.icon);});</script><script src="tutorial-data.js?v=20261004-5"></script>
+<script src="../icons.js?v=20261004-2"></script><script>document.querySelectorAll("[data-icon]").forEach(el=>{el.innerHTML=ASHIcons.svg(el.dataset.icon);});</script><script src="tutorial-data.js?v=20261004-6"></script>
 <script>
 (async()=>{
 const params=new URLSearchParams(location.search), name=params.get("tool");
-const app=await fetch("../app.js?v=20261004-3").then(r=>r.text());
+const app=await fetch("../app.js?v=20261004-4").then(r=>r.text());
 const body=app.match(/const tools=\[(.*?)\n\];/s)?.[1];
 const tools=body?Function("return ["+body+"]")():[];
 const t=tools.find(x=>x[0]===name);

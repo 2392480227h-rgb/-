@@ -193,10 +193,9 @@ html{scroll-behavior:smooth;scroll-padding-top:76px}
   transition:transform 220ms var(--ease-spring),border-color var(--motion-base) var(--ease-out),box-shadow 220ms var(--ease-out),background var(--motion-base) var(--ease-out)
 }
 .grid{
-  transition:opacity 120ms var(--ease-out),transform 180ms var(--ease-out);
-  will-change:opacity,transform
+  transition:opacity 120ms var(--ease-out),transform 180ms var(--ease-out)
 }
-.grid.is-updating{opacity:.76;transform:translateY(2px)}
+.grid.is-updating{opacity:.76;transform:translateY(2px);will-change:opacity,transform}
 .card.is-entering{
   opacity:0;
   transform:translateY(7px) scale(.992);
@@ -229,7 +228,7 @@ button:active,.open:active,.learn:active,.favorite-button:active,.cat:active,.au
 }
 .open:hover,.learn:hover,.favorite-button:hover{transform:translateY(-1px)}
 .favorite-button .favorite-star{display:inline-block;transform-origin:center;transition:transform 180ms var(--ease-spring),color var(--motion-base) var(--ease-out)}
-.favorite-button.is-favorite .favorite-star{animation:favorite-pop 260ms var(--ease-spring)}
+.favorite-button.is-bouncing .favorite-star{animation:favorite-pop 260ms var(--ease-spring)}
 @keyframes favorite-pop{
   0%{transform:scale(.72) rotate(-8deg)}
   55%{transform:scale(1.18) rotate(4deg)}

@@ -31,6 +31,15 @@ const MANUAL_OVERRIDES = {
     embedUrl: "https://player.bilibili.com/player.html?bvid=BV1SQFeeKE7f&p=1&autoplay=0&danmaku=0&high_quality=1",
     note: "直接讲解通义灵码的安装、代码解释、补全和排错等核心使用方法。"
   },
+  "Windsurf": {
+    type: "youtube",
+    videoId: "CLRupjhEFm8",
+    title: "Windsurf Editor TUTORIAL // Better than Cursor? (yes)",
+    source: "YouTube",
+    sourceType: "精选教程",
+    url: "https://www.youtube.com/watch?v=CLRupjhEFm8",
+    note: "直接对应 Windsurf Editor 的上手和使用流程，适合作为 AI 编程入门教程。"
+  },
   "Adobe Podcast": {
     type: "youtube",
     videoId: "Ke85qbZuMl4",

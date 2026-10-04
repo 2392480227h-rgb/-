@@ -562,4 +562,4 @@ console.log(JSON.stringify({
   finalVideoEntries: entries.reduce((sum, [, profile]) => sum + (profile.videos || []).length, 0)
 }, null, 2));
 
-// [curate-videos] validate every existing embed before keeping it
+// [curate-videos] re-run direct embed validation before keeping it

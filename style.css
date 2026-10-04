@@ -248,11 +248,11 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   align-items:center;
   gap:12px;
   padding:9px 11px;
-  border:1px solid #d9e1ee;
+  border:1px solid #d7e0ee;
   border-radius:11px;
   background:
-    radial-gradient(circle at 82% 50%,#e5efff 0,transparent 48%),
-    linear-gradient(135deg,#fdfefe 0%,#f5f8fc 100%);
+    radial-gradient(circle at 84% 55%,#eaf4ff 0,transparent 52%),
+    linear-gradient(135deg,#ffffff 0%,#f4f8fd 100%);
   color:#172033;
   text-decoration:none;
   overflow:hidden;
@@ -263,19 +263,33 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .spcx-ad-card::before{
   content:"";
   position:absolute;
-  inset:0;
+  inset:-4px;
   z-index:-1;
   background-image:url("assets/ads/spcx-logo.jpg");
   background-repeat:no-repeat;
-  background-position:92% 50%;
-  background-size:92% auto;
-  opacity:.20;
+  background-position:88% 50%;
+  background-size:84% auto;
+  filter:invert(1) saturate(.55) contrast(.82);
+  opacity:.12;
   mix-blend-mode:multiply;
+  pointer-events:none;
+}
+.spcx-ad-card::after{
+  content:"";
+  position:absolute;
+  width:120px;
+  height:120px;
+  right:-42px;
+  top:-34px;
+  border-radius:50%;
+  background:#d7eaff80;
+  filter:blur(20px);
+  z-index:-1;
   pointer-events:none;
 }
 .spcx-ad-card:hover{
   transform:translateY(-1px);
-  border-color:#b8c5da;
+  border-color:#b7c5da;
   box-shadow:0 8px 22px #17203312;
 }
 .spcx-ad-copy{
@@ -285,23 +299,23 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   flex:1 1 auto;
   display:flex;
   flex-direction:column;
-  line-height:1.2;
+  line-height:1.16;
 }
 .spcx-ad-copy strong{
   font-size:13px;
   letter-spacing:.01em;
-  color:#172033;
+  color:#101a2d;
 }
 .spcx-ad-copy small{
   margin-top:3px;
-  font-size:10px;
+  font-size:9.5px;
   font-weight:850;
-  color:#394a68;
+  color:#33496b;
 }
 .spcx-ad-copy em{
-  margin-top:3px;
+  margin-top:2px;
   font-size:9px;
-  color:#74819a;
+  color:#71809a;
   font-style:normal;
   white-space:nowrap;
   overflow:hidden;
@@ -313,17 +327,17 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   flex:0 0 auto;
   padding:7px 10px;
   border-radius:8px;
-  border:1px solid #b9cbe4;
-  background:#eef5ffcc;
-  color:#263955;
+  border:1px solid #bfd0e7;
+  background:#eef5ffdd;
+  color:#243856;
   font-size:10px;
   font-weight:850;
   white-space:nowrap;
   transition:.18s;
 }
 .spcx-ad-card:hover .spcx-ad-cta{
-  border-color:#8ea7c8;
-  background:#e7f0fd;
+  border-color:#8fa9ca;
+  background:#e5effd;
 }
 .spcx-ad-label{
   position:absolute;
@@ -333,8 +347,8 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   padding:1px 4px;
   border:1px solid #dbe3ef;
   border-radius:4px;
-  color:#9aa4b5;
-  background:#ffffffc9;
+  color:#98a3b5;
+  background:#ffffffcc;
   font-size:7px;
   font-weight:800;
   line-height:1.2;
@@ -355,12 +369,13 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
     min-width:0;
     min-height:58px;
     padding:8px 9px;
-    gap:7px;
+    gap:8px;
   }
   .spcx-ad-copy strong{font-size:10.5px}
-  .spcx-ad-copy small{font-size:8.5px}
-  .spcx-ad-copy em{font-size:7.5px}
+  .spcx-ad-copy small{font-size:8px}
+  .spcx-ad-copy em{font-size:7.7px}
   .spcx-ad-cta{padding:6px 8px;font-size:9px}
+  .spcx-ad-card::before{background-position:90% 50%;background-size:88% auto;opacity:.10}
 }
 @media(max-width:520px){
   .starter-head-actions{
@@ -383,21 +398,23 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   .starter-guide b{font-size:13px}
   .spcx-ad-card{
     min-height:58px;
-    padding:7px 7px;
+    padding:7px;
     gap:5px;
   }
   .spcx-ad-card::before{
-    background-position:86% 50%;
-    background-size:120% auto;
-    opacity:.17;
+    background-position:84% 50%;
+    background-size:112% auto;
+    opacity:.095;
   }
-  .spcx-ad-copy strong{font-size:9.5px}
-  .spcx-ad-copy small{font-size:7.5px}
-  .spcx-ad-copy em{font-size:7px}
-  .spcx-ad-cta{
-    padding:5px 6px;
-    border-radius:7px;
-    font-size:8px;
+  .spcx-ad-copy strong{
+    font-size:9.4px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    padding-right:10px;
   }
+  .spcx-ad-copy small{font-size:7.4px}
+  .spcx-ad-copy em{font-size:6.8px;line-height:1.15}
+  .spcx-ad-cta{padding:5px 6px;border-radius:7px;font-size:7.8px}
   .spcx-ad-label{right:5px;top:5px;font-size:6px}
 }

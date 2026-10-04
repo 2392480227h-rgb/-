@@ -35,3 +35,42 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Notify IndexNow
+        continue-on-error: true
+        env:
+          INDEXNOW_KEY: e9f3a6c1d7b24f8aa53e0b6c7d91f402
+          SITE_HOST: starterhub-dev.github.io
+          SITE_BASE: https://starterhub-dev.github.io/ai-tools/
+        run: |
+          python - <<'PY'
+          import json
+          import urllib.request
+          import urllib.error
+          import xml.etree.ElementTree as ET
+
+          sitemap_url = "https://starterhub-dev.github.io/ai-tools/sitemap.xml"
+          root = ET.fromstring(urllib.request.urlopen(sitemap_url, timeout=30).read())
+          ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+          urls = [node.text for node in root.findall("sm:url/sm:loc", ns) if node.text]
+
+          payload = json.dumps({
+              "host": "starterhub-dev.github.io",
+              "key": "e9f3a6c1d7b24f8aa53e0b6c7d91f402",
+              "keyLocation": "https://starterhub-dev.github.io/ai-tools/e9f3a6c1d7b24f8aa53e0b6c7d91f402.txt",
+              "urlList": urls,
+          }).encode("utf-8")
+
+          request = urllib.request.Request(
+              "https://api.indexnow.org/indexnow",
+              data=payload,
+              headers={"Content-Type": "application/json; charset=utf-8"},
+              method="POST",
+          )
+          try:
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  print("IndexNow response:", response.status)
+          except urllib.error.HTTPError as error:
+              print("IndexNow returned HTTP", error.code)
+          print("IndexNow submitted", len(urls), "URLs")
+          PY

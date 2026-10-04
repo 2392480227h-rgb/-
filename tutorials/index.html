@@ -21,7 +21,7 @@
 <script src="../icons.js?v=20261004-1"></script>
 <script>
 (async()=>{
-const res=await fetch("../app.js?v=20261004-5"), app=await res.text();
+const res=await fetch("../app.js?v=20261004-6"), app=await res.text();
 const body=app.match(/const tools=\[(.*?)\n\];/s)?.[1];
 const tools=body?Function("return ["+body+"]")():[];
 const esc=s=>String(s||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));

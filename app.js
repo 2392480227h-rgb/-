@@ -217,6 +217,11 @@ function bindFavoriteButtons(){
       if(!tool||!window.ASHFavorites)return;
       window.ASHFavorites.toggle({toolId:getToolId(tool),name:tool[0],url:tool[5],category:tool[2],company:tool[6],icon:tool[1]});
       syncFavoriteButton(button);
+      if(!reducedMotion){
+        button.classList.remove("is-bouncing");
+        requestAnimationFrame(()=>button.classList.add("is-bouncing"));
+        window.setTimeout(()=>button.classList.remove("is-bouncing"),320);
+      }
     };
   });
 }
@@ -263,10 +268,10 @@ function render({animate=false}={}){
 
   if(initialRender&&!reducedMotion){
     grid.querySelectorAll(".card").forEach((card,index)=>{
-      if(index<12) card.classList.add("is-entering");
-    });
-    requestAnimationFrame(()=>{
-      grid.querySelectorAll(".card.is-entering").forEach(card=>card.classList.remove("is-entering"));
+      if(index<12){
+        card.classList.add("is-entering");
+        card.addEventListener("animationend",()=>card.classList.remove("is-entering"),{once:true});
+      }
     });
     initialRender=false;
   } else if(animate&&!reducedMotion){

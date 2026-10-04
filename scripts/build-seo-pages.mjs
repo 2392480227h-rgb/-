@@ -87,13 +87,18 @@ for(const tool of tools){
   const p=getProfile(tool,profiles);
   const canonical=SITE+"tools/"+slug+"/";
   const videos=Array.isArray(p?.videos)?p.videos:[];
-  const videoLinks=videos.slice(0,3).map(v=>{
-    const href=v.type==="external"?v.url:(v.type==="search"?v.searchUrl:v.url||("https://www.youtube.com/watch?v="+v.videoId));
-    return href?'<a class="seo-video-link" href="'+attr(href)+'" target="_blank" rel="noopener noreferrer">'+esc(v.title||"教程视频")+' ↗</a>':"";
-  }).filter(Boolean).join("");
+  const getEmbedUrl=v=>{
+    if(v?.type==="external" && v.embedUrl) return String(v.embedUrl);
+    if(v?.videoId && (!v.type || v.type==="youtube")) return "https://www.youtube-nocookie.com/embed/"+encodeURIComponent(v.videoId)+"?rel=0&playsinline=1&modestbranding=1";
+    return "";
+  };
+  const video=videos.find(v=>getEmbedUrl(v));
+  if(!video) throw new Error("No embeddable tutorial video for "+title);
+  const videoEmbedUrl=getEmbedUrl(video);
+  const videoWatchUrl=video.url||(video.videoId?"https://www.youtube.com/watch?v="+encodeURIComponent(video.videoId):"");
   const related=tools.filter(other=>other!==tool && other[2]===cat).slice(0,5);
   const relatedSection=related.length?'<section><h2>同类工具 / Related tools</h2><div class="seo-related">'+related.map(other=>'<a href="'+attr(SITE+"tools/"+slugify(other[0],internationalNames)+"/")+'"><strong>'+esc(other[0])+'</strong><span>'+esc(other[3])+'</span></a>').join("")+'</div></section>':"";
-  const videoSection=videoLinks?'<section><h2>教程视频 / Video tutorials</h2><p>本站优先整理与当前工具对应的视频入口。播放限制、地区限制或嵌入权限可能变化，请以视频平台页面为准。</p><div class="seo-links">'+videoLinks+'</div></section>':"";
+  const videoSection='<section><h2>教程视频 / Video tutorials</h2><p>对应教程已直接嵌入本页面，点击播放器中的 ▶ 即可观看，不需要先跳转到视频平台。若视频平台限制第三方播放，再使用下方来源页面。</p><div class="seo-video-frame"><iframe class="seo-video-player" src="'+attr(videoEmbedUrl)+'" title="'+attr(video.title||title+" 教程视频")+'" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><div class="seo-video-meta"><strong>'+esc(video.title||"教程视频")+'</strong><span>'+esc(video.sourceType||"精选教程")+(video.source?" · "+esc(video.source):"")+'</span></div>'+(videoWatchUrl?'<a class="seo-video-source" href="'+attr(videoWatchUrl)+'" target="_blank" rel="noopener noreferrer">来源页面 ↗</a>':"")+'</section>';
   const jsonLd=[
     {"@context":"https://schema.org","@type":"WebPage","name":title+" 新手教程","description":desc+" 提供官方入口、入门步骤、第一次任务、提示词与教程视频。","url":canonical,"inLanguage":["zh-CN","en"],"isPartOf":{"@type":"WebSite","name":"AI 新手导航","url":SITE},"about":{"@type":"SoftwareApplication","name":title,"url":url,"applicationCategory":cat,"operatingSystem":"Web"}},
     {"@context":"https://schema.org","@type":"SoftwareApplication","name":title,"description":desc,"url":url,"applicationCategory":cat,"operatingSystem":"Web","publisher":{"@type":"Organization","name":publisher}},
@@ -113,7 +118,7 @@ for(const tool of tools){
     '<meta property="og:title" content="'+attr(title+" 新手教程 | AI Starter Hub")+'"><meta property="og:description" content="'+attr(desc)+'">'+
     '<meta property="og:url" content="'+attr(canonical)+'"><meta name="twitter:card" content="summary">'+
     '<meta name="twitter:title" content="'+attr(title+" 新手教程")+'"><meta name="twitter:description" content="'+attr(desc)+'">'+
-    '<link rel="stylesheet" href="../../style.css?v=20261004-19"><link rel="stylesheet" href="../../seo.css?v=20261004-1">'+
+    '<link rel="stylesheet" href="../../style.css?v=20261004-19"><link rel="stylesheet" href="../../seo.css?v=20261004-2">'+
     '<script type="application/ld+json">'+ld(jsonLd)+'</script></head><body>'+
     '<header class="seo-top"><div class="wrap"><a href="../../" class="seo-brand">🧭 AI 新手导航 <span>AI Starter Hub</span></a><a href="../../tutorials/" class="seo-back">全部教程 / Guides</a></div></header>'+
     '<main class="wrap seo-main"><nav class="seo-breadcrumb"><a href="../../">AI 新手导航</a><span>›</span><a href="../../tutorials/">AI 工具教程</a><span>›</span><strong>'+esc(title)+'</strong></nav>'+

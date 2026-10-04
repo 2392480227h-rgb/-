@@ -127,3 +127,129 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   .ai-now-pulse{animation:none}
   .ai-now,.ai-now-window,.ai-now-link{transition:none}
 }
+
+
+/* =========================================================
+   Global Motion System · iOS-inspired, restrained, performant
+   ========================================================= */
+:root{
+  --motion-fast:120ms;
+  --motion-base:180ms;
+  --motion-slow:320ms;
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  --ease-soft:cubic-bezier(.25,.8,.25,1);
+  --ease-spring:cubic-bezier(.2,.85,.25,1.18);
+}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+.sitebar{
+  transition:background var(--motion-slow) var(--ease-out),border-color var(--motion-base) var(--ease-out),box-shadow var(--motion-slow) var(--ease-out),backdrop-filter var(--motion-slow) var(--ease-out)
+}
+.sitebar.is-scrolled{
+  background:rgba(255,255,255,.86);
+  border-bottom-color:rgba(219,224,235,.88);
+  box-shadow:0 8px 28px rgba(23,32,51,.07);
+  -webkit-backdrop-filter:blur(16px) saturate(150%);
+  backdrop-filter:blur(16px) saturate(150%);
+}
+.sitebar .brand,.navlinks a,.auth-button{
+  transition:color var(--motion-base) var(--ease-out),background var(--motion-base) var(--ease-out),border-color var(--motion-base) var(--ease-out),transform var(--motion-fast) var(--ease-spring)
+}
+.navlinks a{position:relative}
+.navlinks a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-7px;
+  height:1.5px;
+  border-radius:999px;
+  background:currentColor;
+  opacity:0;
+  transform:scaleX(.35);
+  transform-origin:center;
+  transition:opacity var(--motion-base) var(--ease-out),transform var(--motion-base) var(--ease-out)
+}
+.navlinks a:hover::after,.navlinks a:focus-visible::after{opacity:.55;transform:scaleX(1)}
+.searchbox{
+  transition:transform var(--motion-base) var(--ease-out),border-color var(--motion-base) var(--ease-out),box-shadow var(--motion-slow) var(--ease-out)
+}
+.searchbox:focus-within{
+  transform:translateY(-1px);
+  border-color:#c7d0e2;
+  box-shadow:0 20px 48px rgba(0,0,0,.16),0 0 0 3px rgba(164,178,214,.11);
+}
+.suggestions:not([hidden]){
+  animation:motion-pop var(--motion-base) var(--ease-out) both;
+  transform-origin:top center
+}
+@keyframes motion-pop{
+  from{opacity:0;transform:translateY(-4px) scale(.985)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.cat{
+  transition:transform var(--motion-fast) var(--ease-spring),background var(--motion-base) var(--ease-out),color var(--motion-base) var(--ease-out),border-color var(--motion-base) var(--ease-out),box-shadow var(--motion-base) var(--ease-out)
+}
+.card,.starter-card{
+  transition:transform 220ms var(--ease-spring),border-color var(--motion-base) var(--ease-out),box-shadow 220ms var(--ease-out),background var(--motion-base) var(--ease-out)
+}
+.grid{
+  transition:opacity 120ms var(--ease-out),transform 180ms var(--ease-out);
+  will-change:opacity,transform
+}
+.grid.is-updating{opacity:.76;transform:translateY(2px)}
+.card.is-entering{
+  opacity:0;
+  transform:translateY(7px) scale(.992);
+  animation:card-enter 420ms var(--ease-out) both
+}
+.card.is-entering:nth-child(2){animation-delay:18ms}
+.card.is-entering:nth-child(3){animation-delay:36ms}
+.card.is-entering:nth-child(4){animation-delay:54ms}
+.card.is-entering:nth-child(5){animation-delay:72ms}
+.card.is-entering:nth-child(6){animation-delay:90ms}
+.card.is-entering:nth-child(7){animation-delay:108ms}
+.card.is-entering:nth-child(8){animation-delay:126ms}
+.card.is-entering:nth-child(9){animation-delay:144ms}
+.card.is-entering:nth-child(10){animation-delay:162ms}
+.card.is-entering:nth-child(11){animation-delay:180ms}
+.card.is-entering:nth-child(12){animation-delay:198ms}
+@keyframes card-enter{
+  from{opacity:0;transform:translateY(7px) scale(.992)}
+  70%{opacity:1;transform:translateY(-1px) scale(1.002)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+button,.open,.learn,.favorite-button,.starter-card,.cat,.auth-button,.ai-now-link{ -webkit-tap-highlight-color:transparent }
+button:active,.open:active,.learn:active,.favorite-button:active,.cat:active,.auth-button:active,.ai-now-link:active{
+  transform:scale(.975);
+}
+.starter-card:active{transform:scale(.988)}
+.card:active{transform:translateY(-1px) scale(.997)}
+.open,.learn,.favorite-button,.toolbar select{
+  transition:transform var(--motion-fast) var(--ease-spring),background var(--motion-base) var(--ease-out),border-color var(--motion-base) var(--ease-out),box-shadow var(--motion-base) var(--ease-out),color var(--motion-base) var(--ease-out)
+}
+.open:hover,.learn:hover,.favorite-button:hover{transform:translateY(-1px)}
+.favorite-button .favorite-star{display:inline-block;transform-origin:center;transition:transform 180ms var(--ease-spring),color var(--motion-base) var(--ease-out)}
+.favorite-button.is-favorite .favorite-star{animation:favorite-pop 260ms var(--ease-spring)}
+@keyframes favorite-pop{
+  0%{transform:scale(.72) rotate(-8deg)}
+  55%{transform:scale(1.18) rotate(4deg)}
+  100%{transform:scale(1) rotate(0)}
+}
+@media (hover:hover){
+  .card:hover{transform:translateY(-3px)}
+  .starter-card:hover{transform:translateY(-2px)}
+  .cat:hover{transform:translateY(-1px)}
+}
+@media(max-width:760px){
+  .sitebar.is-scrolled{background:rgba(255,255,255,.9)}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:1ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:1ms!important;
+  }
+  .grid{will-change:auto}
+}

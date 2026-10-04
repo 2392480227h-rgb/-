@@ -269,9 +269,9 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   background-repeat:no-repeat;
   background-position:88% 50%;
   background-size:84% auto;
-  filter:invert(1) saturate(.55) contrast(.82);
+  filter:brightness(1.15) saturate(.65) contrast(.9);
   opacity:.12;
-  mix-blend-mode:multiply;
+  mix-blend-mode:screen;
   pointer-events:none;
 }
 .spcx-ad-card::after{
@@ -375,7 +375,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   .spcx-ad-copy small{font-size:8px}
   .spcx-ad-copy em{font-size:7.7px}
   .spcx-ad-cta{padding:6px 8px;font-size:9px}
-  .spcx-ad-card::before{background-position:90% 50%;background-size:88% auto;opacity:.10}
+  .spcx-ad-card::before{background-position:90% 50%;background-size:88% auto;opacity:.11;mix-blend-mode:screen}
 }
 @media(max-width:520px){
   .starter-head-actions{
@@ -404,7 +404,8 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   .spcx-ad-card::before{
     background-position:84% 50%;
     background-size:112% auto;
-    opacity:.095;
+    opacity:.10;
+    mix-blend-mode:screen;
   }
   .spcx-ad-copy strong{
     font-size:9.4px;

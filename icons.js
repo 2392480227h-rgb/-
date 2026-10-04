@@ -75,7 +75,8 @@
     if (slug && verifiedSimpleIconSlugs.has(slug)) return 'https://cdn.simpleicons.org/' + slug;
     try {
       const host = new URL(websiteUrl).hostname;
-      return 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(host) + '&sz=128';
+      // Prefer the brand's own favicon so every new tool gets an official, first-party mark.
+      return 'https://' + host + '/favicon.ico';
     } catch {
       return '';
     }

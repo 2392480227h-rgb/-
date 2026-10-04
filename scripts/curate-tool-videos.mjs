@@ -348,11 +348,75 @@ async function ytSearch(query) {
   return Array.isArray(payload.entries) ? payload.entries.filter(Boolean) : [];
 }
 
-async function pickVideo(name, profile) {
-  if (MANUAL_OVERRIDES[name]) return MANUAL_OVERRIDES[name];
+async function validateVideo(video) {
+  if (!video) return { ok: false, reason: "empty" };
 
-  const current = (profile.videos || []).find(v => v?.videoId && (v.type === "youtube" || !v.type));
-  if (current) return current;
+  const url = video.type === "external"
+    ? String(video.url || "")
+    : (video.videoId ? `https://www.youtube.com/watch?v=${video.videoId}` : String(video.url || ""));
+
+  if (!url) return { ok: false, reason: "missing-url" };
+
+  try {
+    const args = [
+      "-m", "yt_dlp", "-J", "--no-warnings", "--skip-download",
+      "--extractor-args", "youtube:player_client=default,web_embedded",
+      url
+    ];
+    const { stdout } = await execFileAsync("python", args, {
+      maxBuffer: 8 * 1024 * 1024,
+      timeout: 45000
+    });
+    const info = JSON.parse(stdout);
+
+    if (video.type === "external") {
+      const formats = Array.isArray(info.formats) ? info.formats : [];
+      const title = String(info.title || "");
+      if (!formats.length && !info.url) return { ok: false, reason: "no-playable-format" };
+      return { ok: true, title: title || video.title || "" };
+    }
+
+    const expectedId = String(video.videoId || "");
+    const actualId = String(info.id || "");
+    const availability = String(info.availability || "public");
+    const playable = info.playable_in_embed;
+    if (expectedId && actualId && expectedId !== actualId) {
+      return { ok: false, reason: `id-mismatch:${actualId}` };
+    }
+    if (availability && !["public", "unlisted"].includes(availability)) {
+      return { ok: false, reason: `availability:${availability}` };
+    }
+    if (playable === false || playable === "False") {
+      return { ok: false, reason: "embed-disabled" };
+    }
+    if (!info.url && !(Array.isArray(info.formats) && info.formats.length)) {
+      return { ok: false, reason: "no-playable-format" };
+    }
+    return {
+      ok: true,
+      title: String(info.title || video.title || ""),
+      playable_in_embed: playable
+    };
+  } catch (error) {
+    return { ok: false, reason: error?.message || "yt-dlp-failed" };
+  }
+}
+
+async function pickVideo(name, profile, { forceSearch = false } = {}) {
+  const manual = MANUAL_OVERRIDES[name];
+  if (manual && !forceSearch) {
+    const check = await validateVideo(manual);
+    if (check.ok) return manual;
+    console.warn(`[manual invalid] ${name} · ${check.reason}`);
+  }
+
+  if (!forceSearch) {
+    for (const current of profile.videos || []) {
+      const check = await validateVideo(current);
+      if (check.ok) return current;
+      console.warn(`[video invalid] ${name} · ${current.title || current.videoId || current.url} · ${check.reason}`);
+    }
+  }
 
   const alias = aliasesFor(name)[0];
   const queries = [
@@ -390,18 +454,22 @@ async function pickVideo(name, profile) {
   }
 
   candidates.sort((a, b) => b.score - a.score);
-  const chosen = candidates[0];
-  if (!chosen || chosen.score < 75) return null;
+  for (const chosen of candidates) {
+    const candidate = {
+      type: "youtube",
+      videoId: chosen.id,
+      title: chosen.title,
+      source: chosen.channel,
+      sourceType: /official|官方/i.test(chosen.channel) ? "官方教程" : "精选教程",
+      url: chosen.url,
+      note: `视频标题明确对应“${name}”，并带有教程/上手/实战类教学信号。`
+    };
+    const check = await validateVideo(candidate);
+    if (check.ok) return candidate;
+    console.warn(`[candidate invalid] ${name} · ${candidate.title} · ${check.reason}`);
+  }
 
-  return {
-    type: "youtube",
-    videoId: chosen.id,
-    title: chosen.title,
-    source: chosen.channel,
-    sourceType: /official|官方/i.test(chosen.channel) ? "官方教程" : "精选教程",
-    url: chosen.url,
-    note: `视频标题明确对应“${name}”，并带有教程/上手/实战类教学信号。`
-  };
+  return null;
 }
 
 async function mapConcurrent(items, worker) {
@@ -421,44 +489,52 @@ async function mapConcurrent(items, worker) {
 const source = await readFile(FILE, "utf8");
 const profiles = loadProfiles(source);
 const entries = Object.entries(profiles);
-const targets = entries.filter(([_, profile]) => {
-  const v = profile.videos || [];
-  return !v.some(item => item?.videoId && (item.type === "youtube" || !item.type));
+
+console.log(`Profiles: ${entries.length}; validating every tutorial video entry...`);
+
+const checked = await mapConcurrent(entries, async ([name, profile]) => {
+  const videos = Array.isArray(profile.videos) ? profile.videos : [];
+  const valid = [];
+  for (const video of videos) {
+    const check = await validateVideo(video);
+    if (check.ok) {
+      valid.push(video);
+      console.log(`[PASS] ${name} -> ${video.title || video.videoId || video.url}`);
+    } else {
+      console.warn(`[FAIL] ${name} -> ${video.title || video.videoId || video.url} · ${check.reason}`);
+    }
+  }
+
+  if (valid.length) {
+    profile.videos = valid;
+    return { name, repaired: false, video: valid[0], removed: videos.length - valid.length };
+  }
+
+  const repaired = await pickVideo(name, profile, { forceSearch: true });
+  if (repaired) {
+    profile.videos = [repaired];
+    console.log(`[REPAIRED] ${name} -> ${repaired.title} | ${repaired.videoId || repaired.platform}`);
+    return { name, repaired: true, video: repaired, removed: videos.length };
+  }
+
+  return { name, repaired: true, video: null, removed: videos.length };
 });
 
-console.log(`Profiles: ${entries.length}; targets needing concrete videos: ${targets.length}`);
+const missing = checked.filter(item => !item.video).map(item => item.name);
+const repaired = checked.filter(item => item.repaired);
+const removed = checked.reduce((sum, item) => sum + Number(item.removed || 0), 0);
 
-const picked = await mapConcurrent(targets, async ([name, profile]) => {
-  const video = await pickVideo(name, profile);
-  if (video) console.log(`[OK] ${name} -> ${video.title} | ${video.videoId || video.platform}`);
-  else console.warn(`[MISS] ${name}`);
-  return { name, video };
-});
-
-const misses = [];
-for (const item of picked) {
-  if (item.video) profiles[item.name].videos = [item.video];
-  else misses.push(item.name);
-}
-
-for (const [name, profile] of entries) {
-  profile.videos = (profile.videos || []).filter(v =>
-    (v?.videoId && (v.type === "youtube" || !v.type)) ||
-    (v?.type === "external" && v?.embedUrl)
-  );
-}
-
-const missing = entries
-  .filter(([name, profile]) => !(profile.videos || []).length)
-  .map(([name]) => name);
-
-if (misses.length || missing.length) {
-  if (misses.length) console.error(`No strong match for: ${misses.join(", ")}`);
-  if (missing.length) console.error(`No embeddable video for: ${missing.join(", ")}`);
+if (missing.length) {
+  console.error(`No playable tutorial video for: ${missing.join(", ")}`);
   process.exit(2);
 }
 
 const output = "/* AI Starter Hub · tool-specific bilingual beginner guide data */\n" +
   "window.tutorialProfiles = " + JSON.stringify(profiles) + ";\n";
 await writeFile(FILE, output, "utf8");
-console.log(`Wrote concrete video data for all ${entries.length} tools.`);
+console.log(JSON.stringify({
+  profiles: entries.length,
+  repairedTools: repaired.length,
+  removedInvalidEntries: removed,
+  finalVideoEntries: entries.reduce((sum, [, profile]) => sum + (profile.videos || []).length, 0)
+}, null, 2));

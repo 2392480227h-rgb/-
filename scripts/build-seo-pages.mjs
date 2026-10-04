@@ -65,8 +65,9 @@ function getProfile(tool,profiles){
 
 const BUILD_DATE=new Date().toISOString().slice(0,10);
 const tools=parseTools(APP);
-if(tools.length!==150) throw new Error("Expected 150 tools, got "+tools.length);
+if(!tools.length) throw new Error("No tools found");
 const profiles=parseProfiles(DATA);
+if(Object.keys(profiles).length!==tools.length) throw new Error("Tool/profile count mismatch: "+tools.length+" tools, "+Object.keys(profiles).length+" profiles");
 const outRoot=path.join(ROOT,"tools");
 fs.rmSync(outRoot,{recursive:true,force:true});
 fs.mkdirSync(outRoot,{recursive:true});

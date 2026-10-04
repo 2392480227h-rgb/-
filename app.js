@@ -257,9 +257,8 @@ function render(){
   bindFavoriteButtons();bindRecentLinks()
 }
 function syncSearch(){const v=$("#search").value||"";if(v!==window.__lastSearchValue){window.__lastSearchValue=v;render()}}
-["input","change","keyup","search","compositionend","blur","paste"].forEach(ev=>$("#search").addEventListener(ev,syncSearch));
+["input","compositionend","search"].forEach(ev=>$("#search").addEventListener(ev,syncSearch));
 window.addEventListener("ash:favorites-changed",()=>document.querySelectorAll(".favorite-button").forEach(syncFavoriteButton));
-setInterval(syncSearch,300);
 $("#sort").onchange=render;renderCats();render();
 function pickTask(task){const c=taskMap[task];if(c){active=c;renderCats();render()}$("#tools").scrollIntoView({behavior:"smooth",block:"start"})}
 document.querySelectorAll(".starter-card").forEach(b=>b.onclick=()=>pickTask(b.dataset.task));

@@ -27,7 +27,7 @@ const tools=body?Function("return ["+body+"]")():[];
 const esc=s=>String(s||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
 const slugify=name=>{const seed={"豆包":"Doubao","通义千问":"Qwen","文心助手":"ERNIE Assistant","腾讯元宝":"Yuanbao","智谱清言":"ChatGLM","秘塔AI搜索":"Metaso","即梦AI":"Jimeng AI","通义灵码":"Qoder CN"}[name]||name;let slug=String(seed).toLowerCase().replace(/&/g," and ").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");return slug||"tool-"+encodeURIComponent(name).replace(/%/g,"").toLowerCase()};
 document.querySelector("#guide-count").textContent="· "+tools.length+" tools";
-document.querySelector("#guide-grid").innerHTML=tools.map(t=>'<a class="guide-card" href="../tools/encodeuricomponent-t-0/"><div class="guide-icon">'+ASHIcons.brand(t[0],t[5])+'</div><div><strong>'+esc(t[0])+'</strong><span>'+esc(t[2])+'</span><small>'+esc(t[4])+' · '+esc(t[6])+'</small></div><b>'+ASHIcons.svg("arrow")+'</b></a>').join("");
+document.querySelector("#guide-grid").innerHTML=tools.map(t=>'<a class="guide-card" href="../tools/'+slugify(t[0])+'/"><div class="guide-icon">'+ASHIcons.brand(t[0],t[5])+'</div><div><strong>'+esc(t[0])+'</strong><span>'+esc(t[2])+'</span><small>'+esc(t[4])+' · '+esc(t[6])+'</small></div><b>'+ASHIcons.svg("arrow")+'</b></a>').join("");
 })().catch(()=>{document.querySelector("#guide-grid").innerHTML='<div class="tip">目录加载失败，请返回首页。 / Failed to load the guide list.</div>';});
 </script>
 <script>document.querySelectorAll("[data-icon]").forEach(el=>{el.innerHTML=ASHIcons.svg(el.dataset.icon);});</script>

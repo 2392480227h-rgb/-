@@ -158,7 +158,10 @@ const tools=[
 ];
 const cats=["全部",...(window.ASHCategories?.list||[])];let active="全部";
 const $=s=>document.querySelector(s);
-function renderCats(){ $("#cats").innerHTML=cats.map(c=>`<button class="cat ${c===active?"active":""}" data-c="${c}">${c}</button>`).join("");document.querySelectorAll(".cat").forEach(b=>b.onclick=()=>{active=b.dataset.c;renderCats();render()})}
+const reducedMotion=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches===true;
+let initialRender=true;
+let renderMotionTimer=0;
+function renderCats(){ $("#cats").innerHTML=cats.map(c=>`<button class="cat ${c===active?"active":""}" data-c="${c}">${c}</button>`).join("");document.querySelectorAll(".cat").forEach(b=>b.onclick=()=>{active=b.dataset.c;render({animate:true})})}
 function esc(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function normalize(s){return String(s||"").toLowerCase().replace(/[\s_\-]+/g,"").trim()}
 function toolSlug(name){
@@ -217,18 +220,21 @@ function bindFavoriteButtons(){
     };
   });
 }
-function render(){
+function render({animate=false}={}){
   const input=$("#search"), q=normalize(input.value);
   let a=tools.filter(x=>(active==="全部"||mainCategory(x)===active)&&(!q||normalize(x.join(" ")+" "+(internationalNames[x[0]]||"")).includes(q)));
   const sort=$("#sort").value;
+  const favoriteIds=new Set((window.ASHFavorites?.getAll?.()||[]).map(item=>item.toolId));
   if(sort==="heat") a.sort((x,y)=>heatScore(y[0])-heatScore(x[0]));
-  if(sort==="favorites") a.sort((x,y)=>(window.ASHFavorites?.has(getToolId(y))?1:0)-(window.ASHFavorites?.has(getToolId(x))?1:0)||heatScore(y[0])-heatScore(x[0]));
+  if(sort==="favorites") a.sort((x,y)=>(favoriteIds.has(getToolId(y))?1:0)-(favoriteIds.has(getToolId(x))?1:0)||heatScore(y[0])-heatScore(x[0]));
   if(sort==="name") a.sort((x,y)=>x[0].localeCompare(y[0]));
   if(sort==="free") a.sort((x,y)=>x[4].localeCompare(y[4])||heatScore(y[0])-heatScore(x[0]));
   $("#count").textContent=tools.length;
   $("#summary").textContent=`当前显示 ${a.length} 个`;
   $("#empty").hidden=a.length>0;
-  $("#grid").innerHTML=a.map(x=>{
+  const grid=$("#grid");
+  if(animate&&!reducedMotion) grid.classList.add("is-updating");
+  grid.innerHTML=a.map(x=>{
     const score=heatScore(x[0]), rank=heatRank(x[0]), hot=rank>0&&rank<=10;
     return `<article class="card" data-name="${esc(x[0])}" data-heat="${score}">
       <div class="top"><span class="icon">${ASHIcons.brand(x[0],x[5])}</span>
@@ -254,11 +260,39 @@ function render(){
       </div>
     </article>`;
   }).join("");
+
+  if(initialRender&&!reducedMotion){
+    grid.querySelectorAll(".card").forEach((card,index)=>{
+      if(index<12) card.classList.add("is-entering");
+    });
+    requestAnimationFrame(()=>{
+      grid.querySelectorAll(".card.is-entering").forEach(card=>card.classList.remove("is-entering"));
+    });
+    initialRender=false;
+  } else if(animate&&!reducedMotion){
+    window.clearTimeout(renderMotionTimer);
+    renderMotionTimer=window.setTimeout(()=>grid.classList.remove("is-updating"),90);
+  }
+
   bindFavoriteButtons();bindRecentLinks()
 }
 function syncSearch(){const v=$("#search").value||"";if(v!==window.__lastSearchValue){window.__lastSearchValue=v;render()}}
 ["input","compositionend","search"].forEach(ev=>$("#search").addEventListener(ev,syncSearch));
 window.addEventListener("ash:favorites-changed",()=>document.querySelectorAll(".favorite-button").forEach(syncFavoriteButton));
-$("#sort").onchange=render;renderCats();render();
-function pickTask(task){const c=taskMap[task];if(c){active=c;renderCats();render()}$("#tools").scrollIntoView({behavior:"smooth",block:"start"})}
+$("#sort").onchange=()=>render({animate:true});renderCats();render();
+function pickTask(task){const c=taskMap[task];if(c){active=c;renderCats();render({animate:true})}$("#tools").scrollIntoView({behavior:"smooth",block:"start"})}
+
+const sitebar=document.querySelector(".sitebar");
+let navTick=false;
+function syncNavScroll(){
+  navTick=false;
+  if(!sitebar)return;
+  sitebar.classList.toggle("is-scrolled",window.scrollY>6);
+}
+window.addEventListener("scroll",()=>{
+  if(navTick)return;
+  navTick=true;
+  requestAnimationFrame(syncNavScroll);
+},{passive:true});
+syncNavScroll();
 document.querySelectorAll(".starter-card").forEach(b=>b.onclick=()=>pickTask(b.dataset.task));

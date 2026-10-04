@@ -9,8 +9,7 @@
 
 import { writeFile } from "node:fs/promises";
 
-const ROOT = new URL("../../", import.meta.url);
-const OUTPUT = new URL("../../data/ai-news.json", import.meta.url);
+const OUTPUT = "data/ai-news.json";
 
 const SOURCE_DEFS = [
   {

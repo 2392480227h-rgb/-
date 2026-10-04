@@ -23,7 +23,7 @@
 <script>
 (async()=>{
 const params=new URLSearchParams(location.search), name=params.get("tool");
-const app=await fetch("../app.js?v=20261004-5").then(r=>r.text());
+const app=await fetch("../app.js?v=20261004-6").then(r=>r.text());
 const body=app.match(/const tools=\[(.*?)\n\];/s)?.[1];
 const tools=body?Function("return ["+body+"]")():[];
 const t=tools.find(x=>x[0]===name);

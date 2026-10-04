@@ -2,10 +2,19 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI 工具新手教程 · AI Starter Hub</title>
-<meta name="description" content="AI 工具新手图文教程，中英双语，帮助第一次使用 AI 的人快速上手。">
-<link rel="stylesheet" href="../style.css?v=20261004-4">
-<link rel="stylesheet" href="tutorial.css?v=20261004-4">
+<title>AI 工具新手教程 | AI Starter Hub</title>
+<meta name="description" content="AI 工具新手图文教程，中英双语，配套视频与官方入口，帮助第一次使用 AI 的人快速上手。">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="AI 新手导航 · AI Starter Hub">
+<meta property="og:title" content="AI 工具新手教程 | AI Starter Hub">
+<meta property="og:description" content="AI 工具新手图文教程，中英双语，配套视频与官方入口。">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AI 工具新手教程 | AI Starter Hub">
+<meta name="twitter:description" content="AI 工具新手图文教程，中英双语，配套视频与官方入口。">
+<link rel="stylesheet" href="../style.css?v=20261004-18">
+<link rel="stylesheet" href="tutorial.css?v=20261004-5">
 </head>
 <body>
 <header class="topbar"><div class="wrap"><a class="brand" href="../"><span data-icon="compass"></span> AI 新手导航</a><a class="back" href="index.html"><span data-icon="book"></span> 教程目录 / Guides</a></div></header>
@@ -74,7 +83,25 @@ office:{title:"写作与办公 / Writing workspace",html:'<div class="mock"><div
 const v=visuals[p.mode]||visuals.chat;
 const renderVideos=videos=>{if(!videos?.length)return "";return '<section class="section guide-video-section" id="video"><div class="guide-video-heading"><div><span class="panel-label">WATCH / 视频教程</span><h2>先看视频，再跟着做 <span>Watch, then practice</span></h2></div><span class="building-tag">无需登录即可预览</span></div><p class="lead">优先显示与当前工具对应的教程。精选 YouTube 视频可直接在本站播放；官方教程页和其他已核实视频入口会明确标注来源，避免出现“驴头不对马嘴”。</p><div class="guide-video-list">'+videos.map(video=>{if(video.type==="search"){return '<article class="guide-video-card guide-video-search"><div class="guide-video-search-icon">'+ASHIcons.svg("search")+'</div><div class="guide-video-copy"><div class="guide-video-meta"><span>'+esc(video.sourceType||"教程搜索")+'</span><small>'+esc(video.source||"YouTube")+'</small></div><h3>'+esc(video.title||"相关教程")+'</h3><p>'+esc(video.note||"按当前工具名称精确搜索入门教程。")+'</p><div class="guide-video-actions"><a class="btn primary" href="'+esc(video.searchUrl)+'" target="_blank" rel="noopener noreferrer">🔎 查找对应教程 ↗</a></div></div></article>';}if(video.type==="external"){return '<article class="guide-video-card guide-video-search"><div class="guide-video-search-icon">'+ASHIcons.svg("play")+'</div><div class="guide-video-copy"><div class="guide-video-meta"><span>'+esc(video.sourceType||"官方教程")+'</span><small>'+esc(video.source||"视频教程")+'</small></div><h3>'+esc(video.title||"相关视频教程")+'</h3><p>'+esc(video.note||"这是已核实的对应教程入口，打开后可观看视频或教程内容。")+'</p><div class="guide-video-actions"><a class="btn primary" href="'+esc(video.url||"#")+'" target="_blank" rel="noopener noreferrer">▶ 打开教程 / 视频 ↗</a></div></div></article>';}const id=encodeURIComponent(video.videoId||"");const watch=video.url||("https://www.youtube.com/watch?v="+id);return '<article class="guide-video-card"><div class="guide-video-media"><button class="guide-video-preview" type="button" data-video-id="'+esc(video.videoId||"")+'" aria-label="播放 '+esc(video.title||"视频")+'"><img src="https://i.ytimg.com/vi/'+id+'/hqdefault.jpg" alt="'+esc(video.title||"视频")+' 视频封面" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"><span class="guide-video-play" aria-hidden="true">▶</span><span class="guide-video-preview-label">点击播放预览 / Play</span></button></div><div class="guide-video-copy"><div class="guide-video-meta"><span>'+esc(video.sourceType||"精选教程")+'</span><small>'+esc(video.source||"")+'</small></div><h3>'+esc(video.title||"视频教程")+'</h3><p>'+esc(video.note||"围绕这个工具的入门使用进行讲解。")+'</p><div class="guide-video-actions"><button class="btn primary guide-video-load" type="button" data-video-id="'+esc(video.videoId||"")+'">▶ 在本站播放</button><a class="btn secondary" href="'+esc(watch)+'" target="_blank" rel="noopener noreferrer">YouTube 打开 ↗</a></div></div></article>';}).join("")+'</div><p class="guide-video-footnote">提示：如果某个视频禁用了第三方嵌入、需要登录或受到地区/年龄限制，请使用 YouTube 打开入口。</p></section>';};
 
-document.title=title+" 新手教程 · AI Starter Hub";
+const canonicalUrl=new URL("tool.html",location.href); canonicalUrl.search="?tool="+encodeURIComponent(title);
+const seoDescription=desc+" 提供官方入口、图文步骤、第一次任务、提示词与教程视频。";
+const setMeta=(selector,content,attr="content")=>{const el=document.querySelector(selector); if(el) el.setAttribute(attr,content);};
+document.title=title+" 新手教程｜怎么用、入门步骤与提示词 · AI Starter Hub";
+setMeta('meta[name="description"]',seoDescription);
+setMeta('meta[property="og:title"]',document.title);
+setMeta('meta[property="og:description"]',seoDescription);
+setMeta('meta[property="og:url"]',canonicalUrl.href);
+setMeta('meta[name="twitter:title"]',document.title);
+setMeta('meta[name="twitter:description"]',seoDescription);
+let canonical=document.querySelector('link[rel="canonical"]'); if(!canonical){canonical=document.createElement("link"); canonical.rel="canonical"; document.head.append(canonical);} canonical.href=canonicalUrl.href;
+const oldLd=document.querySelector("#tool-structured-data"); if(oldLd) oldLd.remove();
+const ld=document.createElement("script"); ld.type="application/ld+json"; ld.id="tool-structured-data";
+ld.textContent=JSON.stringify([
+  {"@context":"https://schema.org","@type":"WebPage","name":document.title,"description":seoDescription,"url":canonicalUrl.href,"inLanguage":["zh-CN","en"],"isPartOf":{"@type":"WebSite","name":"AI 新手导航","url":"https://starterhub-dev.github.io/ai-tools/"},"about":{"@type":"SoftwareApplication","name":title,"url":url,"applicationCategory":cat,"operatingSystem":"Web"}},
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AI 新手导航","item":"https://starterhub-dev.github.io/ai-tools/"},{"@type":"ListItem","position":2,"name":"新手教程","item":"https://starterhub-dev.github.io/ai-tools/tutorials/"},{"@type":"ListItem","position":3,"name":title,"item":canonicalUrl.href}]}
+]);
+document.head.append(ld);
+
 document.querySelector("#app").innerHTML=
 '<header class="hero"><div class="wrap"><div class="eyebrow">'+esc(title).toUpperCase()+' · TOOL-SPECIFIC GUIDE</div><h1>'+ASHIcons.brand(title,url)+' '+esc(title)+' 新手图文教程</h1><p>'+esc(desc)+'</p><small>'+esc(p.learnEn)+'</small><div class="tool-badges"><span class="pill">'+esc(cat)+'</span><span class="pill">'+esc(free)+'</span><span class="pill">'+esc(publisher)+'</span></div><div class="hero-task"><b>'+ASHIcons.svg("target")+' 第一次任务 / First task</b><span>'+esc(p.task)+'</span><small>'+esc(p.taskEn)+'</small></div></div></header>'+
 '<nav class="toc"><strong>本页内容 / On this page</strong><a href="#start">① 认识 / Understand</a><a href="#video">② 视频 / Watch</a><a href="#do">③ 操作 / Practice</a><a href="#task">④ 任务 / First task</a><a href="#notes">⑤ 注意 / Notes</a></nav>'+

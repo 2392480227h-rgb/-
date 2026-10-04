@@ -16,7 +16,7 @@ import vm from "node:vm";
 
 const execFileAsync = promisify(execFile);
 const FILE = "tutorials/tutorial-data.js";
-const CONCURRENCY = 6;
+const CONCURRENCY = 6; // [curate-videos] one-shot trigger
 const SEARCH_LIMIT = 8;
 
 const ALIASES = {

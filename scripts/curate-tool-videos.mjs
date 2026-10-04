@@ -377,7 +377,7 @@ async function validateVideo(video) {
 
     try {
       const api = new URL("https://api.bilibili.com/x/web-interface/view");
-      const bvid = new URL(sourceUrl).searchParams.get("bvid") || sourceUrl.match(/\\/(BV[a-zA-Z0-9]+)\\/?$/)?.[1];
+      const bvid = new URL(sourceUrl).searchParams.get("bvid") || sourceUrl.match(/(BV[a-zA-Z0-9]+)/)?.[1];
       if (bvid) {
         api.searchParams.set("bvid", bvid);
         const apiResult = await fetchText(api.href, 12000);

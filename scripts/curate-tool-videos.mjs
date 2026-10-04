@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 /**
- * One-off / manual video curation for AI Starter Hub.
+ * Curate one concrete tutorial video per AI tool.
  *
- * Finds a concrete YouTube tutorial for every tool profile that currently
- * uses a search placeholder or a non-YouTube video. The site embeds only
- * concrete video IDs, never YouTube search-result pages.
- *
- * Run in GitHub Actions where yt-dlp is installed:
- *   python -m yt_dlp ...
+ * Policy:
+ *   1. Prefer YouTube.
+ *   2. Accept a non-YouTube video only through an explicit manual override.
+ *   3. Never leave a YouTube search-result placeholder in production data.
+ *   4. Reject obvious name collisions and non-tutorial videos.
  */
 import { readFile, writeFile } from "node:fs/promises";
 import { execFile } from "node:child_process";
@@ -16,203 +15,334 @@ import vm from "node:vm";
 
 const execFileAsync = promisify(execFile);
 const FILE = "tutorials/tutorial-data.js";
-const CONCURRENCY = 6; // [curate-videos] one-shot trigger
-const SEARCH_LIMIT = 8;
+const CONCURRENCY = 6;
+const SEARCH_LIMIT = 10;
+
+const MANUAL_OVERRIDES = {
+  "腾讯元宝": {
+    type: "external",
+    platform: "bilibili",
+    title: "腾讯元宝的8个隐藏用法，用对了事半功倍",
+    source: "一枚卓子 · Bilibili",
+    sourceType: "精选教程",
+    url: "https://www.bilibili.com/video/BV1HCTuz8EKA/",
+    embedUrl: "https://player.bilibili.com/player.html?bvid=BV1HCTuz8EKA&p=1&autoplay=0&danmaku=0&high_quality=1",
+    note: "围绕腾讯元宝实际使用功能的教程，适合作为入门后的第一批实操视频。"
+  },
+  "智谱清言": {
+    type: "youtube",
+    videoId: "0GRNUJvredM",
+    title: "智谱清言 新AI助手：雅思、论文、英语听力，最好的中文大模型？",
+    source: "我是你的网友谢谢",
+    sourceType: "精选教程",
+    url: "https://www.youtube.com/watch?v=0GRNUJvredM",
+    note: "直接演示智谱清言的核心使用场景，适合作为认识工具和第一次上手的教程。"
+  },
+  "WolframAlpha": {
+    type: "youtube",
+    videoId: "BuTLtkkyl2c",
+    title: "Wolfram Alpha Video Tutorial",
+    source: "YouTube",
+    sourceType: "精选教程",
+    url: "https://www.youtube.com/watch?v=BuTLtkkyl2c",
+    note: "直接对应 Wolfram|Alpha 的使用教程，适合新手先认识查询和计算方式。"
+  },
+  "Cline": {
+    type: "external",
+    platform: "bilibili",
+    title: "VScode+Cline入门到精通(一)集成和计算器实战演练",
+    source: "喜欢Ai的北京80后程序员寒山CxyHanShan · Bilibili",
+    sourceType: "精选教程",
+    url: "https://www.bilibili.com/video/BV1oWw6eiExe/",
+    embedUrl: "https://player.bilibili.com/player.html?bvid=BV1oWw6eiExe&p=1&autoplay=0&danmaku=0&high_quality=1",
+    note: "Cline 系列第一集，专门讲集成和基本使用，并用实战演示功能。"
+  }
+};
 
 const ALIASES = {
-  "豆包": "豆包 AI",
-  "Kimi": "Kimi AI",
-  "通义千问": "Qwen AI",
-  "文心助手": "ERNIE Bot",
-  "腾讯元宝": "Tencent Yuanbao AI",
-  "智谱清言": "Zhipu Qingyan AI",
-  "Groq": "Groq AI",
-  "Playground": "Playground AI",
-  "Pi": "Pi AI",
-  "Jan": "Jan AI",
-  "You.com": "You.com AI",
-  "Manus": "Manus AI",
-  "Monica": "Monica AI",
-  "Gamma": "Gamma AI",
-  "Hedra": "Hedra AI",
-  "Windsurf": "Windsurf Editor",
-  "v0": "v0 by Vercel",
-  "Continue": "Continue.dev",
-  "Cline": "Cline AI coding",
-  "Roo Code": "Roo Code",
-  "Devin": "Devin AI",
-  "OpenRouter": "OpenRouter AI",
-  "Replicate": "Replicate AI",
-  "Together AI": "Together AI",
-  "Fireworks AI": "Fireworks AI",
-  "Cerebras": "Cerebras AI",
-  "ModelScope": "ModelScope AI",
-  "Kaggle Models": "Kaggle Models",
-  "vLLM": "vLLM",
-  "llama.cpp": "llama.cpp",
-  "Open WebUI": "Open WebUI",
-  "LocalAI": "LocalAI",
-  "KoboldCpp": "KoboldCpp",
-  "Msty": "Msty AI",
-  "Pinokio": "Pinokio AI",
-  "Google Antigravity": "Google Antigravity",
-  "Microsoft Designer": "Microsoft Designer AI"
+  "DeepSeek": ["deepseek"],
+  "豆包": ["doubao ai", "doubao"],
+  "Kimi": ["kimi ai", "kimi"],
+  "通义千问": ["qwen ai", "qwen"],
+  "文心助手": ["ernie bot", "ernie"],
+  "智谱清言": ["zhipu qingyan", "chatglm"],
+  "Groq": ["groq ai", "groq"],
+  "Google Translate": ["google translate"],
+  "Microsoft Designer": ["microsoft designer"],
+  "QuillBot": ["quillbot"],
+  "DeepL": ["deepl"],
+  "Ideogram": ["ideogram ai", "ideogram"],
+  "Canva": ["canva"],
+  "PhotoRoom": ["photoroom"],
+  "Pika": ["pika ai", "pika"],
+  "Luma Dream Machine": ["luma dream machine", "dream machine"],
+  "TTSMaker": ["ttsmaker"],
+  "PlayHT": ["playht"],
+  "Suno": ["suno ai", "suno"],
+  "Udio": ["udio"],
+  "Soundraw": ["soundraw"],
+  "Gamma": ["gamma ai", "gamma"],
+  "Napkin AI": ["napkin ai", "napkin"],
+  "Fireflies.ai": ["fireflies ai"],
+  "Jan": ["jan ai"],
+  "GPT4All": ["gpt4all"],
+  "LM Studio": ["lm studio"],
+  "Fooocus": ["fooocus"],
+  "Stable Diffusion": ["stable diffusion"],
+  "CodeGeeX": ["codegeex"],
+  "通义灵码": ["tongyi lingma", "lingma", "通义灵码"],
+  "Phind": ["phind"],
+  "Symbolab": ["symbolab"],
+  "Hugging Face": ["hugging face"],
+  "即梦AI": ["即梦 ai", "即梦ai", "jimeng ai"],
+  "SeaArt AI": ["seaart ai", "seaart"],
+  "Tensor.Art": ["tensor art"],
+  "Mage.space": ["mage space"],
+  "Craiyon": ["craiyon"],
+  "Playground": ["playground ai"],
+  "Clipdrop": ["clipdrop"],
+  "Cleanup.pictures": ["cleanup pictures", "cleanup.pictures"],
+  "Remove.bg": ["remove bg", "remove.bg"],
+  "OpusClip": ["opusclip"],
+  "VEED": ["veed io", "veed"],
+  "InVideo AI": ["invideo ai"],
+  "Grok": ["grok ai", "grok"],
+  "Meta AI": ["meta ai"],
+  "Character.AI": ["character ai"],
+  "Pi": ["pi ai"],
+  "You.com": ["you com", "you.com"],
+  "Manus": ["manus ai", "manus"],
+  "Replika": ["replika ai", "replika"],
+  "Monica": ["monica ai"],
+  "Consensus": ["consensus ai"],
+  "Elicit": ["elicit ai", "elicit"],
+  "scite": ["scite ai"],
+  "Genspark": ["genspark ai", "genspark"],
+  "Felo": ["felo ai", "felo"],
+  "Exa": ["exa ai", "exa"],
+  "Tavily": ["tavily"],
+  "WolframAlpha": ["wolframalpha", "wolfram alpha"],
+  "Brave Search": ["brave search"],
+  "Notion AI": ["notion ai"],
+  "Jasper": ["jasper ai"],
+  "Copy.ai": ["copy ai"],
+  "Writesonic": ["writesonic"],
+  "Rytr": ["rytr"],
+  "Wordtune": ["wordtune"],
+  "LanguageTool": ["languagetool"],
+  "Anyword": ["anyword"],
+  "Sudowrite": ["sudowrite"],
+  "Midjourney": ["midjourney"],
+  "Krea": ["krea ai", "krea"],
+  "Recraft": ["recraft ai", "recraft"],
+  "Freepik AI": ["freepik ai"],
+  "OpenArt": ["openart ai", "openart"],
+  "Pixlr AI": ["pixlr ai"],
+  "getimg.ai": ["getimg ai", "getimg"],
+  "Magnific AI": ["magnific ai", "magnific"],
+  "Dzine": ["dzine ai", "dzine"],
+  "Hedra": ["hedra ai", "hedra"],
+  "Synthesia": ["synthesia ai", "synthesia"],
+  "Captions": ["captions ai", "captions"],
+  "Vizard": ["vizard ai"],
+  "Wisecut": ["wisecut ai", "wisecut"],
+  "Vidnoz AI": ["vidnoz ai"],
+  "Riverside": ["riverside fm", "riverside"],
+  "Krisp": ["krisp ai", "krisp"],
+  "Adobe Podcast": ["adobe podcast"],
+  "Windsurf": ["windsurf editor", "windsurf"],
+  "Bolt.new": ["bolt new", "bolt.new"],
+  "Lovable": ["lovable ai", "lovable"],
+  "v0": ["v0 vercel", "v0 by vercel"],
+  "Amazon Q Developer": ["amazon q developer"],
+  "Tabnine": ["tabnine"],
+  "Continue": ["continue ai", "continue dev"],
+  "Cline": ["cline ai", "cline"],
+  "Roo Code": ["roo code"],
+  "OpenHands": ["openhands"],
+  "Devin": ["devin ai", "devin"],
+  "OpenRouter": ["openrouter"],
+  "Replicate": ["replicate ai", "replicate"],
+  "Together AI": ["together ai"],
+  "Fireworks AI": ["fireworks ai"],
+  "Cerebras": ["cerebras ai", "cerebras"],
+  "ModelScope": ["modelscope"],
+  "Kaggle Models": ["kaggle models"],
+  "vLLM": ["vllm"],
+  "llama.cpp": ["llama cpp", "llama.cpp"],
+  "AnythingLLM": ["anythingllm", "anything llm"],
+  "Open WebUI": ["open webui"],
+  "LocalAI": ["localai", "local ai"],
+  "KoboldCpp": ["koboldcpp", "kobold cpp"],
+  "Msty": ["msty ai", "msty"],
+  "Pinokio": ["pinokio ai", "pinokio"],
+  "Google Antigravity": ["google antigravity"]
 };
 
 const TUTORIAL_WORDS = [
   "tutorial", "guide", "beginner", "beginners", "getting started",
   "how to", "walkthrough", "quickstart", "introduction", "lesson",
-  "course", "setup", "set up", "使用", "教程", "入门", "新手", "指南",
-  "教学", "教學", "快速上手", "从入门", "从零开始"
-];
-const NEGATIVE_WORDS = [
-  "news", "headline", "release notes", "comparison", "vs ", "versus",
-  "top 10", "best ai tools", "shorts", "podcast", "interview", "review"
+  "course", "setup", "set up", "step by step",
+  "教程", "入门", "新手", "指南", "教学", "教學", "快速上手",
+  "从入门", "从零开始", "实战", "使用", "详细讲解", "保姆级",
+  "全教程", "完整教程", "操作", "教你", "如何用", "干货"
 ];
 
+const NEGATIVE_WORDS = [
+  "national park", "travel guide", "sci te", "le tee", "music tutorial",
+  "podcast", "interview", "news", "headline", "release notes",
+  "comparison", "versus", " vs ", "review", "top 10", "best ai tools",
+  "shorts", "meme", "affiliate dashboard", "career", "jobs"
+];
+
+const SPECIAL_NEGATIVE = {
+  "DeepL": ["translation service review", "four translation", "测评"],
+  "Pika": ["make money", "赚钱"],
+  "PhotoRoom": ["marketing", "营销"],
+  "Meta AI": ["muse"] ,
+  "Character.AI": ["replace chatgpt", "碾压"],
+  "Exa": ["dify"],
+  "Tavily": ["n8n"],
+  "Brave Search": ["beta"],
+  "Replicate": ["$ millions", "millions"],
+  "Felo": ["felo le tee"],
+  "Captions": ["audio to captions"],
+  "KoboldCpp": ["herika", "skyrim"],
+  "Cerebras": ["generic ai coding assistant"],
+  "ModelScope": ["ai videos"],
+  "Tabnine": ["codex", "hugging face"],
+  "Continue": ["cline + continue", "cline"],
+  "Roo Code": ["system prompt"],
+  "Krea": ["video"],
+  "Freepik AI": ["ai image"],
+  "OpenArt": ["chatgpt"],
+  "LanguageTool": ["affiliate"],
+  "Sudowrite": ["review"]
+};
+
 function loadProfiles(source) {
-  const window = { tutorialProfiles: {} };
-  vm.runInNewContext(source, { window }, { timeout: 5000 });
-  if (!window.tutorialProfiles || typeof window.tutorialProfiles !== "object") {
-    throw new Error("Could not load tutorialProfiles");
-  }
-  return window.tutorialProfiles;
+  const sandbox = { window: { tutorialProfiles: {} } };
+  vm.runInNewContext(source, sandbox, { timeout: 5000 });
+  return sandbox.window.tutorialProfiles;
 }
 
 function normalize(text = "") {
-  return String(text)
-    .toLowerCase()
+  return String(text).toLowerCase()
     .replace(/[^\p{L}\p{N}]+/gu, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
 
-function decodeQuery(searchUrl) {
-  try {
-    const url = new URL(searchUrl);
-    return url.searchParams.get("search_query") || "";
-  } catch {
-    return "";
-  }
+function aliasesFor(name) {
+  return ALIASES[name] || [normalize(name)];
 }
 
-function requiredAliases(name) {
-  const alias = ALIASES[name] || name;
-  const n = normalize(name);
-  if (n === "pi") return ["pi ai", "inflection pi"];
-  if (n === "jan") return ["jan ai"];
-  if (n === "playground") return ["playground ai"];
-  if (n === "gamma") return ["gamma ai"];
-  if (n === "continue") return ["continue dev", "continue ai"];
-  if (n === "v0") return ["v0 vercel", "v0 by vercel"];
-  return [normalize(alias)];
+function hasAlias(name, title) {
+  const t = normalize(title);
+  return aliasesFor(name).some(alias => {
+    const a = normalize(alias);
+    return a && t.includes(a);
+  });
 }
 
-function tokenScore(name, title, query) {
-  const titleN = normalize(title);
-  const aliases = requiredAliases(name);
-  let score = 0;
-  for (const alias of aliases) {
-    if (!alias) continue;
-    if (titleN.includes(alias)) score += 75;
-    const tokens = alias.split(" ").filter(Boolean);
-    const hits = tokens.filter(t => titleN.includes(t)).length;
-    if (tokens.length && hits === tokens.length) score += 35;
-    else if (tokens.length > 1 && hits >= Math.ceil(tokens.length / 2)) score += 15;
-  }
+function hasTutorialMarker(title) {
+  const t = normalize(title);
+  return TUTORIAL_WORDS.some(word => t.includes(normalize(word)));
+}
 
-  const titleWords = titleN.split(" ");
-  const queryN = normalize(query);
-  for (const word of TUTORIAL_WORDS) {
-    const w = normalize(word);
-    if (w && (titleN.includes(w) || queryN.includes(w))) score += 14;
-  }
-  for (const word of NEGATIVE_WORDS) {
-    if (titleN.includes(normalize(word))) score -= 22;
-  }
+function hasNegative(name, title) {
+  const t = normalize(title);
+  const globalBad = NEGATIVE_WORDS.some(word => t.includes(normalize(word)));
+  const special = (SPECIAL_NEGATIVE[name] || []).some(word => t.includes(normalize(word)));
+  return globalBad || special;
+}
 
-  if (/official|官方/i.test(title)) score += 10;
-  if (/\b(ai|ai powered|artificial intelligence)\b/i.test(title)) score += 4;
-  if (titleWords.length >= 4) score += 2;
+function candidateScore(name, title, channel = "") {
+  if (!hasAlias(name, title)) return -10000;
+  if (!hasTutorialMarker(title)) return -9000;
+  if (hasNegative(name, title)) return -8000;
+
+  const t = normalize(title);
+  const exact = aliasesFor(name).some(alias => {
+    const a = normalize(alias);
+    return a && t === a;
+  });
+  let score = exact ? 120 : 80;
+
+  for (const marker of TUTORIAL_WORDS) {
+    if (t.includes(normalize(marker))) score += 10;
+  }
+  if (/official|官方|wolfram|github|microsoft|google|anthropic|openai|adobe|amazon/i.test(channel)) score += 10;
+  if (t.includes("2026")) score += 4;
   return score;
 }
 
 async function ytSearch(query) {
-  const args = [
-    "-J", "--flat-playlist", "--no-warnings", "--ignore-errors",
+  const { stdout } = await execFileAsync("python", [
+    "-m", "yt_dlp", "-J", "--flat-playlist", "--no-warnings", "--ignore-errors",
     "--skip-download", `ytsearch${SEARCH_LIMIT}:${query}`
-  ];
-  const { stdout } = await execFileAsync("python", ["-m", "yt_dlp", ...args], {
-    maxBuffer: 8 * 1024 * 1024,
-    timeout: 30000
-  });
+  ], { maxBuffer: 12 * 1024 * 1024, timeout: 35000 });
   const payload = JSON.parse(stdout);
   return Array.isArray(payload.entries) ? payload.entries.filter(Boolean) : [];
 }
 
 async function pickVideo(name, profile) {
-  const first = (profile.videos || [])[0];
-  const configuredQuery = first?.type === "search" ? decodeQuery(first.searchUrl || "") : "";
-  const alias = ALIASES[name] || name;
+  if (MANUAL_OVERRIDES[name]) return MANUAL_OVERRIDES[name];
+
+  const current = (profile.videos || []).find(v => v?.videoId && (v.type === "youtube" || !v.type));
+  if (current) return current;
+
+  const alias = aliasesFor(name)[0];
   const queries = [
-    configuredQuery,
-    `${alias} tutorial beginner`,
-    `${alias} how to use tutorial`,
-    `${alias} getting started guide`
-  ].filter(Boolean);
+    `"${alias}" tutorial beginner`,
+    `"${alias}" how to use guide`,
+    `${alias} 教程 新手`,
+    `${alias} 使用 教程`
+  ];
 
   const seen = new Set();
-  let candidates = [];
+  const candidates = [];
 
   for (const query of queries) {
     try {
-      const entries = await ytSearch(query);
-      for (const item of entries) {
+      for (const item of await ytSearch(query)) {
         const id = item.id || "";
         if (!id || seen.has(id)) continue;
         seen.add(id);
         const title = item.title || "";
-        const score = tokenScore(name, title, query);
+        const score = candidateScore(name, title, item.channel || item.uploader || "");
+        if (score < 40) continue;
         candidates.push({
           id,
           title,
-          channel: item.channel || item.uploader || item.creator || "YouTube",
+          channel: item.channel || item.uploader || "YouTube",
           url: item.webpage_url || `https://www.youtube.com/watch?v=${id}`,
-          score,
-          query
+          score
         });
       }
     } catch (error) {
       console.warn(`[search failed] ${name} · ${query} · ${error.message}`);
     }
     candidates.sort((a, b) => b.score - a.score);
-    if (candidates.length && candidates[0].score >= 105) break;
+    if (candidates.length && candidates[0].score >= 115) break;
   }
 
   candidates.sort((a, b) => b.score - a.score);
-
-  // Strong match: exact/alias product in title plus tutorial language.
-  const chosen = candidates.find(c => {
-    const titleN = normalize(c.title);
-    const hasProduct = requiredAliases(name).some(a => a && titleN.includes(a));
-    const hasTutorial = TUTORIAL_WORDS.some(w => titleN.includes(normalize(w)));
-    return hasProduct && hasTutorial && c.score >= 100;
-  }) || candidates[0];
-
-  if (!chosen || chosen.score < 92) return null;
+  const chosen = candidates[0];
+  if (!chosen || chosen.score < 75) return null;
 
   return {
     type: "youtube",
     videoId: chosen.id,
     title: chosen.title,
     source: chosen.channel,
-    sourceType: /official|官方/i.test(chosen.title) ? "官方教程" : "精选教程",
+    sourceType: /official|官方/i.test(chosen.channel) ? "官方教程" : "精选教程",
     url: chosen.url,
-    note: `视频标题直接对应“${name}”，围绕基础使用/上手流程讲解，适合作为本站入门教程。`
+    note: `视频标题明确对应“${name}”，并带有教程/上手/实战类教学信号。`
   };
 }
 
-async function mapWithConcurrency(items, worker) {
+async function mapConcurrent(items, worker) {
   const results = new Array(items.length);
   let cursor = 0;
   async function runner() {
@@ -229,47 +359,43 @@ async function mapWithConcurrency(items, worker) {
 const source = await readFile(FILE, "utf8");
 const profiles = loadProfiles(source);
 const entries = Object.entries(profiles);
+const targets = entries.filter(([_, profile]) => {
+  const v = profile.videos || [];
+  return !v.some(item => item?.videoId && (item.type === "youtube" || !item.type));
+});
 
-const targets = entries.filter(([_, profile]) =>
-  (profile.videos || []).some(video => video.type === "search" || video.type === "external")
-);
+console.log(`Profiles: ${entries.length}; targets needing concrete videos: ${targets.length}`);
 
-console.log(`Profiles: ${entries.length}; targets needing concrete YouTube: ${targets.length}`);
-
-const picked = await mapWithConcurrency(targets, async ([name, profile]) => {
-  const result = await pickVideo(name, profile);
-  if (result) console.log(`[OK] ${name} -> ${result.title} | ${result.videoId}`);
+const picked = await mapConcurrent(targets, async ([name, profile]) => {
+  const video = await pickVideo(name, profile);
+  if (video) console.log(`[OK] ${name} -> ${video.title} | ${video.videoId || video.platform}`);
   else console.warn(`[MISS] ${name}`);
-  return { name, result };
+  return { name, video };
 });
 
 const misses = [];
 for (const item of picked) {
-  if (item.result) {
-    profiles[item.name].videos = [item.result];
-  } else {
-    misses.push(item.name);
-  }
+  if (item.video) profiles[item.name].videos = [item.video];
+  else misses.push(item.name);
 }
 
-if (misses.length) {
-  console.error(`Could not find a strong YouTube tutorial match for ${misses.length} tools: ${misses.join(", ")}`);
-  process.exitCode = 2;
-}
-
-// Ensure every profile has at least one concrete YouTube video.
-const missingEmbed = entries
-  .filter(([_, profile]) => !(profile.videos || []).some(v => v.type === "youtube" && v.videoId))
+const missing = entries
+  .filter(([name, profile]) => {
+    const videos = profile.videos || [];
+    return !videos.some(v =>
+      (v?.videoId && (v.type === "youtube" || !v.type)) ||
+      (v?.type === "external" && v?.embedUrl)
+    );
+  })
   .map(([name]) => name);
 
-if (missingEmbed.length) {
-  console.error(`No embeddable YouTube video remains for: ${missingEmbed.join(", ")}`);
-  process.exitCode = 3;
+if (misses.length || missing.length) {
+  if (misses.length) console.error(`No strong match for: ${misses.join(", ")}`);
+  if (missing.length) console.error(`No embeddable video for: ${missing.join(", ")}`);
+  process.exit(2);
 }
-
-if (process.exitCode) process.exit();
 
 const output = "/* AI Starter Hub · tool-specific bilingual beginner guide data */\n" +
   "window.tutorialProfiles = " + JSON.stringify(profiles) + ";\n";
 await writeFile(FILE, output, "utf8");
-console.log(`Wrote curated video data for all ${entries.length} tools.`);
+console.log(`Wrote concrete video data for all ${entries.length} tools.`);

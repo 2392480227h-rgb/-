@@ -161,6 +161,12 @@ const $=s=>document.querySelector(s);
 function renderCats(){ $("#cats").innerHTML=cats.map(c=>`<button class="cat ${c===active?"active":""}" data-c="${c}">${c}</button>`).join("");document.querySelectorAll(".cat").forEach(b=>b.onclick=()=>{active=b.dataset.c;renderCats();render()})}
 function esc(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function normalize(s){return String(s||"").toLowerCase().replace(/[\s_\-]+/g,"").trim()}
+function toolSlug(name){
+  const seed=internationalNames[name]||name;
+  let slug=String(seed).toLowerCase().replace(/&/g," and ").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+  if(!slug){let h=2166136261;for(const ch of String(name))h=Math.imul(h^ch.charCodeAt(0),16777619);slug="tool-"+(h>>>0).toString(36)}
+  return slug;
+}
 const HOT_RANK=["ChatGPT","Gemini","Claude","Perplexity","DeepSeek","Grok","Kimi","NotebookLM","Cursor","GitHub Copilot","Midjourney","Canva","Runway","Suno","ElevenLabs","CapCut","Google AI Studio","Hugging Face","Manus","Genspark","通义千问","Kling AI","Gamma","HeyGen","Replit"];
 function heatScore(name){
   let hash=2166136261;
@@ -244,7 +250,7 @@ function render(){
       </div>
       <div class="card-actions guide-ready">
         <a class="open" href="${x[5]}" target="_blank" rel="noopener noreferrer">打开官网 ↗</a>
-        <a class="learn" href="tutorials/tool.html?tool=${encodeURIComponent(x[0])}"><span class="link-icon">${ASHIcons.svg("book")}</span> 这个工具怎么用？ / Guide</a>
+        <a class="learn" href="tools/${toolSlug(x[0])}/"><span class="link-icon">${ASHIcons.svg("book")}</span> 新手教程 / Guide</a>
       </div>
     </article>`;
   }).join("");

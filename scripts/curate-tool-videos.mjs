@@ -376,22 +376,26 @@ async function validateVideo(video) {
     if (!sourceUrl || !embedUrl) return { ok: false, reason: "missing-external-url" };
 
     try {
-      const api = new URL("https://api.bilibili.com/x/web-interface/view");
-      const bvid = new URL(sourceUrl).searchParams.get("bvid") || sourceUrl.match(/(BV[a-zA-Z0-9]+)/)?.[1];
-      if (bvid) {
-        api.searchParams.set("bvid", bvid);
-        const apiResult = await fetchText(api.href, 12000);
-        const payload = JSON.parse(apiResult.text);
-        if (payload.code !== 0 || !payload.data?.title || !Number(payload.data?.duration)) {
-          return { ok: false, reason: `bilibili-api:${payload.code ?? "invalid"}` };
-        }
-      }
+      const { stdout } = await execFileAsync("python", [
+        "-m", "yt_dlp", "-J", "--no-warnings", "--skip-download", sourceUrl
+      ], {
+        maxBuffer: 8 * 1024 * 1024,
+        timeout: 45000
+      });
+      const info = JSON.parse(stdout);
+      const formats = Array.isArray(info.formats) ? info.formats : [];
+      if (!formats.length && !info.url) return { ok: false, reason: "no-playable-format" };
 
       const embedded = await fetchText(embedUrl, 15000);
       if (!embedded.response.ok) return { ok: false, reason: `embed-http:${embedded.response.status}` };
-      return { ok: true, title: video.title || "" };
+
+      return {
+        ok: true,
+        title: String(info.title || video.title || ""),
+        duration: Number(info.duration || 0)
+      };
     } catch (error) {
-      return { ok: false, reason: error?.name === "AbortError" ? "embed-timeout" : (error?.message || "external-check-failed") };
+      return { ok: false, reason: error?.name === "AbortError" ? "external-timeout" : (error?.message || "external-check-failed") };
     }
   }
 

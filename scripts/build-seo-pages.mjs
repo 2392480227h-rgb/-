@@ -77,6 +77,9 @@ sitemap.push({loc:SITE+"tutorials/",lastmod:"2026-10-04"});
 for(const tool of tools){
   const [title,,cat,desc,free,url,publisher]=tool;
   let slug=slugify(title,internationalNames);
+  let officialIcon="";
+  try { officialIcon=new URL("/favicon.ico",url).href; } catch {}
+  const logoSrc=officialIcon || "../../favicon.svg";
   if(used.has(slug)) slug += "-tool";
   used.add(slug);
   const p=getProfile(tool,profiles);
@@ -110,7 +113,7 @@ for(const tool of tools){
     '<script type="application/ld+json">'+ld(jsonLd)+'</script></head><body>'+
     '<header class="seo-top"><div class="wrap"><a href="../../" class="seo-brand">🧭 AI 新手导航 <span>AI Starter Hub</span></a><a href="../../tutorials/" class="seo-back">全部教程 / Guides</a></div></header>'+
     '<main class="wrap seo-main"><nav class="seo-breadcrumb"><a href="../../">AI 新手导航</a><span>›</span><a href="../../tutorials/">AI 工具教程</a><span>›</span><strong>'+esc(title)+'</strong></nav>'+
-    '<article class="seo-article"><header class="seo-hero"><div class="seo-kicker">'+esc(cat)+' · '+esc(free)+'</div><div class="seo-title-row"><div class="seo-logo"><img src="../../favicon.svg" alt="" aria-hidden="true"></div><div><h1>'+esc(title)+' 新手教程</h1><p>'+esc(desc)+'</p><div class="seo-meta"><span>'+esc(publisher)+'</span><span>官方入口</span><span>新手友好</span></div></div></div></header>'+
+    '<article class="seo-article"><header class="seo-hero"><div class="seo-kicker">'+esc(cat)+' · '+esc(free)+'</div><div class="seo-title-row"><div class="seo-logo"><img src="${logoSrc}" alt="${attr(title)} 官方图标" aria-hidden="true" onerror="this.onerror=null;this.src='../../favicon.svg'"></div><div><h1>'+esc(title)+' 新手教程</h1><p>'+esc(desc)+'</p><div class="seo-meta"><span>'+esc(publisher)+'</span><span>官方入口</span><span>新手友好</span></div></div></div></header>'+
     '<section><h2>这个工具是做什么的？ / What is it for?</h2><p>'+esc(p.learn||desc)+'</p><p>AI Starter Hub 为第一次使用者提供简明中文步骤和英文提示，实际服务、价格、免费额度与功能请以官方页面为准。</p></section>'+
     '<section><h2>第一次使用怎么做？ / First steps</h2><ol class="seo-steps"><li><b>打开官方入口</b><span>进入 '+esc(publisher)+' 的官方页面。</span></li><li><b>完成最小任务</b><span>'+esc(p.task||"先完成一个简单真实任务。")+'</span></li><li><b>检查结果</b><span>先检查事实、格式和输出质量，再继续追问或修改。</span></li></ol></section>'+
     '<section><h2>直接复制的第一次提示词 / First prompt</h2><div class="seo-prompt"><code>'+nl2br(p.prompt||"请用零基础能看懂的方式解释这个工具，并给出可执行步骤。")+'</code></div></section>'+

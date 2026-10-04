@@ -161,15 +161,17 @@ const $=s=>document.querySelector(s);
 function renderCats(){ $("#cats").innerHTML=cats.map(c=>`<button class="cat ${c===active?"active":""}" data-c="${c}">${c}</button>`).join("");document.querySelectorAll(".cat").forEach(b=>b.onclick=()=>{active=b.dataset.c;renderCats();render()})}
 function esc(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function normalize(s){return String(s||"").toLowerCase().replace(/[\s_\-]+/g,"").trim()}
-function popularityScore(name){
+const HOT_RANK=["ChatGPT","Gemini","Claude","Perplexity","DeepSeek","Grok","Kimi","NotebookLM","Cursor","GitHub Copilot","Midjourney","Canva","Runway","Suno","ElevenLabs","CapCut","Google AI Studio","Hugging Face","Manus","Genspark","通义千问","Kling AI","Gamma","HeyGen","Replit"];
+function heatScore(name){
   let hash=2166136261;
   for(let i=0;i<name.length;i++) hash=Math.imul(hash^name.charCodeAt(i),16777619);
-  return 60+((hash>>>0)%841);
+  const rank=HOT_RANK.indexOf(name);
+  if(rank>=0) return 1010-rank*25+((hash>>>0)%11);
+  return 360+((hash>>>0)%331);
 }
-function favoriteCount(name){
-  let hash=2166136261;
-  for(let i=0;i<name.length;i++) hash=Math.imul(hash^name.charCodeAt(i),16777619);
-  return 18+((hash>>>0)%982);
+function heatRank(name){
+  const rank=HOT_RANK.indexOf(name);
+  return rank>=0 ? rank+1 : 0;
 }
 function getToolId(tool){return window.ASHToolId?.fromUrl(tool?.[5])||""}
 function syncFavoriteButton(button){
@@ -209,7 +211,45 @@ function bindFavoriteButtons(){
     };
   });
 }
-function render(){const input=$("#search");const q=normalize(input.value);let a=tools.filter(x=>(active==="全部"||mainCategory(x)===active)&&(!q||normalize(x.join(" ")+" "+(internationalNames[x[0]]||"")).includes(q)));if($("#sort").value==="name")a.sort((x,y)=>x[0].localeCompare(y[0]));if($("#sort").value==="free")a.sort((x,y)=>x[4].localeCompare(y[4]));$("#count").textContent=tools.length;$("#summary").textContent=`当前显示 ${a.length} 个`;$("#empty").hidden=a.length>0;$("#grid").innerHTML=a.map(x=>`<article class="card" data-name="${esc(x[0])}"><div class="top"><span class="icon">${ASHIcons.brand(x[0],x[5])}</span><div class="card-top-actions"><span class="badge">${esc(x[4])}</span><div class="favorite-wrap"><button class="favorite-button" type="button" data-favorite-tool-id="${encodeURIComponent(getToolId(x))}" data-favorite-tool-name="${encodeURIComponent(x[0])}" aria-pressed="false" title="收藏 ${esc(x[0])}"><span class="favorite-star" aria-hidden="true">☆</span><span class="favorite-label">收藏</span></button><span class="favorite-count" title="轻量参考指标，并非实时用户统计">收藏热度 ${favoriteCount(x[0])}</span></div></div></div><h2>${esc(x[0])}${internationalNames[x[0]]?`<small class="intl-name">${esc(internationalNames[x[0]])}</small>`:""}</h2><div class="desc">${esc(x[3])}</div><div class="meta"><span class="tag">${esc(mainCategory(x))}</span><span class="tag">${esc(x[6])}</span></div><div class="card-signal"><span class="popularity">🔥 热度 ${popularityScore(x[0])}</span><span class="signal-note">站内指数</span></div><div class="card-actions guide-ready"><a class="open" href="${x[5]}" target="_blank" rel="noopener noreferrer">打开官网 ↗</a><a class="learn" href="tutorials/tool.html?tool=${encodeURIComponent(x[0])}"><span class="link-icon">${ASHIcons.svg("book")}</span> 这个工具怎么用？ / Guide</a></div></article>`).join("");bindFavoriteButtons();bindRecentLinks()}
+function render(){
+  const input=$("#search"), q=normalize(input.value);
+  let a=tools.filter(x=>(active==="全部"||mainCategory(x)===active)&&(!q||normalize(x.join(" ")+" "+(internationalNames[x[0]]||"")).includes(q)));
+  const sort=$("#sort").value;
+  if(sort==="heat") a.sort((x,y)=>heatScore(y[0])-heatScore(x[0]));
+  if(sort==="favorites") a.sort((x,y)=>(window.ASHFavorites?.has(getToolId(y))?1:0)-(window.ASHFavorites?.has(getToolId(x))?1:0)||heatScore(y[0])-heatScore(x[0]));
+  if(sort==="name") a.sort((x,y)=>x[0].localeCompare(y[0]));
+  if(sort==="free") a.sort((x,y)=>x[4].localeCompare(y[4])||heatScore(y[0])-heatScore(x[0]));
+  $("#count").textContent=tools.length;
+  $("#summary").textContent=`当前显示 ${a.length} 个`;
+  $("#empty").hidden=a.length>0;
+  $("#grid").innerHTML=a.map(x=>{
+    const score=heatScore(x[0]), rank=heatRank(x[0]), hot=rank>0&&rank<=10;
+    return `<article class="card" data-name="${esc(x[0])}" data-heat="${score}">
+      <div class="top"><span class="icon">${ASHIcons.brand(x[0],x[5])}</span>
+        <div class="card-top-actions">
+          <span class="badge">${esc(x[4])}</span>
+          <div class="favorite-wrap">
+            <button class="favorite-button" type="button" data-favorite-tool-id="${encodeURIComponent(getToolId(x))}" data-favorite-tool-name="${encodeURIComponent(x[0])}" aria-pressed="false" title="收藏 ${esc(x[0])}">
+              <span class="favorite-star" aria-hidden="true">☆</span><span class="favorite-label">收藏</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <h2>${esc(x[0])}${internationalNames[x[0]]?`<small class="intl-name">${esc(internationalNames[x[0]])}</small>`:""}</h2>
+      <div class="desc">${esc(x[3])}</div>
+      <div class="meta"><span class="tag">${esc(mainCategory(x))}</span><span class="tag">${esc(x[6])}</span></div>
+      <div class="card-signal">
+        <span class="popularity ${hot?"is-hot":""}">🔥 热度 ${score}${rank?` · TOP ${rank}`:""}</span>
+        <span class="signal-note">站内参考指数</span>
+      </div>
+      <div class="card-actions guide-ready">
+        <a class="open" href="${x[5]}" target="_blank" rel="noopener noreferrer">打开官网 ↗</a>
+        <a class="learn" href="tutorials/tool.html?tool=${encodeURIComponent(x[0])}"><span class="link-icon">${ASHIcons.svg("book")}</span> 这个工具怎么用？ / Guide</a>
+      </div>
+    </article>`;
+  }).join("");
+  bindFavoriteButtons();bindRecentLinks()
+}
 function syncSearch(){const v=$("#search").value||"";if(v!==window.__lastSearchValue){window.__lastSearchValue=v;render()}}
 ["input","change","keyup","search","compositionend","blur","paste"].forEach(ev=>$("#search").addEventListener(ev,syncSearch));
 window.addEventListener("ash:favorites-changed",()=>document.querySelectorAll(".favorite-button").forEach(syncFavoriteButton));

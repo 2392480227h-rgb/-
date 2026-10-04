@@ -422,14 +422,15 @@ for (const item of picked) {
   else misses.push(item.name);
 }
 
+for (const [name, profile] of entries) {
+  profile.videos = (profile.videos || []).filter(v =>
+    (v?.videoId && (v.type === "youtube" || !v.type)) ||
+    (v?.type === "external" && v?.embedUrl)
+  );
+}
+
 const missing = entries
-  .filter(([name, profile]) => {
-    const videos = profile.videos || [];
-    return !videos.some(v =>
-      (v?.videoId && (v.type === "youtube" || !v.type)) ||
-      (v?.type === "external" && v?.embedUrl)
-    );
-  })
+  .filter(([name, profile]) => !(profile.videos || []).length)
   .map(([name]) => name);
 
 if (misses.length || missing.length) {

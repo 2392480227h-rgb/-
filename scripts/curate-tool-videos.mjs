@@ -376,24 +376,12 @@ async function validateVideo(video) {
     if (!sourceUrl || !embedUrl) return { ok: false, reason: "missing-external-url" };
 
     try {
-      const { stdout } = await execFileAsync("python", [
-        "-m", "yt_dlp", "-J", "--no-warnings", "--skip-download", sourceUrl
-      ], {
-        maxBuffer: 8 * 1024 * 1024,
-        timeout: 45000
-      });
-      const info = JSON.parse(stdout);
-      const formats = Array.isArray(info.formats) ? info.formats : [];
-      if (!formats.length && !info.url) return { ok: false, reason: "no-playable-format" };
-
       const embedded = await fetchText(embedUrl, 15000);
       if (!embedded.response.ok) return { ok: false, reason: `embed-http:${embedded.response.status}` };
-
-      return {
-        ok: true,
-        title: String(info.title || video.title || ""),
-        duration: Number(info.duration || 0)
-      };
+      if (/视频不存在|视频已失效|稿件不存在|视频加载失败/i.test(embedded.text)) {
+        return { ok: false, reason: "bilibili-embed-unavailable" };
+      }
+      return { ok: true, title: video.title || "" };
     } catch (error) {
       return { ok: false, reason: error?.name === "AbortError" ? "external-timeout" : (error?.message || "external-check-failed") };
     }

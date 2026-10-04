@@ -77,7 +77,7 @@ sitemap.push({loc:SITE,lastmod:BUILD_DATE});
 sitemap.push({loc:SITE+"tutorials/",lastmod:BUILD_DATE});
 
 for(const tool of tools){
-  const [title,,cat,desc,free,url,publisher]=tool;
+  const [title,icon,cat,desc,free,url,publisher]=tool;
   let slug=slugify(title,internationalNames);
   const logoFallback=icon||"AI";
   if(used.has(slug)) slug += "-tool";

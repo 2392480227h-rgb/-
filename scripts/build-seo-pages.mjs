@@ -63,6 +63,7 @@ function getProfile(tool,profiles){
   ];
 }
 
+const BUILD_DATE=new Date().toISOString().slice(0,10);
 const tools=parseTools(APP);
 if(tools.length!==150) throw new Error("Expected 150 tools, got "+tools.length);
 const profiles=parseProfiles(DATA);
@@ -71,8 +72,8 @@ fs.rmSync(outRoot,{recursive:true,force:true});
 fs.mkdirSync(outRoot,{recursive:true});
 const used=new Set();
 const sitemap=[];
-sitemap.push({loc:SITE,lastmod:"2026-10-04"});
-sitemap.push({loc:SITE+"tutorials/",lastmod:"2026-10-04"});
+sitemap.push({loc:SITE,lastmod:BUILD_DATE});
+sitemap.push({loc:SITE+"tutorials/",lastmod:BUILD_DATE});
 
 for(const tool of tools){
   const [title,,cat,desc,free,url,publisher]=tool;
@@ -89,6 +90,8 @@ for(const tool of tools){
     const href=v.type==="external"?v.url:(v.type==="search"?v.searchUrl:v.url||("https://www.youtube.com/watch?v="+v.videoId));
     return href?'<a class="seo-video-link" href="'+attr(href)+'" target="_blank" rel="noopener noreferrer">'+esc(v.title||"教程视频")+' ↗</a>':"";
   }).filter(Boolean).join("");
+  const related=tools.filter(other=>other!==tool && other[2]===cat).slice(0,5);
+  const relatedSection=related.length?'<section><h2>同类工具 / Related tools</h2><div class="seo-related">'+related.map(other=>'<a href="'+attr(SITE+"tools/"+slugify(other[0],internationalNames)+"/")+'"><strong>'+esc(other[0])+'</strong><span>'+esc(other[3])+'</span></a>').join("")+'</div></section>':"";
   const videoSection=videoLinks?'<section><h2>教程视频 / Video tutorials</h2><p>本站优先整理与当前工具对应的视频入口。播放限制、地区限制或嵌入权限可能变化，请以视频平台页面为准。</p><div class="seo-links">'+videoLinks+'</div></section>':"";
   const jsonLd=[
     {"@context":"https://schema.org","@type":"WebPage","name":title+" 新手教程","description":desc+" 提供官方入口、入门步骤、第一次任务、提示词与教程视频。","url":canonical,"inLanguage":["zh-CN","en"],"isPartOf":{"@type":"WebSite","name":"AI 新手导航","url":SITE},"about":{"@type":"SoftwareApplication","name":title,"url":url,"applicationCategory":cat,"operatingSystem":"Web"}},
@@ -118,13 +121,14 @@ for(const tool of tools){
     '<section><h2>第一次使用怎么做？ / First steps</h2><ol class="seo-steps"><li><b>打开官方入口</b><span>进入 '+esc(publisher)+' 的官方页面。</span></li><li><b>完成最小任务</b><span>'+esc(p.task||"先完成一个简单真实任务。")+'</span></li><li><b>检查结果</b><span>先检查事实、格式和输出质量，再继续追问或修改。</span></li></ol></section>'+
     '<section><h2>直接复制的第一次提示词 / First prompt</h2><div class="seo-prompt"><code>'+nl2br(p.prompt||"请用零基础能看懂的方式解释这个工具，并给出可执行步骤。")+'</code></div></section>'+
     '<section><h2>新手注意什么？ / Beginner tips</h2><ul class="seo-tips"><li>'+esc(p.tip||"先从小任务开始，逐步增加复杂度。")+'</li><li>重要事实请核对原始来源，不要把 AI 第一版回答直接当作最终事实。</li><li>免费额度、地区限制、模型与界面可能变化，使用前请查看官方页面。</li></ul></section>'+
+    relatedSection+
     videoSection+
     '<section class="seo-cta"><div><strong>准备开始了？</strong><span>进入官网完成第一次任务，或者打开本站完整交互教程。</span></div><div class="seo-actions"><a class="seo-primary" href="'+attr(url)+'" target="_blank" rel="noopener noreferrer">打开官方入口 ↗</a><a class="seo-secondary" href="../../tutorials/tool.html?tool='+encodeURIComponent(title)+'">完整图文教程 ↗</a></div></section>'+
     '</article></main><footer class="footer"><div class="wrap">AI 新手导航 · Discover → Understand → Learn → Use</div></footer></body></html>';
   const dir=path.join(outRoot,slug);
   fs.mkdirSync(dir,{recursive:true});
   fs.writeFileSync(path.join(dir,"index.html"),html);
-  sitemap.push({loc:canonical,lastmod:"2026-10-04"});
+  sitemap.push({loc:canonical,lastmod:BUILD_DATE});
 }
 
 const sitemapXml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+

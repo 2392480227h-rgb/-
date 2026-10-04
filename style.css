@@ -233,67 +233,74 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 }
 
 
-/* Space X sponsor card */
+/* Space X sponsor card · rebuilt */
 .starter-head-actions{
   display:grid;
-  grid-template-columns:minmax(190px,1fr) minmax(250px,1.35fr);
+  grid-template-columns:minmax(190px,0.95fr) minmax(250px,1.2fr);
   gap:10px;
   align-items:stretch;
+}
+.starter-guide{
+  height:62px;
+  min-height:62px;
 }
 .spcx-ad-card{
   position:relative;
   min-width:250px;
+  height:62px;
   min-height:62px;
-  display:flex;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
   align-items:center;
-  gap:12px;
-  padding:9px 11px;
-  border:1px solid #d7e0ee;
+  gap:10px;
+  padding:9px 10px 9px 13px;
+  border:1px solid #263d5a;
   border-radius:11px;
-  color:#172033;
+  color:#fff;
   text-decoration:none;
   overflow:hidden;
+  isolation:isolate;
   background-image:
+    linear-gradient(90deg,#040914 0%,#071528 43%,#07152800 82%),
     url("assets/ads/spcx-logo.webp"),
-    radial-gradient(circle at 88% 52%,#dceeff 0%,transparent 45%),
-    linear-gradient(135deg,#ffffff 0%,#f4f8fd 100%);
+    radial-gradient(circle at 18% 50%,#123d72 0%,transparent 58%);
   background-repeat:no-repeat;
-  background-position:78% 52%,center,center;
-  background-size:155% auto,auto,auto;
-  background-blend-mode:screen,normal,normal;
-  box-shadow:0 5px 16px #1720330b;
-  transition:.18s;
+  background-position:center,right center,center;
+  background-size:auto,auto 160%,auto;
+  background-blend-mode:normal,screen,normal;
+  box-shadow:0 7px 20px #0b13260f,inset 0 1px 0 #ffffff12;
+  transition:transform .18s,border-color .18s,box-shadow .18s;
 }
 .spcx-ad-card:hover{
   transform:translateY(-1px);
-  border-color:#b7c5da;
-  box-shadow:0 8px 22px #17203312;
+  border-color:#3f6590;
+  box-shadow:0 10px 24px #0b13261a,inset 0 1px 0 #ffffff18;
 }
 .spcx-ad-copy{
   position:relative;
   z-index:2;
   min-width:0;
-  flex:1 1 auto;
   display:flex;
   flex-direction:column;
-  line-height:1.16;
-  text-shadow:0 1px 0 #ffffff;
+  align-items:flex-start;
+  line-height:1.14;
+  text-shadow:0 1px 8px #020610;
 }
 .spcx-ad-copy strong{
   font-size:13px;
   letter-spacing:.01em;
-  color:#101a2d;
+  color:#fff;
 }
 .spcx-ad-copy small{
   margin-top:3px;
   font-size:9.5px;
   font-weight:850;
-  color:#33496b;
+  color:#b8d8ff;
 }
 .spcx-ad-copy em{
   margin-top:2px;
-  font-size:9px;
-  color:#667792;
+  font-size:8.5px;
+  color:#8fa7c9;
   font-style:normal;
   white-space:nowrap;
   overflow:hidden;
@@ -303,20 +310,21 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   position:relative;
   z-index:2;
   flex:0 0 auto;
+  align-self:center;
   padding:7px 10px;
+  border:1px solid #9fc4ee;
   border-radius:8px;
-  border:1px solid #a9c4e4;
-  background:#f3f8ffea;
-  color:#233b5d;
+  background:#f5f9ff;
+  color:#0b1a32;
   font-size:10px;
-  font-weight:850;
+  font-weight:900;
   white-space:nowrap;
-  box-shadow:0 4px 10px #4575aa12;
-  transition:.18s;
+  box-shadow:0 5px 12px #00000024;
+  transition:background .18s,transform .18s;
 }
 .spcx-ad-card:hover .spcx-ad-cta{
-  border-color:#87a8cd;
-  background:#e9f2ff;
+  background:#fff;
+  transform:translateX(1px);
 }
 .spcx-ad-label{
   position:absolute;
@@ -324,55 +332,57 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   top:6px;
   z-index:3;
   padding:1px 4px;
-  border:1px solid #dbe3ef;
+  border:1px solid #7d94b2;
   border-radius:4px;
-  color:#98a3b5;
-  background:#ffffffd9;
+  color:#b7c6da;
+  background:#071426cc;
   font-size:7px;
   font-weight:800;
   line-height:1.2;
 }
 @media(max-width:900px){
   .starter-head-actions{
-    grid-template-columns:minmax(180px,1fr) minmax(220px,1.2fr);
+    grid-template-columns:minmax(180px,0.95fr) minmax(220px,1.1fr);
   }
   .spcx-ad-card{min-width:0}
 }
 @media(max-width:760px){
   .starter-head-actions{
     width:100%;
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:1fr 1.08fr;
     gap:7px;
   }
   .starter-guide{
     width:100%;
-    max-width:none;
     min-width:0;
+    height:60px;
+    min-height:60px;
   }
   .spcx-ad-card{
     width:100%;
     min-width:0;
+    height:60px;
     min-height:60px;
-    padding:8px 9px;
-    gap:8px;
-    background-position:78% 52%,center,center;
-    background-size:160% auto,auto,auto;
+    padding:8px 8px 8px 10px;
+    gap:7px;
+    background-size:auto,auto 170%,auto;
   }
   .spcx-ad-copy strong{font-size:10.5px}
   .spcx-ad-copy small{font-size:8px}
-  .spcx-ad-copy em{font-size:7.7px}
+  .spcx-ad-copy em{font-size:7.4px}
   .spcx-ad-cta{padding:6px 8px;font-size:9px}
 }
 @media(max-width:520px){
   .starter-head-actions{
     display:grid;
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:1fr 1.08fr;
     align-items:stretch;
   }
   .starter-guide{
     max-width:none;
-    min-width:0;
     padding:7px 8px;
+    height:58px;
+    min-height:58px;
   }
   .starter-guide-logo{
     width:30px!important;
@@ -383,21 +393,26 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   .starter-guide small{font-size:7.5px}
   .starter-guide b{font-size:13px}
   .spcx-ad-card{
-    min-height:60px;
-    padding:7px;
+    height:58px;
+    min-height:58px;
+    padding:6px 6px 6px 8px;
     gap:5px;
-    background-position:82% 52%,center,center;
-    background-size:190% auto,auto,auto;
+    background-position:center,right center,center;
+    background-size:auto,auto 190%,auto;
   }
   .spcx-ad-copy strong{
-    font-size:9.4px;
+    font-size:9.2px;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    padding-right:10px;
+    padding-right:9px;
   }
-  .spcx-ad-copy small{font-size:7.4px}
-  .spcx-ad-copy em{font-size:6.8px;line-height:1.15}
-  .spcx-ad-cta{padding:5px 6px;border-radius:7px;font-size:7.8px}
+  .spcx-ad-copy small{font-size:7px}
+  .spcx-ad-copy em{
+    font-size:6.4px;
+    line-height:1.1;
+    padding-right:4px;
+  }
+  .spcx-ad-cta{padding:5px 6px;border-radius:7px;font-size:7.6px}
   .spcx-ad-label{right:5px;top:5px;font-size:6px}
 }

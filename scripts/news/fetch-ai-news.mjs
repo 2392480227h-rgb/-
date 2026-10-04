@@ -176,7 +176,7 @@ function extractAnchors(html, baseUrl, sourceDef) {
       excerpt: `${title}。来自 ${sourceDef.name} 的公开更新，点击查看原文。`,
       source: sourceDef.name,
       url: stripTracking(href),
-      publishedAt: publishedAt || new Date().toISOString(),
+      publishedAt: publishedAt || "",
       sourceKind: sourceDef.kind,
       score: 45 * sourceDef.weight + (classification.type === "abstract" ? 12 : classification.type === "major" ? 20 : 8)
     });
@@ -269,6 +269,7 @@ async function readExisting() {
   }
 }
 
+const fetchedAt = new Date().toISOString();
 const errors = [];
 const all = [];
 
@@ -285,36 +286,54 @@ for (const source of SOURCE_DEFS) {
 }
 
 const existing = await readExisting();
+const existingByUrl = new Map((existing.items || []).map(item => [stripTracking(String(item.url || "")), item]));
+
 const merged = dedupe([...all, ...(existing.items || [])])
-  .filter(item => withinWindow(item))
-  .map(item => ({
-    id: item.id || canonicalId(item.url, item.title),
-    type: item.type || "update",
-    label: item.label || "🟣 AI 动态",
-    title: String(item.title || "").trim(),
-    excerpt: String(item.excerpt || "").trim().slice(0, 260),
-    source: String(item.source || "Public Source"),
-    url: stripTracking(String(item.url || "")),
-    publishedAt: item.publishedAt || new Date().toISOString(),
-    sourceKind: item.sourceKind || "community",
-    score: Number(item.score || 0)
+  .filter(item => withinWindow({
+    ...item,
+    publishedAt: item.publishedAt || existingByUrl.get(stripTracking(String(item.url || "")))?.publishedAt || ""
   }))
+  .map(item => {
+    const prior = existingByUrl.get(stripTracking(String(item.url || "")));
+    return {
+      id: item.id || prior?.id || canonicalId(item.url, item.title),
+      type: item.type || prior?.type || "update",
+      label: item.label || prior?.label || "🟣 AI 动态",
+      title: String(item.title || prior?.title || "").trim(),
+      excerpt: String(item.excerpt || prior?.excerpt || "").trim().slice(0, 260),
+      source: String(item.source || prior?.source || "Public Source"),
+      url: stripTracking(String(item.url || prior?.url || "")),
+      publishedAt: item.publishedAt || prior?.publishedAt || fetchedAt,
+      sourceKind: item.sourceKind || prior?.sourceKind || "community",
+      score: Number(item.score ?? prior?.score ?? 0)
+    };
+  })
   .filter(item => item.title && item.url);
 
+if (!all.length && !(existing.items || []).length) {
+  throw new Error("All news sources failed and no existing feed is available.");
+}
+
 const ranked = rank(merged).slice(0, MAX_ITEMS);
-const output = {
-  version: 1,
-  updatedAt: new Date().toISOString(),
-  sourceStatus: {
-    checked: SOURCE_DEFS.map(source => source.name),
-    errors
-  },
-  items: ranked
-};
+const stableItems = ranked.map(({score, ...item}) => item);
+const previousStableItems = (existing.items || []).map(({score, ...item}) => item);
 
-await writeFile(OUTPUT, JSON.stringify(output, null, 2) + "\n", "utf8");
+if (JSON.stringify(stableItems) === JSON.stringify(previousStableItems)) {
+  console.log("No content changes; keeping the existing feed untouched.");
+} else {
+  const output = {
+    version: 1,
+    updatedAt: fetchedAt,
+    sourceStatus: {
+      checked: SOURCE_DEFS.map(source => source.name),
+      errors
+    },
+    items: stableItems
+  };
+  await writeFile(OUTPUT, JSON.stringify(output, null, 2) + "\n", "utf8");
+  console.log(`Wrote ${stableItems.length} news items to ${OUTPUT.pathname}`);
+}
 
-console.log(`Wrote ${ranked.length} news items to ${OUTPUT.pathname}`);
 if (errors.length) {
   console.warn(`Source warnings: ${errors.join(" | ")}`);
 }

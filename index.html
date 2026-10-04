@@ -23,6 +23,20 @@
 <body>
 <header class="sitebar"><div class="wrap nav"><a class="brand" href="./"><span class="icon-slot" data-icon="compass"></span><strong>AI 新手导航</strong><em>AI Starter Hub</em></a><div class="navlinks"><a href="#start">新手入口 / Start</a><a href="#tools">工具 / Tools</a><a href="#about">关于 / About</a></div><button id="authButton" class="auth-button" type="button"><span class="google-mark" aria-hidden="true">G</span><span>使用 Google 登录</span></button></div></header>
 <header class="hero" id="start"><div class="wrap">
+  <div class="ai-now is-visible" data-ai-now role="region" aria-label="AI NOW · AI 圈动态">
+    <div class="ai-now-brand">
+      <span class="ai-now-pulse" aria-hidden="true"></span>
+      <strong>AI NOW</strong>
+      <small data-ai-now-status>SYNC</small>
+    </div>
+    <span class="ai-now-divider" aria-hidden="true"></span>
+    <div class="ai-now-window">
+      <span class="ai-now-label" data-ai-now-label>🟣 AI 动态</span>
+      <span class="ai-now-title" data-ai-now-title>正在加载新鲜 AI 情报……</span>
+      <span class="ai-now-source" data-ai-now-source></span>
+    </div>
+    <a class="ai-now-link" data-ai-now-link href="#" target="_blank" rel="noopener noreferrer" aria-label="查看 AI 动态原文"><span>原文</span><b aria-hidden="true">↗</b></a>
+  </div>
   <div class="eyebrow">AI STARTER HUB · 中英双语 / BILINGUAL</div>
   <h1>第一次用 AI？<br><span>从这里开始。</span></h1>
   <p>不用懂专业术语。告诉我们你想做什么，就能找到适合你的 AI 工具。<br><small>No jargon required. Tell us what you want to do, and find an AI tool that fits.</small></p>
@@ -62,5 +76,5 @@
 </main>
 <footer id="about" class="footer"><div class="wrap footgrid"><div><strong><span class="icon-slot" data-icon="compass"></span> AI 新手导航 · AI Starter Hub</strong><p>让第一次接触 AI 的人，也能轻松找到入口。<br>Made for beginners, with simple bilingual descriptions.</p><small>免费额度和服务政策可能变化，请以官方页面为准。 / Pricing and free quotas may change.</small></div><div><span><span class="icon-slot" data-icon="globe"></span> 中英双语 / Bilingual</span><span><span class="icon-slot" data-icon="compass"></span> 新手友好 / Beginner-friendly</span><span><span class="icon-slot" data-icon="mobile"></span> 移动端 / Mobile-ready</span></div></div><div class="easter-egg">本项目由一只 🐣 提出需求，由一只（PP）🗿 疯狂写代码，最终成功上线</div></footer>
 <script src="icons.js?v=20261004-3"></script><script src="tool-id.js?v=20261004-1"></script><script src="categories.js?v=20261004-2"></script><script src="favorites.js?v=20261004-3"></script><script src="recent.js?v=20261004-1"></script><script src="app.js?v=20261004-6"></script>
-<script src="search-suggestions.js?v=20261004-2"></script><script type="module" src="auth.js?v=20261003-2"></script>
+<script src="search-suggestions.js?v=20261004-2"></script><script src="news/ai-now.js?v=20261004-1" defer></script><script type="module" src="auth.js?v=20261003-2"></script>
 </body></html>

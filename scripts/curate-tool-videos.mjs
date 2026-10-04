@@ -22,6 +22,25 @@ const CONCURRENCY = 6;
 const SEARCH_LIMIT = 10;
 
 const MANUAL_OVERRIDES = {
+  "文心助手": {
+    type: "external",
+    platform: "bilibili",
+    title: "〖AI主播-LLM篇〗接入 文心一言 官方API（ERNIE-Bot）",
+    source: "Love丶伊卡洛斯 · Bilibili",
+    sourceType: "精选教程",
+    url: "https://www.bilibili.com/video/BV1Sb4y1T7fv/",
+    embedUrl: "https://player.bilibili.com/player.html?bvid=BV1Sb4y1T7fv&p=1&autoplay=0&danmaku=0&high_quality=1",
+    note: "直接围绕文心一言（ERNIE-Bot）进行接入与配置演示，比泛泛介绍百度产品更对板。"
+  },
+  "Beautiful.ai": {
+    type: "youtube",
+    videoId: "YiWrqmembVo",
+    title: "Document to AI Presentation (Beautiful.ai 3.0 Tutorial)",
+    source: "Kevin Stratvert",
+    sourceType: "精选教程",
+    url: "https://www.youtube.com/watch?v=YiWrqmembVo",
+    note: "2026 年直接演示 Beautiful.ai 3.0 的 AI 演示文稿工作流，包含创建、编辑、动画、协作与从文档生成演示文稿。"
+  },
   "通义灵码": {
     type: "external",
     platform: "bilibili",

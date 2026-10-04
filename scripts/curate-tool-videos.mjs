@@ -44,12 +44,12 @@ const MANUAL_OVERRIDES = {
   "通义灵码": {
     type: "external",
     platform: "bilibili",
-    title: "通义灵码的安装及应用〖2025最新版〗",
-    source: "Ju加油坊 · Bilibili",
+    title: "手把手看通义灵码如何从0到1构建Web页面",
+    source: "杭州黄老师 · Bilibili",
     sourceType: "精选教程",
-    url: "https://www.bilibili.com/video/BV1SQFeeKE7f/",
-    embedUrl: "https://player.bilibili.com/player.html?bvid=BV1SQFeeKE7f&p=1&autoplay=0&danmaku=0&high_quality=1",
-    note: "直接讲解通义灵码的安装、代码解释、补全和排错等核心使用方法。"
+    url: "https://www.bilibili.com/video/BV1DFfeB4EA8/",
+    embedUrl: "https://player.bilibili.com/player.html?bvid=BV1DFfeB4EA8&p=1&autoplay=0&danmaku=0&high_quality=1",
+    note: "2026 年直接用真实项目从零演示通义灵码构建 Web 页面，包含从新建项目开始的实际操作，更适合当前版本入门。"
   },
   "Windsurf": {
     type: "youtube",

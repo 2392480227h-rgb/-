@@ -233,7 +233,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 }
 
 
-/* Sponsor ad card */
+/* Space X sponsor card */
 .starter-head-actions{
   display:grid;
   grid-template-columns:minmax(190px,1fr) minmax(250px,1.35fr);
@@ -250,37 +250,19 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   padding:9px 11px;
   border:1px solid #d7e0ee;
   border-radius:11px;
-  background:linear-gradient(135deg,#ffffff 0%,#f4f8fd 100%);
   color:#172033;
   text-decoration:none;
   overflow:hidden;
-  isolation:isolate;
+  background-image:
+    url("assets/ads/spcx-logo.jpg"),
+    radial-gradient(circle at 88% 52%,#dceeff 0%,transparent 45%),
+    linear-gradient(135deg,#ffffff 0%,#f4f8fd 100%);
+  background-repeat:no-repeat;
+  background-position:78% 52%,center,center;
+  background-size:155% auto,auto,auto;
+  background-blend-mode:screen,normal,normal;
   box-shadow:0 5px 16px #1720330b;
   transition:.18s;
-}
-.spcx-ad-card::before{
-  content:"";
-  position:absolute;
-  inset:-16% -8%;
-  z-index:0;
-  background-image:url("assets/ads/spcx-logo.jpg");
-  background-repeat:no-repeat;
-  background-position:78% 52%;
-  background-size:152% auto;
-  filter:brightness(1.18) saturate(.95) contrast(.92);
-  opacity:.25;
-  mix-blend-mode:screen;
-  pointer-events:none;
-}
-.spcx-ad-card::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:1;
-  background:
-    linear-gradient(90deg,#ffffffeb 0%,#ffffffcf 40%,#ffffff5c 72%,#ffffff18 100%),
-    radial-gradient(circle at 87% 52%,#d7ebff7a 0,transparent 50%);
-  pointer-events:none;
 }
 .spcx-ad-card:hover{
   transform:translateY(-1px);
@@ -295,6 +277,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   display:flex;
   flex-direction:column;
   line-height:1.16;
+  text-shadow:0 1px 0 #ffffff;
 }
 .spcx-ad-copy strong{
   font-size:13px;
@@ -323,7 +306,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   padding:7px 10px;
   border-radius:8px;
   border:1px solid #a9c4e4;
-  background:#f3f8ffed;
+  background:#f3f8ffea;
   color:#233b5d;
   font-size:10px;
   font-weight:850;
@@ -350,7 +333,9 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   line-height:1.2;
 }
 @media(max-width:900px){
-  .starter-head-actions{grid-template-columns:minmax(180px,1fr) minmax(220px,1.2fr)}
+  .starter-head-actions{
+    grid-template-columns:minmax(180px,1fr) minmax(220px,1.2fr);
+  }
   .spcx-ad-card{min-width:0}
 }
 @media(max-width:760px){
@@ -359,18 +344,19 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
     grid-template-columns:1fr 1fr;
     gap:7px;
   }
-  .starter-guide{width:100%;max-width:none;min-width:0}
+  .starter-guide{
+    width:100%;
+    max-width:none;
+    min-width:0;
+  }
   .spcx-ad-card{
     width:100%;
     min-width:0;
     min-height:60px;
     padding:8px 9px;
     gap:8px;
-  }
-  .spcx-ad-card::before{
-    background-position:78% 52%;
-    background-size:158% auto;
-    opacity:.26;
+    background-position:78% 52%,center,center;
+    background-size:160% auto,auto,auto;
   }
   .spcx-ad-copy strong{font-size:10.5px}
   .spcx-ad-copy small{font-size:8px}
@@ -400,23 +386,15 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
     min-height:60px;
     padding:7px;
     gap:5px;
-  }
-  .spcx-ad-card::before{
-    background-position:80% 52%;
-    background-size:185% auto;
-    opacity:.24;
-  }
-  .spcx-ad-card::after{
-    background:
-      linear-gradient(90deg,#ffffffee 0%,#ffffffd8 44%,#ffffff61 78%,#ffffff16 100%),
-      radial-gradient(circle at 86% 50%,#d5eaff80 0,transparent 52%);
+    background-position:82% 52%,center,center;
+    background-size:190% auto,auto,auto;
   }
   .spcx-ad-copy strong{
     font-size:9.4px;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    padding-right:10px
+    padding-right:10px;
   }
   .spcx-ad-copy small{font-size:7.4px}
   .spcx-ad-copy em{font-size:6.8px;line-height:1.15}

@@ -17,6 +17,7 @@ const execFileAsync = promisify(execFile);
 const FILE = "tutorials/tutorial-data.js";
 const CONCURRENCY = 6;
 // [curate-videos] trigger full curation after matcher hardening
+// [curate-videos] final manual overrides for non-YouTube fallbacks
 const SEARCH_LIMIT = 10;
 
 const MANUAL_OVERRIDES = {

@@ -348,59 +348,82 @@ async function ytSearch(query) {
   return Array.isArray(payload.entries) ? payload.entries.filter(Boolean) : [];
 }
 
+async function fetchText(url, timeoutMs = 15000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, {
+      redirect: "follow",
+      headers: {
+        "User-Agent": "Mozilla/5.0 (compatible; AI-Starter-Hub video checker/1.0)",
+        "Accept-Language": "en-US,en;q=0.9"
+      },
+      signal: controller.signal
+    });
+    const text = await response.text();
+    return { response, text };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function validateVideo(video) {
   if (!video) return { ok: false, reason: "empty" };
 
-  const url = video.type === "external"
-    ? String(video.url || "")
-    : (video.videoId ? `https://www.youtube.com/watch?v=${video.videoId}` : String(video.url || ""));
+  if (video.type === "external") {
+    const sourceUrl = String(video.url || "");
+    const embedUrl = String(video.embedUrl || "");
+    if (!sourceUrl || !embedUrl) return { ok: false, reason: "missing-external-url" };
 
-  if (!url) return { ok: false, reason: "missing-url" };
+    try {
+      const api = new URL("https://api.bilibili.com/x/web-interface/view");
+      const bvid = new URL(sourceUrl).searchParams.get("bvid") || sourceUrl.match(/\\/(BV[a-zA-Z0-9]+)\\/?$/)?.[1];
+      if (bvid) {
+        api.searchParams.set("bvid", bvid);
+        const apiResult = await fetchText(api.href, 12000);
+        const payload = JSON.parse(apiResult.text);
+        if (payload.code !== 0 || !payload.data?.title || !Number(payload.data?.duration)) {
+          return { ok: false, reason: `bilibili-api:${payload.code ?? "invalid"}` };
+        }
+      }
 
+      const embedded = await fetchText(embedUrl, 15000);
+      if (!embedded.response.ok) return { ok: false, reason: `embed-http:${embedded.response.status}` };
+      return { ok: true, title: video.title || "" };
+    } catch (error) {
+      return { ok: false, reason: error?.name === "AbortError" ? "embed-timeout" : (error?.message || "external-check-failed") };
+    }
+  }
+
+  const expectedId = String(video.videoId || "");
+  if (!expectedId) return { ok: false, reason: "missing-youtube-id" };
+
+  const embedUrl = `https://www.youtube.com/embed/${encodeURIComponent(expectedId)}?rel=0&playsinline=1&modestbranding=1`;
   try {
-    const args = [
-      "-m", "yt_dlp", "-J", "--no-warnings", "--skip-download",
-      "--extractor-args", "youtube:player_client=default,web_embedded",
-      url
-    ];
-    const { stdout } = await execFileAsync("python", args, {
-      maxBuffer: 8 * 1024 * 1024,
-      timeout: 45000
-    });
-    const info = JSON.parse(stdout);
+    const embedded = await fetchText(embedUrl, 15000);
+    if (!embedded.response.ok) return { ok: false, reason: `embed-http:${embedded.response.status}` };
 
-    if (video.type === "external") {
-      const formats = Array.isArray(info.formats) ? info.formats : [];
-      const title = String(info.title || "");
-      if (!formats.length && !info.url) return { ok: false, reason: "no-playable-format" };
-      return { ok: true, title: title || video.title || "" };
-    }
+    const html = embedded.text;
+    const statusMatch =
+      html.match(/"playabilityStatus"\\s*:\\s*\\{\\s*"status"\\s*:\\s*"([A-Z_]+)"/) ||
+      html.match(/"status"\\s*:\\s*"(OK|UNPLAYABLE|ERROR|LOGIN_REQUIRED|AGE_CHECK_REQUIRED|AGE_VERIFICATION_REQUIRED)"/);
+    const status = statusMatch?.[1] || "";
 
-    const expectedId = String(video.videoId || "");
-    const actualId = String(info.id || "");
-    const availability = String(info.availability || "public");
-    const playable = info.playable_in_embed;
-    if (expectedId && actualId && expectedId !== actualId) {
-      return { ok: false, reason: `id-mismatch:${actualId}` };
+    if (status === "ERROR" || status === "UNPLAYABLE" || status === "LOGIN_REQUIRED") {
+      return { ok: false, reason: `youtube-playability:${status}` };
     }
-    if (availability && !["public", "unlisted"].includes(availability)) {
-      return { ok: false, reason: `availability:${availability}` };
+    if (/This video is unavailable|Video unavailable|This video is private|This video is no longer available/i.test(html)) {
+      return { ok: false, reason: "youtube-unavailable" };
     }
-    if (playable === false || playable === "False") {
+    if (/"playableInEmbed"\\s*:\\s*false/i.test(html) || /"playable_in_embed"\\s*:\\s*false/i.test(html)) {
       return { ok: false, reason: "embed-disabled" };
     }
-    if (!info.url && !(Array.isArray(info.formats) && info.formats.length)) {
-      return { ok: false, reason: "no-playable-format" };
-    }
-    return {
-      ok: true,
-      title: String(info.title || video.title || ""),
-      playable_in_embed: playable
-    };
+    return { ok: true, title: video.title || "", playability: status || "unknown" };
   } catch (error) {
-    return { ok: false, reason: error?.message || "yt-dlp-failed" };
+    return { ok: false, reason: error?.name === "AbortError" ? "embed-timeout" : (error?.message || "youtube-check-failed") };
   }
 }
+
 
 async function pickVideo(name, profile, { forceSearch = false } = {}) {
   const manual = MANUAL_OVERRIDES[name];

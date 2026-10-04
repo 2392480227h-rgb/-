@@ -254,7 +254,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   text-decoration:none;
   overflow:hidden;
   background-image:
-    url("assets/ads/spcx-logo.jpg"),
+    url("assets/ads/spcx-logo.webp"),
     radial-gradient(circle at 88% 52%,#dceeff 0%,transparent 45%),
     linear-gradient(135deg,#ffffff 0%,#f4f8fd 100%);
   background-repeat:no-repeat;

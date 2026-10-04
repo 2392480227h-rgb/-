@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-04T00:00:00.000Z",
+  "sourceStatus": {
+    "checked": [
+      "OpenAI",
+      "Anthropic",
+      "Google AI",
+      "Hugging Face",
+      "Hacker News"
+    ],
+    "errors": []
+  },
+  "items": [
+    {
+      "id": "seed-anthropic-frontier-academy",
+      "type": "major",
+      "label": "🔴 AI 大事",
+      "title": "Anthropic 投入 1 亿美元，计划培养 1 万名企业 AI 工程师",
+      "excerpt": "Anthropic 在 2026 年 10 月 2 日宣布推出 Claude Frontier Academy，目标到 2027 年底培养 10,000 名 Frontier Deployed Engineers。",
+      "source": "Anthropic",
+      "url": "https://www.anthropic.com/news/claude-frontier-academy",
+      "publishedAt": "2026-10-02T00:00:00.000Z",
+      "sourceKind": "official",
+      "score": 95
+    },
+    {
+      "id": "seed-hf-thinkingbox",
+      "type": "abstract",
+      "label": "🗿 AI 抽象",
+      "title": "AI Agent 说“完成了”，数据库：你完成个锤子",
+      "excerpt": "Microsoft 与 Hugging Face 的 ThinkingBox 用最终数据库状态和副作用检验 Agent，而不是只看它有没有调用工具。",
+      "source": "Hugging Face",
+      "url": "https://huggingface.co/blog/microsoft/thinkingbox",
+      "publishedAt": "2026-10-03T00:00:00.000Z",
+      "sourceKind": "community",
+      "score": 93
+    },
+    {
+      "id": "seed-hf-bug-agent",
+      "type": "update",
+      "label": "🟣 AI 动态",
+      "title": "Hugging Face 的 AI Agent 正在夜里自己修 Transformers 的 Bug",
+      "excerpt": "公开文章介绍了 Serge 这个 CI Agent：它寻找真实失败、复现问题、写补丁、验证，并把值得合并的修复交给维护者。",
+      "source": "Hugging Face",
+      "url": "https://huggingface.co/blog/huggingface/anatomy-of-a-bug-fixing-agent",
+      "publishedAt": "2026-09-29T00:00:00.000Z",
+      "sourceKind": "community",
+      "score": 88
+    },
+    {
+      "id": "seed-openai-ads",
+      "type": "major",
+      "label": "🔴 AI 大事",
+      "title": "OpenAI 正在重新设计 AI 时代的广告体验",
+      "excerpt": "OpenAI 发布新的 ChatGPT Ads 相关体验，并介绍 Sponsored Agents、Ads Manager AI 工具以及 HubSpot 和 Shopify 集成。",
+      "source": "OpenAI",
+      "url": "https://openai.com/index/reimagining-advertising-with-ai/",
+      "publishedAt": "2026-09-16T00:00:00.000Z",
+      "sourceKind": "official",
+      "score": 82
+    },
+    {
+      "id": "seed-google-economy",
+      "type": "update",
+      "label": "🟣 AI 动态",
+      "title": "Google 扩大 AI & Economy 研究团队，拉来诺奖经济学家等专家",
+      "excerpt": "Google 宣布扩展 AI & Economy Research Program，引入多位经济学家和研究人员研究 AI 对工作、生产率和全球经济的影响。",
+      "source": "Google AI",
+      "url": "https://blog.google/innovation-and-ai/technology/ai/expanding-ai-economy-research-bench",
+      "publishedAt": "2026-09-18T00:00:00.000Z",
+      "sourceKind": "official",
+      "score": 78
+    },
+    {
+      "id": "seed-hf-open-source-hell",
+      "type": "abstract",
+      "label": "🗿 AI 抽象",
+      "title": "《通往开源地狱之路由善意铺成》被挂上 Hugging Face 社区首页",
+      "excerpt": "这是社区作者对开源 AI 工程现实的一次吐槽式总结，属于“没那么重大，但 AI 圈的人看了容易点进去”的内容。",
+      "source": "Hugging Face",
+      "url": "https://huggingface.co/blog/qgallouedec/open-source-hell",
+      "publishedAt": "2026-09-22T00:00:00.000Z",
+      "sourceKind": "community",
+      "score": 74
+    }
+  ]
+}\n

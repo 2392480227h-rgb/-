@@ -262,13 +262,13 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   content:"";
   position:absolute;
   inset:-16% -8%;
-  z-index:-1;
+  z-index:0;
   background-image:url("assets/ads/spcx-logo.jpg");
   background-repeat:no-repeat;
   background-position:78% 52%;
   background-size:152% auto;
-  filter:brightness(1.22) saturate(1.1) contrast(.98);
-  opacity:.30;
+  filter:brightness(1.18) saturate(.95) contrast(.92);
+  opacity:.25;
   mix-blend-mode:screen;
   pointer-events:none;
 }
@@ -276,10 +276,10 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   content:"";
   position:absolute;
   inset:0;
-  z-index:-1;
+  z-index:1;
   background:
-    linear-gradient(90deg,#ffffff 0%,#ffffffdc 40%,#ffffff52 74%,#ffffff16 100%),
-    radial-gradient(circle at 86% 48%,#d5eaff88 0,transparent 48%);
+    linear-gradient(90deg,#ffffffeb 0%,#ffffffcf 40%,#ffffff5c 72%,#ffffff18 100%),
+    radial-gradient(circle at 87% 52%,#d7ebff7a 0,transparent 50%);
   pointer-events:none;
 }
 .spcx-ad-card:hover{
@@ -289,7 +289,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 }
 .spcx-ad-copy{
   position:relative;
-  z-index:1;
+  z-index:2;
   min-width:0;
   flex:1 1 auto;
   display:flex;
@@ -318,12 +318,12 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 }
 .spcx-ad-cta{
   position:relative;
-  z-index:1;
+  z-index:2;
   flex:0 0 auto;
   padding:7px 10px;
   border-radius:8px;
   border:1px solid #a9c4e4;
-  background:#f3f8ffdf;
+  background:#f3f8ffed;
   color:#233b5d;
   font-size:10px;
   font-weight:850;
@@ -339,7 +339,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   position:absolute;
   right:7px;
   top:6px;
-  z-index:2;
+  z-index:3;
   padding:1px 4px;
   border:1px solid #dbe3ef;
   border-radius:4px;
@@ -370,7 +370,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   .spcx-ad-card::before{
     background-position:78% 52%;
     background-size:158% auto;
-    opacity:.27;
+    opacity:.26;
   }
   .spcx-ad-copy strong{font-size:10.5px}
   .spcx-ad-copy small{font-size:8px}
@@ -404,11 +404,11 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   .spcx-ad-card::before{
     background-position:80% 52%;
     background-size:185% auto;
-    opacity:.25;
+    opacity:.24;
   }
   .spcx-ad-card::after{
     background:
-      linear-gradient(90deg,#ffffff 0%,#ffffffdf 44%,#ffffff60 77%,#ffffff18 100%),
+      linear-gradient(90deg,#ffffffee 0%,#ffffffd8 44%,#ffffff61 78%,#ffffff16 100%),
       radial-gradient(circle at 86% 50%,#d5eaff80 0,transparent 52%);
   }
   .spcx-ad-copy strong{

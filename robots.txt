@@ -1,8 +1,5 @@
 User-agent: *
 Allow: /
 
-# Public entry points and guide pages are intentionally crawlable.
-# Private account features are client-side and do not need to be indexed.
-Disallow: /profile.html
-
+# The account page is marked noindex in HTML and is not included in the sitemap.
 Sitemap: https://starterhub-dev.github.io/ai-tools/sitemap.xml

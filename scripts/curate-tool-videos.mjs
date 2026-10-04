@@ -20,6 +20,36 @@ const CONCURRENCY = 6;
 const SEARCH_LIMIT = 10;
 
 const MANUAL_OVERRIDES = {
+  "通义灵码": {
+    type: "external",
+    platform: "bilibili",
+    title: "通义灵码的安装及应用〖2025最新版〗",
+    source: "Ju加油坊 · Bilibili",
+    sourceType: "精选教程",
+    url: "https://www.bilibili.com/video/BV1SQFeeKE7f/",
+    embedUrl: "https://player.bilibili.com/player.html?bvid=BV1SQFeeKE7f&p=1&autoplay=0&danmaku=0&high_quality=1",
+    note: "直接讲解通义灵码的安装、代码解释、补全和排错等核心使用方法。"
+  },
+  "Adobe Podcast": {
+    type: "youtube",
+    videoId: "Ke85qbZuMl4",
+    title: "How To Use Adobe Podcast To Enhance Audio (Quick Guide)",
+    source: "SolveBase",
+    sourceType: "精选教程",
+    url: "https://www.youtube.com/watch?v=Ke85qbZuMl4",
+    note: "直接对应 Adobe Podcast 的音频增强功能，适合作为快速入门视频。"
+  },
+  "CodeGeeX": {
+    type: "external",
+    platform: "bilibili",
+    title: "CodeGeeX：新手入门学AI编程神器｜项目地图、幽灵注释、代码对话、代码生成",
+    source: "花叔v · Bilibili",
+    sourceType: "精选教程",
+    url: "https://www.bilibili.com/video/BV1GmBeYHEvH/",
+    embedUrl: "https://player.bilibili.com/player.html?bvid=BV1GmBeYHEvH&p=1&autoplay=0&danmaku=0&high_quality=1",
+    note: "面向新手实操 CodeGeeX，覆盖 VS Code 安装、项目分析、代码注释、生成和修改。"
+  },
+
   "腾讯元宝": {
     type: "external",
     platform: "bilibili",
@@ -151,7 +181,7 @@ const ALIASES = {
   "Riverside": ["riverside fm", "riverside"],
   "Krisp": ["krisp ai", "krisp"],
   "Adobe Podcast": ["adobe podcast"],
-  "Windsurf": ["windsurf editor", "windsurf"],
+  "Windsurf": ["windsurf editor"],
   "Bolt.new": ["bolt new", "bolt.new"],
   "Lovable": ["lovable ai", "lovable"],
   "v0": ["v0 vercel", "v0 by vercel"],
@@ -200,7 +230,8 @@ const SPECIAL_NEGATIVE = {
   "DeepL": ["translation service review", "four translation", "测评"],
   "Pika": ["make money", "赚钱"],
   "PhotoRoom": ["marketing", "营销"],
-  "Meta AI": ["muse"] ,
+  "Meta AI": ["muse"],
+  "文心助手": ["fine tuning", "fine-tuning", "unsloth", "lora"],
   "Character.AI": ["replace chatgpt", "碾压"],
   "Exa": ["dify"],
   "Tavily": ["n8n"],

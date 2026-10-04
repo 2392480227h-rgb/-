@@ -185,14 +185,11 @@ function extractAnchors(html, baseUrl, sourceDef) {
 }
 
 function rank(items) {
-  const now = Date.now();
-  return items
-    .map(item => {
-      const ageHours = Math.max(0, (now - new Date(item.publishedAt).getTime()) / 36e5);
-      const freshness = Math.max(0, 35 - ageHours * 0.8);
-      return { ...item, score: Math.round((item.score || 0) + freshness) };
-    })
-    .sort((a, b) => b.score - a.score);
+  return [...items].sort((a, b) => {
+    const scoreDiff = Number(b.score || 0) - Number(a.score || 0);
+    if (scoreDiff) return scoreDiff;
+    return new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime();
+  });
 }
 
 async function fetchJson(url) {

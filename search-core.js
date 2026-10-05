@@ -5,12 +5,22 @@ if(!config)return;
 const norm=s=>String(s||"").normalize("NFKC").toLowerCase().replace(/[“”‘’]/g,"").replace(/[！-～]/g," ").replace(/[^\\p{L}\\p{N}]+/gu," ").replace(/\\s+/g," ").trim();
 const compact=s=>norm(s).replace(/\\s+/g,"");
 const uniq=a=>[...new Set(a.filter(Boolean))];
-function matchPhrases(raw,phrases){
+function escapeRe(s){return String(s).replace(/[.*+?^$()|[\\]\\]/g,"\\function matchPhrases(raw,phrases){
   const n=compact(raw),out=[];
   for(const p of phrases){const np=compact(p);if(np&&n.includes(np))out.push(np);}
   return uniq(out);
 }
-function escapeRe(s){return String(s).replace(/[.*+?^$()|[\\]\\]/g,"\\$&");}
+function escapeRe(s){return String(s).replace(/[.*+?^$()|[\\]\\]/g,"\\$&");}");}
+function matchPhrases(raw,phrases){
+  const n=norm(raw),c=compact(raw),out=[];
+  for(const p of phrases){
+    const np=norm(p),cp=compact(p);
+    if(!np)continue;
+    const latinOnly=/^[a-z0-9]+$/i.test(np);
+    if(latinOnly ? new RegExp("\\b"+escapeRe(np)+"\\b","i").test(n) : c.includes(cp)) out.push(cp);
+  }
+  return uniq(out);
+}
 function cleanQuery(raw){
   let q=String(raw||"");
   for(const phrase of [...config.stopPhrases].sort((a,b)=>b.length-a.length)){

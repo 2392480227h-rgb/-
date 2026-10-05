@@ -273,6 +273,6 @@ button:active,.open:active,.learn:active,.favorite-button:active,.cat:active,.au
     padding:6px 9px !important;
   }
 }
-\n@media(max-width:760px){.brand-logo{width:172px;height:44px}}\n@media(max-width:520px){.brand-logo{width:154px;height:40px}}\n
+
 @media(max-width:760px){.brand-mark{width:38px;height:38px}.brand-name strong{font-size:16px}.brand-name em{font-size:9px}}
 @media(max-width:520px){.brand{gap:8px}.brand-mark{width:36px;height:36px}.brand-name{gap:5px}.brand-name strong{font-size:14px}.brand-name em{display:none}}

@@ -6,13 +6,14 @@ if(!input||!box||typeof tools==="undefined"||!window.SearchCore)return;
 
 function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
 const chips=[
-  ["做图片","Images"],["做视频","Video"],["写文章","Writing"],["学习资料","Learn"]
+  ["做图片","Images"],["做视频","Video"],["做音乐","Music"],["写文章","Writing"],["学习资料","Learn"]
 ];
 
 function chipBrandIcons(q){
   const map={
     "做图片":["Midjourney","Leonardo AI","Ideogram"],
     "做视频":["Runway","Kling AI","Pika"],
+    "做音乐":["Suno","Udio","AIVA"],
     "写文章":["ChatGPT","Claude","Gemini"],
     "学习资料":["NotebookLM","ChatGPT","Gemini"]
   };

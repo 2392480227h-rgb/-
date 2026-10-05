@@ -42,19 +42,21 @@ function context(raw){
   const input=String(raw||"").trim();
   if(!compact(input))return {query:input,intents:[],tasks:[],terms:[],cleaned:"",intent:null,task:null};
 
+  const cleaned=cleanQuery(input);
+  const searchable=input+" "+cleaned;
+
   const intents=config.intents.map(rule=>{
-    const hits=matchPhrases(input,rule.phrases);
+    const hits=matchPhrases(searchable,rule.phrases);
     const score=hits.reduce((n,x)=>n+Math.min(90,Math.max(12,x.length*2)),0)+(hits.length?rule.categories.length*4:0);
     return {rule,hits,score};
   }).filter(x=>x.hits.length).sort((a,b)=>b.score-a.score);
 
   const tasks=config.tasks.map(rule=>{
-    const hits=matchPhrases(input,rule.phrases);
+    const hits=matchPhrases(searchable,rule.phrases);
     const score=hits.reduce((n,x)=>n+Math.min(100,Math.max(14,x.length*3)),0);
     return {rule,hits,score};
   }).filter(x=>x.hits.length).sort((a,b)=>b.score-a.score);
 
-  const cleaned=cleanQuery(input);
   const terms=uniq([
     ...intents.flatMap(x=>x.hits),
     ...tasks.flatMap(x=>x.hits),

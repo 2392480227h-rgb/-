@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="160" viewBox="0 0 760 160" role="img" aria-labelledby="title desc">
+<title id="title">AI Starter Hub</title>
+<desc id="desc">Symmetrical futuristic A emblem with orbital ring and AI Starter Hub wordmark.</desc>
+<defs>
+  <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#77F7FF"/><stop offset=".34" stop-color="#2C8BFF"/><stop offset=".68" stop-color="#3046FF"/><stop offset="1" stop-color="#A25BFF"/></linearGradient>
+  <linearGradient id="g2" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#F7FBFF"/><stop offset=".45" stop-color="#B8D8FF"/><stop offset="1" stop-color="#7B6CFF"/></linearGradient>
+  <linearGradient id="g3" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1C65FF"/><stop offset=".5" stop-color="#46E7FF"/><stop offset="1" stop-color="#8A5DFF"/></linearGradient>
+  <linearGradient id="textAI" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#56F5FF"/><stop offset=".5" stop-color="#2B83FF"/><stop offset="1" stop-color="#4752FF"/></linearGradient>
+  <linearGradient id="textHub" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".5" stop-color="#D5E5FF"/><stop offset="1" stop-color="#95A4C7"/></linearGradient>
+  <filter id="glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.8"/></filter>
+</defs>
+<g transform="translate(12 8)">
+  <ellipse cx="72" cy="72" rx="62" ry="28" fill="none" stroke="url(#g3)" stroke-width="3.2" opacity=".95" transform="rotate(0 72 72)" filter="url(#glow)"/>
+  <circle cx="17" cy="72" r="5.5" fill="#55EFFF" filter="url(#glow)"/>
+  <circle cx="127" cy="72" r="5.5" fill="#8E5CFF" filter="url(#glow)"/>
+  <path d="M72 10 L78 30 L100 62 L124 122 L102 122 L83 92 L72 74 L61 92 L42 122 L20 122 L44 62 L66 30 Z" fill="url(#g1)" stroke="#A8F7FF" stroke-width="1.5"/>
+  <path d="M72 12 L45 61 L33 86 L61 70 L72 52 Z" fill="url(#g2)" opacity=".86"/>
+  <path d="M72 12 L99 61 L111 86 L83 70 L72 52 Z" fill="url(#g2)" opacity=".86"/>
+  <path d="M55 110 Q72 88 89 110 L80 126 Q72 116 64 126 Z" fill="url(#g1)" opacity=".95"/>
+  <path d="M72 27 L79 60 L112 71 L79 77 L72 111 L65 77 L32 71 L65 60 Z" fill="#F6FEFF" opacity=".98" filter="url(#glow)"/>
+  <path d="M72 5 V22" stroke="#FFF2C4" stroke-width="2.6" stroke-linecap="round" filter="url(#glow)"/>
+  <path d="M64 13 H80" stroke="#FFF2C4" stroke-width="2.2" stroke-linecap="round" filter="url(#glow)"/>
+</g>
+<g transform="translate(175 0)">
+  <text x="0" y="97" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif" font-size="62" font-weight="850" letter-spacing="-2">
+    <tspan fill="url(#textAI)">AI</tspan><tspan fill="url(#textHub)" dx="9">Starter Hub</tspan>
+  </text>
+  <rect x="2" y="119" width="470" height="2" rx="1" fill="url(#g3)" opacity=".62"/>
+  <path d="M238 116 l5 7 7 5-7 5-5 7-5-7-7-5 7-5z" fill="#C8F7FF" opacity=".95" filter="url(#glow)"/>
+</g>
+</svg>

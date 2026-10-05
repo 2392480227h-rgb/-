@@ -32,7 +32,7 @@ const SearchConfig = {
     {id:"python",intent:"code",label:"Python",phrases:["python","py"]},
     {id:"chat_general",intent:"chat",label:"通用聊天",phrases:["聊天","问问题","问答","助手","chat","assistant"]}
   ],
-  stopPhrases:["我想要","我想","我要","我想用","我想让ai","我想让","我要用","帮我","请帮我","请问","有没有","能不能","可不可以","可以帮我","怎么用","怎么去","怎么才能","如何用","如何","怎样用","怎样","告诉我","教我","我需要","想要","想用","使用","用ai","用","一下","一个","一下子","给我","帮忙"],
+  stopPhrases:["我想要","我想","我要","我想用","我想让ai","我想让","我要用","帮我","请帮我","请问","有没有","能不能","可不可以","可以帮我","怎么用","怎么去","怎么才能","如何用","如何","怎样用","怎样","告诉我","教我","我需要","想要","想用","使用","用ai","一下","一个","一下子","给我","帮忙"],
   toolMeta:{
     "ChatGPT":{intents:["chat","learn","write","image","code"],tasks:["chat_general","article","study_material","image_creation","coding"],keywords:["问答","聊天","写作","图片","代码","学习"]},
     "Gemini":{intents:["chat","learn","write","image","code"],tasks:["chat_general","study_material","image_creation","coding"],keywords:["问答","研究","图片","代码","学习"]},

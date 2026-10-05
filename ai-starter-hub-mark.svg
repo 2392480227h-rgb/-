@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 144" width="144" height="144" role="img" aria-labelledby="t d">
+<title id="t">AI Starter Hub mark</title>
+<desc id="d">Symmetrical silver geometric A and I emblem with a horizontal beam.</desc>
+<defs>
+  <linearGradient id="silverA" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#F8FAFC"/>
+    <stop offset=".28" stop-color="#D7DDE5"/>
+    <stop offset=".58" stop-color="#8C96A3"/>
+    <stop offset=".82" stop-color="#EEF2F6"/>
+    <stop offset="1" stop-color="#AAB3BE"/>
+  </linearGradient>
+  <linearGradient id="silverI" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF"/>
+    <stop offset=".35" stop-color="#DCE2E9"/>
+    <stop offset=".65" stop-color="#A7B0BC"/>
+    <stop offset="1" stop-color="#E9EDF2"/>
+  </linearGradient>
+  <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#8D97A3"/>
+    <stop offset=".18" stop-color="#E3E7EC"/>
+    <stop offset=".5" stop-color="#FFFFFF"/>
+    <stop offset=".82" stop-color="#E3E7EC"/>
+    <stop offset="1" stop-color="#8D97A3"/>
+  </linearGradient>
+</defs>
+<!-- mirrored A wings -->
+<path fill="url(#silverA)" d="M72 13 L81 31 L107 65 L126 119 L105 119 L86 88 L72 68 L58 88 L39 119 L18 119 L37 65 L63 31 Z"/>
+<path fill="#59636F" opacity=".55" d="M72 16 L48 64 L31 103 L40 119 L59 88 L72 69 Z"/>
+<path fill="#59636F" opacity=".55" d="M72 16 L96 64 L113 103 L104 119 L85 88 L72 69 Z"/>
+<!-- central I, visually integrated rather than a separate letter -->
+<path fill="url(#silverI)" d="M66 9 H78 L83 15 H61 Z M67 15 H77 V125 L72 132 L67 125 Z"/>
+<!-- horizontal beam, intentionally +20% heavier -->
+<path fill="url(#beam)" d="M9 69 L64 64 L72 63 L80 64 L135 69 L80 75 L72 76 L64 75 Z"/>
+<path fill="#FFFFFF" opacity=".72" d="M10 69 L64 65 L72 64 L80 65 L134 69 L80 70 L72 70 L64 70 Z"/>
+</svg>

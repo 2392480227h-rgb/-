@@ -3,7 +3,7 @@ const SearchConfig = {
   intents: [
     { id:"image", label:"图片创作", categories:["图片","设计"], phrases:["图片","图像","照片","画图","画画","绘图","绘画","做图","做图片","生成图片","图片生成","ai绘图","ai绘画","ai图片","海报","封面","头像","壁纸","插画","艺术图","概念图","商品图","产品图","商品照片","产品照片","抠图","去背景","背景移除","修图","图片编辑","image","images","photo","poster","illustration","art","design"] },
     { id:"video", label:"视频创作", categories:["视频","视频 / 音频"], phrases:["视频","做视频","生成视频","ai视频","视频生成","视频制作","短视频","短片","宣传片","口播","剪视频","剪辑","视频剪辑","字幕","视频字幕","视频特效","动画","video","videos","editing","shorts","reels"] },
-    { id:"audio", label:"音乐音频", categories:["音频","音乐","音频 / 配音","视频 / 音频"], phrases:["音乐","做音乐","生成音乐","ai音乐","音乐生成","作曲","ai作曲","歌曲","生成歌曲","写歌","写一首歌","做一首歌","创作歌曲","歌曲创作","背景音乐","配乐","音频","录音","语音","配音","声音","tts","语音合成","文字转语音","转写","语音转文字","录音转文字","录音转成文字","音频转文字","播客","music","audio","song","songs","compose","composition","voice","voiceover","text to speech","speech to text"] },
+    { id:"audio", label:"音乐音频", categories:["音频","音乐","音频 / 配音","视频 / 音频"], phrases:["音乐","做音乐","生成音乐","ai音乐","音乐生成","作曲","ai作曲","歌曲","生成歌曲","写歌","写一首歌","做一首歌","创作歌曲","歌曲创作","背景音乐","配乐","音频","录音","语音","配音","声音","tts","语音合成","文字转语音","转写","语音转文字","录音转文字","录音转成文字","音频转文字","音频转成文字","播客","music","audio","song","songs","compose","composition","voice","voiceover","text to speech","speech to text"] },
     { id:"write", label:"写作办公", categories:["写作","写作 / 办公"], phrases:["写作","写文章","文章","作文","小说","写小说","故事","邮件","写邮件","文案","广告文案","改写","润色","扩写","缩写","报告","写报告","办公","写东西","writing","write","email","copywriting"] },
     { id:"learn", label:"学习研究", categories:["学习","学习 / 研究","搜索 / 研究"], phrases:["学习","学习资料","资料","查资料","研究","论文","查论文","文献","知识","学习笔记","做笔记","总结资料","读文档","看论文","数学题","作业","考试","学习英语","study","learn","research","paper","papers","math"] },
     { id:"code", label:"编程开发", categories:["编程","编程 / 开发","开发 / 模型"], phrases:["编程","代码","写代码","写程序","开发","程序","网站","做网站","网页","前端","后端","python","javascript","typescript","java","c++","程序报错","代码报错","debug","调试","coding","code","developer","development"] },
@@ -18,7 +18,7 @@ const SearchConfig = {
     {id:"video_creation",intent:"video",label:"视频生成",phrases:["生成视频","视频生成","ai视频","做视频","视频制作","宣传片","短片","make a video","make video","create video","create a video","text to video"]},
     {id:"music_creation",intent:"audio",label:"音乐生成",phrases:["音乐","做音乐","生成音乐","ai音乐","音乐生成","作曲","ai作曲","歌曲","生成歌曲","写歌","写一首歌","做一首歌","创作歌曲","歌曲创作","背景音乐","配乐","music","make music","create music","song","songs","compose","composition","text to music"]},
     {id:"voice_generation",intent:"audio",label:"AI 配音",phrases:["配音","语音合成","文字转语音","tts","AI语音","生成声音","voiceover","voice over","text to speech","tts voice"]},
-    {id:"transcription",intent:"audio",label:"语音转文字",phrases:["转写","语音转文字","录音转文字","录音转成文字","音频转文字","会议转写","字幕转写","speech to text","audio to text","transcription","transcribe"]},
+    {id:"transcription",intent:"audio",label:"语音转文字",phrases:["转写","语音转文字","录音转文字","录音转成文字","音频转文字","音频转成文字","会议转写","字幕转写","speech to text","audio to text","transcription","transcribe"]},
     {id:"audio_edit",intent:"audio",label:"音频处理",phrases:["音频编辑","音频剪辑","音频处理","降噪","清理音频","播客","做播客","podcast","audio editing","audio edit","noise removal"]},
     {id:"video_edit",intent:"video",label:"视频剪辑",phrases:["剪视频","剪辑","视频剪辑","视频编辑","edit video","video editing"]},
     {id:"short_video",intent:"video",label:"短视频",phrases:["短视频","short video","shorts","reels"]},

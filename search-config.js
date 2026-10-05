@@ -9,12 +9,12 @@ const SearchConfig = {
     { id:"chat", label:"聊天助手", categories:["聊天","聊天 / 综合","聊天 / 办公","聊天 / 助手"], phrases:["聊天","问问题","问答","助手","日常助手","头脑风暴","对话","陪伴","chat","assistant","brainstorm","conversation"] }
   ],
   tasks: [
-    {id:"image_creation",intent:"image",label:"图片生成",phrases:["生成图片","图片生成","ai绘图","ai绘画","画图","绘图","做图片","做图","image generation","text to image"]},
+    {id:"image_creation",intent:"image",label:"图片生成",phrases:["生成图片","图片生成","ai绘图","ai绘画","画图","绘图","做图片","做图","make images","create images","image generation","text to image"]},
     {id:"poster",intent:"image",label:"海报设计",phrases:["海报","宣传海报","封面","banner","poster","social post"]},
     {id:"avatar",intent:"image",label:"头像创作",phrases:["头像","人物头像","profile photo","avatar","headshot"]},
     {id:"product_image",intent:"image",label:"商品图片",phrases:["商品图","商品照片","产品图","产品照片","电商图片","淘宝图","商品宣传图","product photo","product image"]},
     {id:"background_remove",intent:"image",label:"抠图去背景",phrases:["抠图","去背景","背景移除","透明背景","remove background","background remover"]},
-    {id:"video_creation",intent:"video",label:"视频生成",phrases:["生成视频","视频生成","ai视频","做视频","视频制作","短片","text to video"]},
+    {id:"video_creation",intent:"video",label:"视频生成",phrases:["生成视频","视频生成","ai视频","做视频","视频制作","宣传片","短片","make a video","make video","create video","create a video","text to video"]},
     {id:"video_edit",intent:"video",label:"视频剪辑",phrases:["剪视频","剪辑","视频剪辑","视频编辑","edit video","video editing"]},
     {id:"short_video",intent:"video",label:"短视频",phrases:["短视频","short video","shorts","reels"]},
     {id:"subtitles",intent:"video",label:"字幕",phrases:["字幕","视频字幕","自动字幕","subtitle","subtitles","caption"]},

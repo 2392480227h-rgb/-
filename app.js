@@ -227,7 +227,7 @@ function bindFavoriteButtons(){
 }
 function render({animate=false}={}){
   const input=$("#search"), q=normalize(input.value);
-  let a=tools.filter(x=>(active==="全部"||mainCategory(x)===active)&&(!q||normalize(x.join(" ")+" "+(internationalNames[x[0]]||"")).includes(q)));
+  let a;if(q&&window.SearchCore){a=window.SearchCore.search(input.value,{tools,category:active,limit:tools.length}).results.map(item=>item.tool);}else{a=tools.filter(x=>active==="全部"||mainCategory(x)===active);}
   const sort=$("#sort").value;
   const favoriteIds=new Set((window.ASHFavorites?.getAll?.()||[]).map(item=>item.toolId));
   if(sort==="heat") a.sort((x,y)=>heatScore(y[0])-heatScore(x[0]));

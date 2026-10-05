@@ -252,3 +252,24 @@ button:active,.open:active,.learn:active,.favorite-button:active,.cat:active,.au
   }
   .grid{will-change:auto}
 }
+
+
+/* =========================================================
+   Mobile text inflation guard · search suggestions only
+   ========================================================= */
+#suggestions,#suggestions *{
+  -webkit-text-size-adjust:none !important;
+  text-size-adjust:none !important;
+}
+#suggestions .suggest-chips>.suggest-chip,
+#suggestions .suggest-chips>.suggest-chip>span{
+  font-size:13px !important;
+  line-height:18px !important;
+}
+@media(max-width:520px){
+  #suggestions .suggest-chips>.suggest-chip{
+    height:34px !important;
+    max-height:34px !important;
+    padding:6px 9px !important;
+  }
+}

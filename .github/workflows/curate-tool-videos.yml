@@ -34,10 +34,22 @@ jobs:
         run: git diff --stat && git diff -- tutorials/tutorial-data.js | head -n 300
 
       - name: Commit curated videos
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add tutorials/tutorial-data.js
-          git diff --cached --quiet && echo "No changes to commit." && exit 0
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           git commit -m "data: curate concrete tutorial videos for all tools"
           git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Request Pages deployment
+        if: ${{ always() && (steps.commit.outputs.changed == 'true' || github.event_name == 'push') }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/${GITHUB_REPOSITORY}/dispatches" -f event_type=site-data-updated

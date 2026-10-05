@@ -1,0 +1,29 @@
+name: Health Check Tool Tutorial Videos
+
+on:
+  schedule:
+    - cron: "43 3 * * *"
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - "tutorials/tutorial-data.js"
+      - "scripts/check-tool-videos.mjs"
+      - ".github/workflows/video-healthcheck.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Check tutorial video health
+        run: node scripts/check-tool-videos.mjs

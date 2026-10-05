@@ -29,7 +29,7 @@ const SearchConfig = {
     {id:"website",intent:"code",label:"做网站",phrases:["做网站","建网站","制作网站","网页","web app","website","web page"]},
     {id:"coding",intent:"code",label:"写代码",phrases:["写代码","写程序","coding","code","programming"]},
     {id:"debug",intent:"code",label:"调试代码",phrases:["debug","调试","程序报错","代码报错","修复bug","fix bug"]},
-    {id:"python",intent:"code",label:"Python",phrases:["python","py"]},
+    {id:"python",intent:"code",label:"Python",phrases:["python"]},
     {id:"chat_general",intent:"chat",label:"通用聊天",phrases:["聊天","问问题","问答","助手","chat","assistant"]}
   ],
   stopPhrases:["我想要","我想","我要","我想用","我想让ai","我想让","我要用","帮我","请帮我","请问","有没有","能不能","可不可以","可以帮我","怎么用","怎么","怎么去","怎么才能","如何用","如何","怎样用","怎样","告诉我","教我","我需要","想要","想用","使用","用ai","一下","一个","一下子","给我","帮忙"],

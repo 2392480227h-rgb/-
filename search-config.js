@@ -34,8 +34,8 @@ const SearchConfig = {
   ],
   stopPhrases:["我想要","我想","我要","我想用","我想让ai","我想让","我要用","帮我","请帮我","请问","有没有","能不能","可不可以","可以帮我","怎么用","怎么","怎么去","怎么才能","如何用","如何","怎样用","怎样","告诉我","教我","我需要","想要","想用","使用","用ai","一下","一个","一下子","给我","帮忙"],
   toolMeta:{
-    "ChatGPT":{intents:["chat","learn","write","image","code"],tasks:["chat_general","article","study_material","image_creation","coding"],keywords:["问答","聊天","写作","图片","代码","学习"]},
-    "Gemini":{intents:["chat","learn","write","image","code"],tasks:["chat_general","study_material","image_creation","coding"],keywords:["问答","研究","图片","代码","学习"]},
+    "ChatGPT":{intents:["chat","learn","write","image","code"],tasks:["chat_general"],keywords:["问答","聊天","写作","图片","代码","学习"]},
+    "Gemini":{intents:["chat","learn","write","image","code"],tasks:["chat_general"],keywords:["问答","研究","图片","代码","学习"]},
     "Claude":{intents:["chat","write","code","learn"],tasks:["article","rewrite","coding","study_material"],keywords:["长文","分析","写作","代码"]},
     "Perplexity":{intents:["learn"],tasks:["paper_research","study_material"],keywords:["搜索","研究","论文","资料"]},
     "NotebookLM":{intents:["learn"],tasks:["study_material","paper_research"],keywords:["资料","文档","笔记","研究","总结"]},

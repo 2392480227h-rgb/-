@@ -122,14 +122,16 @@ function toolScore(tool,ctx){
   if(ctx.cleaned&&nameN===compact(ctx.cleaned))score+=1000;
   if(ctx.cleaned&&nameN.includes(compact(ctx.cleaned)))score+=420;
 
+  const hasTask=ctx.tasks.length>0;
+  const matchedTasks=new Set(meta.tasks||[]);
   for(const task of ctx.tasks){
-    if((meta.tasks||[]).includes(task.rule.id))score+=320;
-    if((meta.intents||[]).includes(task.rule.intent))score+=140;
+    if(matchedTasks.has(task.rule.id))score+=320;
+    if((meta.intents||[]).includes(task.rule.intent))score+=hasTask?55:140;
   }
 
   for(const intent of ctx.intents){
-    if((meta.intents||[]).includes(intent.rule.id))score+=230;
-    if(intent.rule.categories.some(c=>cat.includes(norm(c))))score+=90;
+    if((meta.intents||[]).includes(intent.rule.id))score+=hasTask?95:230;
+    if(intent.rule.categories.some(c=>cat.includes(norm(c))))score+=hasTask?35:90;
   }
 
   for(const term of ctx.terms){

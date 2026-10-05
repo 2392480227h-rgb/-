@@ -1,6 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
-<title>AI 新手导航</title>
-<rect width="64" height="64" rx="16" fill="#11182b"/>
-<circle cx="32" cy="32" r="22" fill="none" stroke="#b8c5ff" stroke-width="4"/>
-<path d="M39 13 29 29l-9 7 15-1-1 16 11-18-13 1Z" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 144 144">
+<defs>
+  <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#77F7FF"/><stop offset=".34" stop-color="#2C8BFF"/><stop offset=".68" stop-color="#3046FF"/><stop offset="1" stop-color="#A25BFF"/></linearGradient>
+  <linearGradient id="g2" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#F7FBFF"/><stop offset=".45" stop-color="#B8D8FF"/><stop offset="1" stop-color="#7B6CFF"/></linearGradient>
+  <linearGradient id="g3" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1C65FF"/><stop offset=".5" stop-color="#46E7FF"/><stop offset="1" stop-color="#8A5DFF"/></linearGradient>
+  <filter id="glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="3.3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<ellipse cx="72" cy="72" rx="61" ry="28" fill="none" stroke="url(#g3)" stroke-width="3.2" filter="url(#glow)"/>
+<circle cx="17" cy="72" r="5.3" fill="#55EFFF" filter="url(#glow)"/><circle cx="127" cy="72" r="5.3" fill="#8E5CFF" filter="url(#glow)"/>
+<path d="M72 10 L78 30 L100 62 L124 122 L102 122 L83 92 L72 74 L61 92 L42 122 L20 122 L44 62 L66 30 Z" fill="url(#g1)" stroke="#A8F7FF" stroke-width="1.5"/>
+<path d="M72 12 L45 61 L33 86 L61 70 L72 52 Z" fill="url(#g2)" opacity=".86"/>
+<path d="M72 12 L99 61 L111 86 L83 70 L72 52 Z" fill="url(#g2)" opacity=".86"/>
+<path d="M55 110 Q72 88 89 110 L80 126 Q72 116 64 126 Z" fill="url(#g1)"/>
+<path d="M72 27 L79 60 L112 71 L79 77 L72 111 L65 77 L32 71 L65 60 Z" fill="#F6FEFF" filter="url(#glow)"/>
+<path d="M72 5 V22 M64 13 H80" stroke="#FFF2C4" stroke-width="2.3" stroke-linecap="round" filter="url(#glow)"/>
 </svg>

@@ -31,7 +31,7 @@ function applyStatic(){
   const meta=document.querySelector('meta[name="description"]');
   if(meta)meta.content=lang==="en"?"AI Starter Hub helps beginners discover 150+ AI tools by task, with official links and practical guides.":"AI 新手导航（AI Starter Hub）收录 150+ 主流 AI 工具，提供按用途发现、官方入口与新手教程。";
   const btn=document.getElementById("languageButton");
-  if(btn){btn.textContent=t("langButton");btn.title=t("langTitle");btn.setAttribute("aria-label",t("langTitle"));}
+  if(btn){btn.textContent=t("langButton");btn.title=t("langTitle");btn.setAttribute("aria-label",t("langTitle"));if(!btn.dataset.bound){btn.dataset.bound="1";btn.addEventListener("click",toggle);}}
   const q=document.getElementById("search");
   if(q){q.placeholder=t("searchPlaceholder");q.setAttribute("aria-label",lang==="en"?"Search AI tools":"搜索 AI 工具 / Search AI tools");}
   const nav=document.querySelectorAll(".navlinks a");if(nav[0])nav[0].textContent=t("navStart");if(nav[1])nav[1].textContent=t("navTools");if(nav[2])nav[2].textContent=t("navAbout");

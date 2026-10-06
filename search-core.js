@@ -3,7 +3,11 @@
 const config=window.ASHSearchConfig;
 if(!config)return;
 
-const norm=s=>String(s||"")
+const normalizeTraditional=s=>{
+  const helper=window.ASHI18n?.toSimplified;
+  return helper?helper(s):String(s||"");
+};
+const norm=s=>String(normalizeTraditional(s)||"")
   .normalize("NFKC")
   .toLowerCase()
   .replace(/[“”‘’]/g,"")

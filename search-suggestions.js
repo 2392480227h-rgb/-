@@ -8,9 +8,9 @@ function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&l
 const chips=[
   {zh:"做图片",en:"Images",q:"make images"},
   {zh:"做视频",en:"Video",q:"make a video"},
-  {zh:"做音乐",en:"Music",q:"make music"},
-  {zh:"写文章",en:"Writing",q:"write an article"},
-  {zh:"学习资料",en:"Learn",q:"study material"}
+  {zh:"做音乐",tw:"製作音樂",en:"Music",q:"make music"},
+  {zh:"写文章",tw:"寫文章",en:"Writing",q:"write an article"},
+  {zh:"学习资料",tw:"學習資料",en:"Learn",q:"study material"}
 ];
 
 function chipBrandIcons(q){
@@ -34,8 +34,8 @@ function draw(){
   const list=result.results.map(x=>x.tool);
 
   if(!q.trim()){
-    const en=window.ASHI18n?.current()==="en";
-    box.innerHTML='<div class="suggest-title">'+esc(window.ASHI18n?.t("suggestTitle")||"不知道怎么搜？试试 / Try asking")+'</div><div class="suggest-chips">'+chips.map(c=>'<button class="suggest-chip" data-q="'+esc(en?c.q:c.zh)+'"><span class="chip-brands">'+chipBrandIcons(c.zh)+'</span><span>'+esc(en?c.en:c.zh)+'</span></button>').join("")+'</div>';
+    const lang=window.ASHI18n?.current()||"zh";
+    box.innerHTML='<div class="suggest-title">'+esc(window.ASHI18n?.t("suggestTitle")||"不知道怎么搜？试试 / Try asking")+'</div><div class="suggest-chips">'+chips.map(c=>{const label=lang==="en"?c.en:(lang==="zh-TW"?c.tw:c.zh);const query=lang==="en"?c.q:(lang==="zh-TW"?c.tw:c.zh);return '<button class="suggest-chip" data-q="'+esc(query)+'"><span class="chip-brands">'+chipBrandIcons(c.zh)+'</span><span>'+esc(label)+'</span></button>';}).join("")+'</div>';
   }else if(list.length){
     const task=ctx.tasks?.[0]?.rule?.intent==="audio"?ctx.tasks?.[0]?.rule?.label:ctx.tasks?.[0]?.rule?.label||"";
     const intent=ctx.intents?.[0]?.rule?.label||"";

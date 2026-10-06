@@ -262,8 +262,8 @@ function render({animate=false}={}){
       <div class="desc">${esc(desc)}</div>
       <div class="meta"><span class="tag">${esc(category)}</span><span class="tag">${esc(x[6])}</span></div>
       <div class="card-signal">
-        <span class="popularity ${hot?"is-hot":""}">🔥 ${window.ASHI18n?.current()==="en"?"Popular":"热度"} ${score}${rank?` · TOP ${rank}`:""}</span>
-        <span class="signal-note">${window.ASHI18n?.current()==="en"?"Site reference index":"站内参考指数"}</span>
+        <span class="popularity ${hot?"is-hot":""}">🔥 ${window.ASHI18n?.t("heatLabel",score)||("热度 "+score)}${rank?` · TOP ${rank}`:""}</span>
+        <span class="signal-note">${window.ASHI18n?.t("signalNote")||"站内参考指数"}</span>
       </div>
       <div class="card-actions guide-ready">
         <a class="open" href="${x[5]}" target="_blank" rel="noopener noreferrer">${esc(window.ASHI18n?.t("open")||"打开官网 ↗")}</a>

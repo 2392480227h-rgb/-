@@ -161,7 +161,7 @@ const $=s=>document.querySelector(s);
 const reducedMotion=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches===true;
 let initialRender=true;
 let renderMotionTimer=0;
-function renderCats(){ $("#cats").innerHTML=cats.map(c=>`<button class="cat ${c===active?"active":""}" data-c="${c}">${c}</button>`).join("");document.querySelectorAll(".cat").forEach(b=>b.onclick=()=>{active=b.dataset.c;render({animate:true})})}
+function renderCats(){ $("#cats").innerHTML=cats.map(c=>`<button class="cat ${c===active?"active":""}" data-c="${c}">${window.ASHI18n?.category(c)||c}</button>`).join("");document.querySelectorAll(".cat").forEach(b=>b.onclick=()=>{active=b.dataset.c;render({animate:true})})}
 function esc(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function normalize(s){return String(s||"").toLowerCase().replace(/[\s_\-]+/g,"").trim()}
 function toolSlug(name){
@@ -189,12 +189,12 @@ function syncFavoriteButton(button){
   const name=button.dataset.favoriteToolName ? decodeURIComponent(button.dataset.favoriteToolName) : "";
   button.classList.toggle("is-favorite",active);
   button.setAttribute("aria-pressed",String(active));
-  button.setAttribute("title",active?("取消收藏 "+name):("收藏 "+name));
-  button.setAttribute("aria-label",active?("取消收藏 "+name):("收藏 "+name));
+  button.setAttribute("title",active?(window.ASHI18n?.t("favoriteRemove",name)||("取消收藏 "+name)):(window.ASHI18n?.t("favoriteAdd",name)||("收藏 "+name)));
+  button.setAttribute("aria-label",active?(window.ASHI18n?.t("favoriteRemove",name)||("取消收藏 "+name)):(window.ASHI18n?.t("favoriteAdd",name)||("收藏 "+name)));
   const star=button.querySelector(".favorite-star");
   if(star)star.textContent=active?"★":"☆";
   const label=button.querySelector(".favorite-label");
-  if(label)label.textContent=active?"已收藏":"收藏";
+  if(label)label.textContent=active?(window.ASHI18n?.t("favorited")||"已收藏"):(window.ASHI18n?.t("favorite")||"收藏");
 }
 function bindRecentLinks(){
   document.querySelectorAll(".open").forEach(link=>{
@@ -235,33 +235,39 @@ function render({animate=false}={}){
   if(sort==="name") a.sort((x,y)=>x[0].localeCompare(y[0]));
   if(sort==="free") a.sort((x,y)=>x[4].localeCompare(y[4])||heatScore(y[0])-heatScore(x[0]));
   $("#count").textContent=tools.length;
-  $("#summary").textContent=`当前显示 ${a.length} 个`;
+  $("#summary").textContent=window.ASHI18n?.t("shownCount",a.length)||(`当前显示 ${a.length} 个`);
+  $("#summary").dataset.i18nReady="1";
   $("#empty").hidden=a.length>0;
   const grid=$("#grid");
   if(animate&&!reducedMotion) grid.classList.add("is-updating");
   grid.innerHTML=a.map(x=>{
     const score=heatScore(x[0]), rank=heatRank(x[0]), hot=rank>0&&rank<=10;
+    const displayName=window.ASHI18n?.toolName(x)||x[0];
+    const desc=window.ASHI18n?.toolDescription(x)||x[3];
+    const category=window.ASHI18n?.category(x)||mainCategory(x);
+    const status=window.ASHI18n?.status(x[4])||x[4];
+    const intl=window.ASHI18n?.current()==="zh"&&internationalNames[x[0]]?`<small class="intl-name">${esc(internationalNames[x[0]])}</small>`:"";
     return `<article class="card" data-name="${esc(x[0])}" data-heat="${score}">
       <div class="top"><span class="icon">${ASHIcons.brand(x[0],x[5])}</span>
         <div class="card-top-actions">
-          <span class="badge">${esc(x[4])}</span>
+          <span class="badge">${esc(status)}</span>
           <div class="favorite-wrap">
-            <button class="favorite-button" type="button" data-favorite-tool-id="${encodeURIComponent(getToolId(x))}" data-favorite-tool-name="${encodeURIComponent(x[0])}" aria-pressed="false" title="收藏 ${esc(x[0])}">
-              <span class="favorite-star" aria-hidden="true">☆</span><span class="favorite-label">收藏</span>
+            <button class="favorite-button" type="button" data-favorite-tool-id="${encodeURIComponent(getToolId(x))}" data-favorite-tool-name="${encodeURIComponent(displayName)}" aria-pressed="false" title="${esc(window.ASHI18n?.t("favoriteAdd",displayName)||("收藏 "+displayName))}">
+              <span class="favorite-star" aria-hidden="true">☆</span><span class="favorite-label">${esc(window.ASHI18n?.t("favorite")||"收藏")}</span>
             </button>
           </div>
         </div>
       </div>
-      <h2>${esc(x[0])}${internationalNames[x[0]]?`<small class="intl-name">${esc(internationalNames[x[0]])}</small>`:""}</h2>
-      <div class="desc">${esc(x[3])}</div>
-      <div class="meta"><span class="tag">${esc(mainCategory(x))}</span><span class="tag">${esc(x[6])}</span></div>
+      <h2>${esc(displayName)}${intl}</h2>
+      <div class="desc">${esc(desc)}</div>
+      <div class="meta"><span class="tag">${esc(category)}</span><span class="tag">${esc(x[6])}</span></div>
       <div class="card-signal">
-        <span class="popularity ${hot?"is-hot":""}">🔥 热度 ${score}${rank?` · TOP ${rank}`:""}</span>
-        <span class="signal-note">站内参考指数</span>
+        <span class="popularity ${hot?"is-hot":""}">🔥 ${window.ASHI18n?.current()==="en"?"Popular":"热度"} ${score}${rank?` · TOP ${rank}`:""}</span>
+        <span class="signal-note">${window.ASHI18n?.current()==="en"?"Site reference index":"站内参考指数"}</span>
       </div>
       <div class="card-actions guide-ready">
-        <a class="open" href="${x[5]}" target="_blank" rel="noopener noreferrer">打开官网 ↗</a>
-        <a class="learn" href="tools/${toolSlug(x[0])}/"><span class="link-icon">${ASHIcons.svg("book")}</span> 新手教程 / Guide</a>
+        <a class="open" href="${x[5]}" target="_blank" rel="noopener noreferrer">${esc(window.ASHI18n?.t("open")||"打开官网 ↗")}</a>
+        <a class="learn" href="tools/${toolSlug(x[0])}/"><span class="link-icon">${ASHIcons.svg("book")}</span> ${esc(window.ASHI18n?.t("guide")||"新手教程 / Guide")}</a>
       </div>
     </article>`;
   }).join("");
@@ -284,7 +290,9 @@ function render({animate=false}={}){
 function syncSearch(){const v=$("#search").value||"";if(v!==window.__lastSearchValue){window.__lastSearchValue=v;render()}}
 ["input","compositionend","search"].forEach(ev=>$("#search").addEventListener(ev,syncSearch));
 window.addEventListener("ash:favorites-changed",()=>document.querySelectorAll(".favorite-button").forEach(syncFavoriteButton));
-$("#sort").onchange=()=>render({animate:true});renderCats();render();
+$("#sort").onchange=()=>render({animate:true});
+window.addEventListener("ash:language-changed",()=>{renderCats();render({animate:true});if(window.SearchSuggestions?.refresh)window.SearchSuggestions.refresh();});
+renderCats();render();
 function pickTask(task){const c=taskMap[task];if(c){active=c;renderCats();render({animate:true})}$("#tools").scrollIntoView({behavior:"smooth",block:"start"})}
 
 const sitebar=document.querySelector(".sitebar");

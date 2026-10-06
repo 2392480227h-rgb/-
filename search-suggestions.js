@@ -6,7 +6,11 @@ if(!input||!box||typeof tools==="undefined"||!window.SearchCore)return;
 
 function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
 const chips=[
-  ["做图片","Images"],["做视频","Video"],["做音乐","Music"],["写文章","Writing"],["学习资料","Learn"]
+  {zh:"做图片",en:"Images",q:"make images"},
+  {zh:"做视频",en:"Video",q:"make a video"},
+  {zh:"做音乐",en:"Music",q:"make music"},
+  {zh:"写文章",en:"Writing",q:"write an article"},
+  {zh:"学习资料",en:"Learn",q:"study material"}
 ];
 
 function chipBrandIcons(q){
@@ -30,14 +34,15 @@ function draw(){
   const list=result.results.map(x=>x.tool);
 
   if(!q.trim()){
-    box.innerHTML='<div class="suggest-title">不知道怎么搜？试试 / Try asking</div><div class="suggest-chips">'+chips.map(([a,b])=>'<button class="suggest-chip" data-q="'+a+'"><span class="chip-brands">'+chipBrandIcons(a)+'</span><span>'+a+' / '+b+'</span></button>').join("")+'</div>';
+    const en=window.ASHI18n?.current()==="en";
+    box.innerHTML='<div class="suggest-title">'+esc(window.ASHI18n?.t("suggestTitle")||"不知道怎么搜？试试 / Try asking")+'</div><div class="suggest-chips">'+chips.map(c=>'<button class="suggest-chip" data-q="'+esc(en?c.q:c.zh)+'"><span class="chip-brands">'+chipBrandIcons(c.zh)+'</span><span>'+esc(en?c.en:c.zh)+'</span></button>').join("")+'</div>';
   }else if(list.length){
-    const task=ctx.tasks?.[0]?.rule?.label||"";
+    const task=ctx.tasks?.[0]?.rule?.intent==="audio"?ctx.tasks?.[0]?.rule?.label:ctx.tasks?.[0]?.rule?.label||"";
     const intent=ctx.intents?.[0]?.rule?.label||"";
-    const label=task?("识别到："+task):(intent?("识别到："+intent):"你可能在找 / You may be looking for");
-    box.innerHTML='<div class="suggest-title">'+esc(label)+'</div>'+list.map(t=>'<button class="suggest-item" data-name="'+esc(t[0])+'"><span class="suggest-icon">'+(window.ASHIcons?ASHIcons.brand(t[0],t[5]):t[1])+'</span><span><strong>'+esc(t[0])+'</strong><small>'+esc(t[2])+' · '+esc(t[3])+'</small></span><b>›</b></button>').join("");
+    const label=task?(window.ASHI18n?.t("suggestRecognized",window.ASHI18n?.task(task)||task)||("识别到："+task)):(intent?(window.ASHI18n?.t("suggestRecognized",intent)||("识别到："+intent)):(window.ASHI18n?.t("suggestLooking")||"你可能在找 / You may be looking for"));
+    box.innerHTML='<div class="suggest-title">'+esc(label)+'</div>'+list.map(tool=>{const name=window.ASHI18n?.toolName(tool)||tool[0];const desc=window.ASHI18n?.toolDescription(tool)||tool[3];const cat=window.ASHI18n?.category(tool)||tool[2];return '<button class="suggest-item" data-name="'+esc(tool[0])+'"><span class="suggest-icon">'+(window.ASHIcons?ASHIcons.brand(tool[0],tool[5]):tool[1])+'</span><span><strong>'+esc(name)+'</strong><small>'+esc(cat)+' · '+esc(desc)+'</small></span><b>›</b></button>';}).join("");
   }else{
-    box.innerHTML='<div class="suggest-empty">暂时没找到合适的工具。换一种说法试试，例如：<strong>我想做图片 / 我想用 AI 做视频 / 我想学 Python</strong><br><small>Describe what you want to do instead of remembering a tool name.</small></div>';
+    box.innerHTML='<div class="suggest-empty">'+(window.ASHI18n?.t("suggestEmpty")||"暂时没找到合适的工具。换一种说法试试。")+'</div>';
   }
 
   box.hidden=false;
@@ -65,4 +70,4 @@ function draw(){
 ["input","compositionend","search"].forEach(e=>input.addEventListener(e,draw));
 input.addEventListener("focus",draw);
 input.addEventListener("blur",function(){setTimeout(function(){box.hidden=true},180)});
-})();
+})();\nwindow.SearchSuggestions={refresh:draw};\n

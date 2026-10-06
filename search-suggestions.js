@@ -6,8 +6,8 @@ if(!input||!box||typeof tools==="undefined"||!window.SearchCore)return;
 
 function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
 const chips=[
-  {zh:"做图片",en:"Images",q:"make images"},
-  {zh:"做视频",en:"Video",q:"make a video"},
+  {zh:"做图片",tw:"製作圖片",en:"Images",q:"make images"},
+  {zh:"做视频",tw:"製作影片",en:"Video",q:"make a video"},
   {zh:"做音乐",tw:"製作音樂",en:"Music",q:"make music"},
   {zh:"写文章",tw:"寫文章",en:"Writing",q:"write an article"},
   {zh:"学习资料",tw:"學習資料",en:"Learn",q:"study material"}

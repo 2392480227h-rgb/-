@@ -70,4 +70,4 @@ function draw(){
 ["input","compositionend","search"].forEach(e=>input.addEventListener(e,draw));
 input.addEventListener("focus",draw);
 input.addEventListener("blur",function(){setTimeout(function(){box.hidden=true},180)});
-})();\nwindow.SearchSuggestions={refresh:draw};\n
+window.SearchSuggestions={refresh:draw};\n})();\n

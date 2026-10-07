@@ -5,7 +5,7 @@ const signedOut = $("signedOut");
 const signedIn = $("signedIn");
 const status = $("profileStatus");
 let currentSession = null;
-const T = (key, fallback = key) => window.ASHI18n?.t(key) ?? fallback;
+const T = (key, fallback = key, ...args) => window.ASHI18n?.t(key, ...args) ?? fallback;
 
 function setStatus(text, loggedIn = false) {
   if (!status) return;
@@ -50,7 +50,7 @@ function renderFavorites() {
   const list = $("favoritesList"), empty = $("favoritesEmpty"), summary = $("favoriteSummary");
   if (!list || !empty) return;
   const favorites = window.ASHFavorites?.getAll?.() || [];
-  if (summary) summary.textContent = T("profileFavoritesCount", `${favorites.length} 个工具`)(favorites.length);
+  if (summary) summary.textContent = T("profileFavoritesCount", `${favorites.length} 个工具`, favorites.length);
   list.replaceChildren();
   empty.hidden = favorites.length > 0;
   for (const item of favorites) {
@@ -101,7 +101,7 @@ function renderRecent() {
   const list = $("recentList"), empty = $("recentEmpty"), summary = $("recentSummary"), clearButton = $("clearRecentButton");
   if (!list || !empty) return;
   const recent = window.ASHRecent?.getAll?.() || [];
-  if (summary) summary.textContent = T("profileFavoritesCount", `${recent.length} 个工具`)(recent.length);
+  if (summary) summary.textContent = T("profileFavoritesCount", `${recent.length} 个工具`, recent.length);
   if (clearButton) clearButton.disabled = recent.length === 0;
   list.replaceChildren();
   empty.hidden = recent.length > 0;

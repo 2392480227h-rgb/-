@@ -6,7 +6,7 @@ button,a{font:inherit}
 .profile-sitebar{height:64px;background:#fff;border-bottom:1px solid #e8ebf2;position:sticky;top:0;z-index:10}
 .profile-nav{height:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}
 .profile-brand{display:flex;align-items:baseline;gap:8px;color:#151b2c;text-decoration:none;font-size:18px}
-.profile-brand span{font-size:25px}
+.profile-brand-icon{width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;flex:none}.profile-brand-icon img{width:28px;height:28px;display:block}
 .profile-brand em{font-size:11px;color:#8a94a8;font-style:normal}
 .back-home{color:#667085;text-decoration:none;border:1px solid #dfe4ed;background:#fff;border-radius:10px;padding:7px 11px;font-weight:700;font-size:12px}
 .back-home:hover{background:#f8f9fc;border-color:#c6cfdf;color:#172033}

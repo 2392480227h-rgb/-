@@ -4,11 +4,11 @@ body{margin:0;background:#f6f7fb;color:#172033;font:15px/1.6 -apple-system,Blink
 button,a{font:inherit}
 .profile-wrap{width:min(1060px,calc(100% - 32px));margin:auto}
 .profile-sitebar{height:64px;background:#fff;border-bottom:1px solid #e8ebf2;position:sticky;top:0;z-index:10}
-.profile-nav{height:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.profile-nav{height:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .profile-brand{display:flex;align-items:center;gap:8px;color:#151b2c;text-decoration:none;font-size:18px}
 .profile-brand-icon{width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 28px;overflow:hidden}.profile-brand-icon img{display:block;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain}
 .profile-brand em{font-size:11px;color:#8a94a8;font-style:normal}
-.back-home{color:#667085;text-decoration:none;border:1px solid #dfe4ed;background:#fff;border-radius:10px;padding:7px 11px;font-weight:700;font-size:12px}
+.back-home{color:#667085;text-decoration:none;border:1px solid #dfe4ed;background:#fff;border-radius:10px;padding:7px 11px;font-weight:700;font-size:12px;flex:0 0 auto}
 .back-home:hover{background:#f8f9fc;border-color:#c6cfdf;color:#172033}
 .profile-main{padding:44px 0 80px}
 .profile-hero{display:flex;align-items:end;justify-content:space-between;gap:24px;padding:12px 0 28px}
@@ -58,6 +58,17 @@ button,a{font:inherit}
 }
 @media(max-width:520px){
   .profile-wrap{width:min(100% - 22px,1060px)}
+  .profile-nav{gap:6px}
+  .profile-brand{gap:5px;font-size:13px;min-width:0}
+  .profile-brand-icon{width:24px;height:24px;flex-basis:24px}
+  .profile-brand em{display:none}
+  .profile-nav-ad{height:38px;min-height:38px;min-width:0;flex:1 1 auto;padding:5px 5px 5px 7px;gap:4px;border-radius:8px;background-size:auto,auto 195%,auto}
+  .profile-nav-ad .spcx-ad-copy small,.profile-nav-ad .spcx-ad-copy em{display:none}
+  .profile-nav-ad .spcx-ad-copy strong{font-size:7.2px}
+  .profile-nav-ad .spcx-ad-cta{padding:4px 5px;border-radius:5px;font-size:6.5px}
+  .profile-nav-ad .spcx-ad-label{right:3px;top:3px;font-size:5px}
+  .back-home{padding:5px 7px;font-size:9px}
+
   .profile-brand em{display:none}
   .profile-nav{gap:10px}
   .back-home{padding:6px 9px}
@@ -69,6 +80,16 @@ button,a{font:inherit}
   .secondary-button,.danger-button{width:100%}
   .profile-footer .profile-wrap{padding:25px 0;flex-direction:column;align-items:flex-start}
 }
+
+/* Profile header sponsor card, shared with the homepage */
+.profile-nav-ad{flex:1 1 260px;min-width:180px;max-width:460px;height:46px;min-height:46px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;padding:6px 8px 6px 11px;border:1px solid #263d5a;border-radius:10px;color:#fff;text-decoration:none;overflow:hidden;isolation:isolate;background-image:linear-gradient(90deg,#040914 0%,#071528 43%,#07152800 82%),url("assets/ads/spcx-logo.webp"),radial-gradient(circle at 18% 50%,#123d72 0%,transparent 58%);background-repeat:no-repeat;background-position:center,right center,center;background-size:auto,auto 175%,auto;background-blend-mode:normal,screen,normal;box-shadow:0 5px 16px #0b13260f,inset 0 1px 0 #ffffff12;transition:transform .18s,border-color .18s,box-shadow .18s}
+.profile-nav-ad:hover{transform:translateY(-1px);border-color:#3f6590;box-shadow:0 8px 20px #0b13261a,inset 0 1px 0 #ffffff18}
+.profile-nav-ad .spcx-ad-copy{position:relative;z-index:2;min-width:0;display:flex;flex-direction:column;align-items:flex-start;line-height:1.12;text-shadow:0 1px 8px #020610}
+.profile-nav-ad .spcx-ad-copy strong{font-size:11px;letter-spacing:.01em;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.profile-nav-ad .spcx-ad-copy small{margin-top:2px;font-size:8px;font-weight:850;color:#b8d8ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.profile-nav-ad .spcx-ad-copy em{margin-top:1px;font-size:7px;color:#8fa7c9;font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.profile-nav-ad .spcx-ad-cta{position:relative;z-index:2;flex:0 0 auto;align-self:center;padding:6px 8px;border:1px solid #9fc4ee;border-radius:7px;background:#f5f9ff;color:#0b1a32;font-size:8px;font-weight:900;white-space:nowrap;box-shadow:0 4px 10px #00000024}
+.profile-nav-ad .spcx-ad-label{position:absolute;right:5px;top:4px;z-index:3;padding:1px 3px;border:1px solid #7d94b2;border-radius:3px;color:#b7c6da;background:#071426cc;font-size:6px;font-weight:800;line-height:1.2}
 
 /* Icon system */
 [data-icon]{display:inline-grid;place-items:center}

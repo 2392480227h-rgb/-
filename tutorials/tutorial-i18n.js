@@ -22,8 +22,7 @@ const UI={
     step2Lead:"。先完成最小任务，不追求一次学会全部功能。",step3:"第 3 步：检查结果并继续",step3En:"Step 3: Review and refine",
     step3Lead:"第一次结果不满意很正常。告诉工具哪里要改、保留什么、删掉什么。",
     step3LeadEn:"It is normal for the first result to need changes. Say what to keep, change, or remove.",
-    followupTitle:"万能补充 / Useful follow-ups:",followups:"“再简单一点” · “给我 3 个版本” · “只修改这一部分” · “再检查一次”
-“Make it simpler” · “Give me 3 versions” · “Change only this part” · “Check it again”",
+    followupTitle:"万能补充 / Useful follow-ups:",followups:"“再简单一点” · “给我 3 个版本” · “只修改这一部分” · “再检查一次”\n“Make it simpler” · “Give me 3 versions” · “Change only this part” · “Check it again”",
     videoHeading:"教程视频直接播放",videoHeadingEn:"Watch right here",videoLead:"视频已经直接嵌入本教程页面，不需要先跳转到 YouTube 或其他站点。YouTube、Bilibili 等可嵌入视频都会在这里显示原生播放器；只有平台明确禁止第三方嵌入时，才保留来源入口作为备用。",
     videoTag:"本站内嵌 · 点播放器即可播放",videoSearchNote:"按当前工具名称精确搜索入门教程。",videoSearch:"教程搜索",videoOpenSearch:"🔎 打开教程来源 ↗",videoSource:"来源页面 ↗",
     videoFootnote:"提示：播放器就在上方。正常情况下直接点击播放器中的 ▶ 即可观看；若平台限制第三方播放，可使用“来源页面”打开原视频。",
@@ -57,8 +56,7 @@ const UI={
     step2Lead:"。先完成最小任務，不追求一次學會全部功能。",step3:"第 3 步：檢查結果並繼續",step3En:"Step 3: Review and refine",
     step3Lead:"第一次結果不滿意很正常。告訴工具哪裡要改、保留什麼、刪掉什麼。",
     step3LeadEn:"It is normal for the first result to need changes. Say what to keep, change, or remove.",
-    followupTitle:"萬用補充 / Useful follow-ups:",followups:"「再簡單一點」 · 「給我 3 個版本」 · 「只修改這一部分」 · 「再檢查一次」
-“Make it simpler” · “Give me 3 versions” · “Change only this part” · “Check it again”",
+    followupTitle:"萬用補充 / Useful follow-ups:",followups:"「再簡單一點」 · 「給我 3 個版本」 · 「只修改這一部分」 · 「再檢查一次」\n“Make it simpler” · “Give me 3 versions” · “Change only this part” · “Check it again”",
     videoHeading:"教學影片直接播放",videoHeadingEn:"Watch right here",videoLead:"影片已經直接嵌入本教學頁面，不需要先跳轉到 YouTube 或其他站點。YouTube、Bilibili 等可嵌入影片都會在這裡顯示原生播放器；只有平台明確禁止第三方嵌入時，才保留來源入口作為備用。",
     videoTag:"本站內嵌 · 點播放器即可播放",videoSearchNote:"依目前工具名稱精確搜尋入門教學。",videoSearch:"教學搜尋",videoOpenSearch:"🔎 開啟教學來源 ↗",videoSource:"來源頁面 ↗",
     videoFootnote:"提示：播放器就在上方。正常情況下直接點擊播放器中的 ▶ 即可觀看；若平台限制第三方播放，可使用「來源頁面」開啟原影片。",

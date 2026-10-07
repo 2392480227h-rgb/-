@@ -47,6 +47,7 @@ function toolName(tool){if(!Array.isArray(tool))return "";if(lang==="en")return 
 function task(value){if(lang==="en")return TASK_EN[value]||value;if(lang==="zh-TW")return TASK_TW[value]||toTraditional(value);return value;}
 
 function applyStatic(){
+  if(!document.getElementById("languagePicker"))return;
   document.documentElement.lang=lang==="en"?"en":(lang==="zh-TW"?"zh-TW":"zh-CN");
   document.title=lang==="en"?"AI Starter Hub | 150+ AI Tools, Guides & Free Access":(lang==="zh-TW"?"AI Starter Hub｜150+ AI 工具、教學與免費入口":"AI 新手導航 | 150+ AI 工具、教程與免費入口 · AI Starter Hub");
   const meta=document.querySelector('meta[name="description"]');

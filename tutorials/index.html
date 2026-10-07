@@ -14,12 +14,12 @@
 <meta name="twitter:description" content="按工具浏览 AI 新手教程。">
 <link rel="stylesheet" href="../style.css?v=20261004-19"><link rel="stylesheet" href="tutorial.css?v=20261004-5">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"AI 工具新手教程","url":"https://starterhub-dev.github.io/ai-tools/tutorials/","description":"AI 新手导航的工具教程目录，提供 150+ 工具的入门指南。","inLanguage":["zh-CN","zh-TW","en"],"isPartOf":{"@type":"WebSite","name":"AI 新手导航","url":"https://starterhub-dev.github.io/ai-tools/"}}</script></head><body>
-<header class="topbar"><div class="wrap"><a class="brand" href="../"><span data-icon="compass"></span><span id="pageBrand"></span></a><div style="display:flex;align-items:center;gap:10px"><a class="back" href="../" id="pageBack"></a><div class="language-picker" id="pageLanguagePicker"><button id="pageLanguageButton" class="lang-button" type="button" aria-haspopup="menu" aria-expanded="false"><span class="lang-globe" aria-hidden="true">🌐</span><span id="pageLanguageLabel">语言</span><span class="lang-chevron" aria-hidden="true">⌄</span></button><div id="pageLanguageMenu" class="language-menu" role="menu" hidden><button type="button" data-language="zh">简体中文<span>简中</span></button><button type="button" data-language="zh-TW">繁體中文<span>繁中</span></button><button type="button" data-language="en">English<span>EN</span></button></div></div></div></div></header>
+<header class="topbar"><div class="wrap"><a class="brand" href="../"><img class="tutorial-brand-mark" src="../ai-starter-hub-mark.svg" alt="" aria-hidden="true"><span id="pageBrand"></span></a><a class="back" href="../" id="pageBack"></a></div></header>
 <header class="hero"><div class="wrap"><div class="eyebrow" id="tutorialEyebrow"></div><h1 id="tutorialTitle"></h1><p id="tutorialLead"></p><small id="tutorialSub"></small><div class="tool-badges"><span class="pill"><span data-icon="mobile"></span><span id="badgeMobile"></span></span><span class="pill"><span data-icon="globe"></span><span id="badgeLanguage"></span></span><span class="pill"><span data-icon="image"></span><span id="badgeVisual"></span></span><span class="pill"><span data-icon="star"></span><span id="badgeBeginner"></span></span></div></div></header>
 <main class="wrap content"><section class="section"><h2 id="guideHeading"></h2><p class="lead" id="guideBrowse"></p><div id="guide-grid" class="guide-grid"></div><div class="tip" style="margin-top:18px"><strong id="readTipTitle"></strong> <span id="readTip"></span></div></section></main>
 <footer class="footer"><div class="wrap" id="tutorialFooter"></div></footer>
 <script src="../i18n.js?v=20261007-1"></script>
-<script src="tutorial-i18n.js?v=20261007-1"></script>
+<script src="tutorial-i18n.js?v=20261007-2"></script>
 <script src="../icons.js?v=20261004-3"></script>
 <script>
 (async()=>{
@@ -48,8 +48,7 @@ function render(){
  document.getElementById("tutorialFooter").textContent=TI.t("footer");
  document.getElementById("guide-grid").innerHTML=tools.map(t=>'<a class="guide-card" href="tool.html?tool='+encodeURIComponent(t[0])+'"><div class="guide-icon">'+ASHIcons.brand(t[0],t[5])+'</div><div><strong>'+esc(TI.toolName(t))+'</strong><span>'+esc(TI.category(t[2]))+'</span><small>'+esc(TI.status(t[4]))+' · '+esc(t[6])+'</small></div><b>'+ASHIcons.svg("arrow")+'</b></a>').join("");
  document.querySelectorAll("[data-icon]").forEach(el=>{el.innerHTML=ASHIcons.svg(el.dataset.icon);});
- TI.bindPicker();
-}
+ }
 TI.bindSync(render);
 render();
 })().catch(()=>{document.querySelector("#guide-grid").innerHTML='<div class="tip">目录加载失败 / Failed to load the guide list.</div>';});

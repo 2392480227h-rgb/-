@@ -45,3 +45,6 @@
 .guide-video-search-icon{width:76px;height:76px;border-radius:20px;background:#eef1f7;display:grid;place-items:center;color:#536179}
 .guide-video-search-icon svg{width:38px;height:38px}
 @media(max-width:720px){.guide-video-search{grid-template-columns:1fr}.guide-video-search-icon{width:58px;height:58px}.guide-video-search-icon svg{width:30px;height:30px}}
+
+/* Shared site identity */
+.tutorial-brand-mark{width:28px;height:28px;display:block;object-fit:contain;flex:0 0 auto}.topbar .brand{display:inline-flex;align-items:center;gap:8px}.topbar .brand #pageBrand{min-width:0}@media(max-width:520px){.tutorial-brand-mark{width:25px;height:25px}.topbar .brand{gap:6px;font-size:12px}.topbar .back{font-size:11px}}

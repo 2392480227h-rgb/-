@@ -47,6 +47,38 @@ function relativeTime(timestamp) {
   return new Date(timestamp).toLocaleDateString(lang === "en" ? "en-US" : (lang === "zh-TW" ? "zh-TW" : "zh-CN"));
 }
 
+function renderToolBrandIcon(container, item) {
+  container.replaceChildren();
+  const src = window.ASHIcons?.brandUrl?.(item.name, item.url);
+  if (!src) {
+    container.textContent = item.icon || "⭐";
+    return;
+  }
+
+  const img = document.createElement("img");
+  img.src = src;
+  img.alt = "";
+  img.loading = "lazy";
+  img.referrerPolicy = "no-referrer";
+
+  let triedFallback = false;
+  img.onerror = () => {
+    if (!triedFallback) {
+      triedFallback = true;
+      try {
+        const host = new URL(item.url).hostname;
+        if (host) {
+          img.src = "https://" + host + "/favicon.ico";
+          return;
+        }
+      } catch {}
+    }
+    img.remove();
+  };
+
+  container.append(img);
+}
+
 function renderFavorites() {
   const list = $("favoritesList"), empty = $("favoritesEmpty"), summary = $("favoriteSummary");
   if (!list || !empty) return;
@@ -57,11 +89,7 @@ function renderFavorites() {
   for (const item of favorites) {
     const article = document.createElement("article"); article.className = "favorite-item";
     const icon = document.createElement("div"); icon.className = "favorite-item-icon";
-    if (window.ASHIcons?.brand) {
-      icon.innerHTML = window.ASHIcons.brand(item.name, item.url);
-    } else {
-      icon.textContent = item.icon || "⭐";
-    }
+    renderToolBrandIcon(icon, item);
     const copy = document.createElement("div"); copy.className = "favorite-item-copy";
     const name = document.createElement("strong"); name.textContent = item.name;
     const meta = document.createElement("small"); meta.textContent = [window.ASHI18n?.category?.(item.category) || item.category, item.company].filter(Boolean).join(" · ");
@@ -87,11 +115,7 @@ function renderRecent() {
   for (const item of recent) {
     const article = document.createElement("article"); article.className = "recent-item";
     const icon = document.createElement("div"); icon.className = "recent-item-icon";
-    if (window.ASHIcons?.brand) {
-      icon.innerHTML = window.ASHIcons.brand(item.name, item.url);
-    } else {
-      icon.textContent = item.icon || "⭐";
-    }
+    renderToolBrandIcon(icon, item);
     const copy = document.createElement("div"); copy.className = "recent-item-copy";
     const name = document.createElement("strong"); name.textContent = item.name;
     const meta = document.createElement("small"); meta.textContent = [relativeTime(item.visitedAt), window.ASHI18n?.category?.(item.category) || item.category, item.company].filter(Boolean).join(" · ");
@@ -113,13 +137,21 @@ function renderSession(session) {
   signedOut.hidden = loggedIn;
   signedIn.hidden = !loggedIn;
 
-  renderFavorites();
-  renderRecent();
+  // Update the auth status first. Rendering saved/recent tools must never
+  // leave the header stuck on "Checking sign-in status…".
+  setStatus(
+    T(loggedIn ? "profileLogged" : "profileNotLogged", loggedIn ? "● 已登录" : "● 未登录"),
+    loggedIn
+  );
 
-  if (!loggedIn) {
-    setStatus(T("profileNotLogged", "● 未登录"), false);
-    return;
+  try {
+    renderFavorites();
+    renderRecent();
+  } catch (error) {
+    console.warn("Profile list render failed:", error);
   }
+
+  if (!loggedIn) return;
 
   const rawName = String(user.user_metadata?.name || user.user_metadata?.full_name || T("profileDefaultUser", "已登录用户")).trim();
   const name = rawName.split("(")[0].trim() || rawName || "已登录用户";

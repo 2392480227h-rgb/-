@@ -4,6 +4,8 @@ const $ = (id) => document.getElementById(id);
 const signedOut = $("signedOut");
 const signedIn = $("signedIn");
 const status = $("profileStatus");
+let currentSession = null;
+const T = (key, fallback = key) => window.ASHI18n?.t(key) ?? fallback;
 
 function setStatus(text, loggedIn = false) {
   if (!status) return;
@@ -48,7 +50,7 @@ function renderFavorites() {
   const list = $("favoritesList"), empty = $("favoritesEmpty"), summary = $("favoriteSummary");
   if (!list || !empty) return;
   const favorites = window.ASHFavorites?.getAll?.() || [];
-  if (summary) summary.textContent = `${favorites.length} 个工具`;
+  if (summary) summary.textContent = T("profileFavoritesCount", `${favorites.length} 个工具`)(favorites.length);
   list.replaceChildren();
   empty.hidden = favorites.length > 0;
   for (const item of favorites) {
@@ -87,9 +89,9 @@ function renderFavorites() {
     copy.append(name, meta);
     const actions = document.createElement("div"); actions.className = "favorite-item-actions";
     if (item.url) {
-      const open = document.createElement("a"); open.className = "secondary-button favorite-open"; open.href = item.url; open.target = "_blank"; open.rel = "noopener noreferrer"; open.textContent = "打开"; actions.append(open);
+      const open = document.createElement("a"); open.className = "secondary-button favorite-open"; open.href = item.url; open.target = "_blank"; open.rel = "noopener noreferrer"; open.textContent = T("profileOpen", "打开"); actions.append(open);
     }
-    const remove = document.createElement("button"); remove.className = "danger-button favorite-remove"; remove.type = "button"; remove.textContent = "取消收藏";
+    const remove = document.createElement("button"); remove.className = "danger-button favorite-remove"; remove.type = "button"; remove.textContent = T("profileRemove", "取消收藏");
     remove.addEventListener("click", () => window.ASHFavorites?.toggle(item)); actions.append(remove);
     article.append(icon, copy, actions); list.append(article);
   }
@@ -99,7 +101,7 @@ function renderRecent() {
   const list = $("recentList"), empty = $("recentEmpty"), summary = $("recentSummary"), clearButton = $("clearRecentButton");
   if (!list || !empty) return;
   const recent = window.ASHRecent?.getAll?.() || [];
-  if (summary) summary.textContent = `${recent.length} 个工具`;
+  if (summary) summary.textContent = T("profileFavoritesCount", `${recent.length} 个工具`)(recent.length);
   if (clearButton) clearButton.disabled = recent.length === 0;
   list.replaceChildren();
   empty.hidden = recent.length > 0;
@@ -139,15 +141,16 @@ function renderRecent() {
     copy.append(name, meta);
     const actions = document.createElement("div"); actions.className = "recent-item-actions";
     if (item.url) {
-      const open = document.createElement("a"); open.className = "secondary-button"; open.href = item.url; open.target = "_blank"; open.rel = "noopener noreferrer"; open.textContent = "再次打开"; actions.append(open);
+      const open = document.createElement("a"); open.className = "secondary-button"; open.href = item.url; open.target = "_blank"; open.rel = "noopener noreferrer"; open.textContent = T("profileAgain", "再次打开"); actions.append(open);
     }
-    const remove = document.createElement("button"); remove.className = "danger-button"; remove.type = "button"; remove.textContent = "移除";
+    const remove = document.createElement("button"); remove.className = "danger-button"; remove.type = "button"; remove.textContent = T("profileRemoveRecent", "移除");
     remove.addEventListener("click", () => window.ASHRecent?.remove(item.toolId)); actions.append(remove);
     article.append(icon, copy, actions); list.append(article);
   }
 }
 
 function renderSession(session) {
+  currentSession = session;
   const user = session?.user || null;
   const loggedIn = Boolean(user);
   signedOut.hidden = loggedIn;
@@ -157,7 +160,7 @@ function renderSession(session) {
   renderRecent();
 
   if (!loggedIn) {
-    setStatus("● 未登录", false);
+    setStatus(T("profileNotLogged", "● 未登录"), false);
     return;
   }
 
@@ -166,7 +169,7 @@ function renderSession(session) {
   $("profileName").textContent = name;
   $("profileEmail").textContent = String(user.email || "Google 账号");
   renderAvatar(user);
-  setStatus("● 已登录", true);
+  setStatus(T("profileLogged", "● 已登录"), true);
 }
 
 async function startLogin(forceAccountSelect = false) {
@@ -186,6 +189,7 @@ $("signOutButton")?.addEventListener("click", async () => {
   if (error) window.alert("退出登录失败：" + error.message);
 });
 
+window.addEventListener("ash:language-changed", () => { renderFavorites(); renderRecent(); renderSession(currentSession); });
 window.addEventListener("ash:favorites-changed", renderFavorites);
 window.addEventListener("ash:recent-changed", renderRecent);
 $("clearRecentButton")?.addEventListener("click", () => window.ASHRecent?.clear());

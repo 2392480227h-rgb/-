@@ -89,6 +89,8 @@ function renderVideos(videos,title){
 }
 function render(){
  const L=TI.lang();
+ const brand=document.getElementById("pageBrand");if(brand)brand.textContent=TI.t("brand");
+ const pageBack=document.getElementById("pageBack");if(pageBack)pageBack.innerHTML=ASHIcons.svg("arrowLeft")+" "+TI.t("back");
  p.learn=pick("learn");p.task=pick("task");p.prompt=pick("prompt");p.tip=pick("tip");p.avoid=pick("avoid");
  const title=TI.toolName(tool)||originalTitle,cat=TI.category(originalCat),free=TI.status(originalFree),desc=localizedToolDesc();
  const seoTitle=L==="en"?title+" Beginner Guide | How to Use, Prompts & Steps · AI Starter Hub":(L==="zh-TW"?title+" 新手教學｜使用方法、提示詞與步驟 · AI Starter Hub":title+" 新手教程｜怎么用、入门步骤与提示词 · AI Starter Hub");

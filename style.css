@@ -281,7 +281,6 @@ button:active,.open:active,.learn:active,.favorite-button:active,.cat:active,.au
    Language switcher · i18n foundation
    ========================================================= */
 .nav{gap:10px}
-.nav{gap:10px}
 .language-picker{position:relative;flex:0 0 auto}
 .lang-button{
   display:inline-flex;

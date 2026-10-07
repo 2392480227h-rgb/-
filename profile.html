@@ -116,7 +116,7 @@
   </div>
 </footer>
 
-<script src="icons.js?v=20261004-3"></script><script src="tool-id.js?v=20261004-1"></script><script src="categories.js?v=20261004-2"></script><script src="favorites.js?v=20261004-3"></script><script src="recent.js?v=20261004-1"></script><script src="i18n.js?v=20261007-6"></script><script type="module" src="profile.js?v=20261007-1"></script>
+<script src="icons.js?v=20261004-3"></script><script src="tool-id.js?v=20261004-1"></script><script src="categories.js?v=20261004-2"></script><script src="favorites.js?v=20261004-3"></script><script src="recent.js?v=20261004-1"></script><script src="i18n.js?v=20261007-6"></script><script type="module" src="profile.js?v=20261007-2"></script>
 <script>
 (function(){
   const s=id=>document.getElementById(id);
@@ -133,7 +133,7 @@
     const fav=document.querySelector(".favorites-panel");if(fav){fav.querySelector(".panel-label").textContent=i.t("profileFavorites");fav.querySelector("h2").textContent=i.t("profileFavoritesTitle");}
     const rec=document.querySelector(".recent-panel");if(rec){rec.querySelector(".panel-label").textContent=i.t("profileRecent");rec.querySelector("h2").textContent=i.t("profileRecentTitle");const c=s("clearRecentButton");if(c)c.textContent=i.t("profileClear");}
     const road=document.querySelector(".roadmap-panel");if(road){road.querySelector(".panel-label").textContent=i.t("profileSpace");road.querySelector("h2").textContent=i.t("profileRoadmapTitle");road.querySelector(".building-tag").textContent=i.t("profileBuilding");const cards=road.querySelectorAll(".roadmap-grid > div");const cardText=[[i.t("profileRoadmapFavorites"),i.t("profileRoadmapFavoritesHint")],[i.t("profileRoadmapRecent"),i.t("profileRoadmapRecentHint")],[i.t("profileRoadmapAccount"),i.t("profileRoadmapAccountHint")]];cards.forEach((card,idx)=>{const strong=card.querySelector("strong"),small=card.querySelector("small");if(strong)strong.textContent=cardText[idx][0];if(small)small.textContent=cardText[idx][1];});}
-    const account=document.querySelector(".account-panel");if(account){const label=account.querySelector(".panel-label");if(label)label.textContent=i.t("profileAccount");const sw=s("switchAccountButton"),so=s("signOutButton");if(sw)sw.innerHTML='<span data-icon="refresh"></span> '+i.t("profileSwitch");if(so)so.innerHTML='<span data-icon="logout"></span> '+i.t("profileLogout");}
+    const account=document.querySelector(".account-panel");if(account){const label=account.querySelector(".panel-label");if(label)label.textContent=i.t("profileAccount");const sw=s("switchAccountButton"),so=s("signOutButton");if(sw&&sw.lastChild)sw.lastChild.textContent=" "+i.t("profileSwitch");if(so&&so.lastChild)so.lastChild.textContent=" "+i.t("profileLogout");}
     const favEmpty=s("favoritesEmpty");if(favEmpty){favEmpty.querySelector("strong").textContent=i.t("profileFavoriteEmpty");favEmpty.querySelector("span").textContent=i.t("profileFavoriteHint");}
     const recentEmpty=s("recentEmpty");if(recentEmpty){recentEmpty.querySelector("strong").textContent=i.t("profileRecentEmpty");recentEmpty.querySelector("span").textContent=i.t("profileRecentHint");}
     const footer=document.querySelector(".profile-footer");if(footer){const note=footer.querySelector("small");if(note)note.textContent=i.t("profileAccountData");}

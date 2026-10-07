@@ -128,7 +128,7 @@ for(const tool of tools){
     relatedSection+
     videoSection+
     '<section class="seo-cta"><div><strong>准备开始了？</strong><span>进入官网完成第一次任务，或者打开本站完整交互教程。</span></div><div class="seo-actions"><a class="seo-primary" href="'+attr(url)+'" target="_blank" rel="noopener noreferrer">打开官方入口 ↗</a><a class="seo-secondary" href="../../tutorials/tool.html?tool='+encodeURIComponent(title)+'">完整图文教程 ↗</a></div></section>'+
-    '</article></main><footer class="footer"><div class="wrap">AI 新手导航 · Discover → Understand → Learn → Use</div></footer><script src="../../icons.js?v=20261005-1"></script></body></html>';
+    '</article></main><script src="../../i18n.js?v=20261007-1"></script><script src="../../tutorials/tutorial-i18n.js?v=20261007-1"></script><script src="../../icons.js?v=20261004-3"></script><script src="../../tutorials/tutorial-data.js?v=20261004-8"></script><script>window.ASH_TUTORIAL_BASE="../../";window.ASH_TUTORIAL_TOOL_NAME='+'JSON.stringify(title).replace(/</g,"\\u003c")+';</script><script src="../../tutorials/tutorial-runtime.js?v=20261007-1"></script></body></html>';
   const dir=path.join(outRoot,slug);
   fs.mkdirSync(dir,{recursive:true});
   fs.writeFileSync(path.join(dir,"index.html"),html);

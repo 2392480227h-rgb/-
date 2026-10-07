@@ -39,11 +39,12 @@ function renderAvatar(user) {
 function relativeTime(timestamp) {
   const diff = Math.max(0, Date.now() - Number(timestamp || 0));
   const minute = 60 * 1000, hour = 60 * minute, day = 24 * hour;
-  if (diff < minute) return "刚刚";
-  if (diff < hour) return Math.floor(diff / minute) + " 分钟前";
-  if (diff < day) return Math.floor(diff / hour) + " 小时前";
-  if (diff < 7 * day) return Math.floor(diff / day) + " 天前";
-  return new Date(timestamp).toLocaleDateString();
+  const lang = window.ASHI18n?.current?.() || "zh";
+  if (diff < minute) return lang === "en" ? "just now" : (lang === "zh-TW" ? "剛剛" : "刚刚");
+  if (diff < hour) { const n = Math.floor(diff / minute); return lang === "en" ? `${n} min ago` : `${n} ${lang === "zh-TW" ? "分鐘前" : "分钟前"}`; }
+  if (diff < day) { const n = Math.floor(diff / hour); return lang === "en" ? `${n} hr ago` : `${n} ${lang === "zh-TW" ? "小時前" : "小时前"}`; }
+  if (diff < 7 * day) { const n = Math.floor(diff / day); return lang === "en" ? `${n} days ago` : `${n} ${lang === "zh-TW" ? "天前" : "天前"}`; }
+  return new Date(timestamp).toLocaleDateString(lang === "en" ? "en-US" : (lang === "zh-TW" ? "zh-TW" : "zh-CN"));
 }
 
 function renderFavorites() {
@@ -85,7 +86,7 @@ function renderFavorites() {
     }
     const copy = document.createElement("div"); copy.className = "favorite-item-copy";
     const name = document.createElement("strong"); name.textContent = item.name;
-    const meta = document.createElement("small"); meta.textContent = [window.ASHCategories?.main(item.category) || item.category, item.company].filter(Boolean).join(" · ");
+    const meta = document.createElement("small"); meta.textContent = [window.ASHI18n?.category?.(item.category) || item.category, item.company].filter(Boolean).join(" · ");
     copy.append(name, meta);
     const actions = document.createElement("div"); actions.className = "favorite-item-actions";
     if (item.url) {
@@ -164,10 +165,10 @@ function renderSession(session) {
     return;
   }
 
-  const rawName = String(user.user_metadata?.name || user.user_metadata?.full_name || "已登录用户").trim();
+  const rawName = String(user.user_metadata?.name || user.user_metadata?.full_name || T("profileDefaultUser", "已登录用户")).trim();
   const name = rawName.split("(")[0].trim() || rawName || "已登录用户";
   $("profileName").textContent = name;
-  $("profileEmail").textContent = String(user.email || "Google 账号");
+  $("profileEmail").textContent = String(user.email || T("profileGoogleAccount", "Google 账号"));
   renderAvatar(user);
   setStatus(T("profileLogged", "● 已登录"), true);
 }
@@ -177,7 +178,7 @@ async function startLogin(forceAccountSelect = false) {
     redirectTo: new URL("./profile.html", window.location.href).href,
     prompt: forceAccountSelect ? "select_account" : undefined
   });
-  if (result?.error) window.alert("Google 登录失败：" + result.error.message);
+  if (result?.error) window.alert(T("profileLoginError", "Google 登录失败：") + result.error.message);
 }
 
 document.querySelectorAll("[data-icon]").forEach(el => { el.innerHTML = window.ASHIcons.svg(el.dataset.icon); });
@@ -186,7 +187,7 @@ $("signInButton")?.addEventListener("click", () => startLogin(false));
 $("switchAccountButton")?.addEventListener("click", () => startLogin(true));
 $("signOutButton")?.addEventListener("click", async () => {
   const { error } = await supabase.auth.signOut();
-  if (error) window.alert("退出登录失败：" + error.message);
+  if (error) window.alert(T("profileSignOutError", "退出登录失败：") + error.message);
 });
 
 window.addEventListener("ash:language-changed", () => { renderFavorites(); renderRecent(); renderSession(currentSession); });
@@ -199,7 +200,7 @@ supabase.auth.onAuthStateChange((_event, session) => renderSession(session));
 supabase.auth.getSession().then(({ data, error }) => {
   if (error) {
     console.warn("Auth session read failed:", error);
-    setStatus("登录状态读取失败");
+    setStatus(T("profileSessionError", "登录状态读取失败"));
     return;
   }
   renderSession(data.session);

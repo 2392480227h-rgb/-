@@ -158,3 +158,15 @@ button,a{font:inherit}
 .favorite-item-icon .brand-icon[data-broken="1"] .brand-fallback,.recent-item-icon .brand-icon[data-broken="1"] .brand-fallback{display:none!important}
 .favorite-item-icon .brand-icon,.recent-item-icon .brand-icon{width:100%!important;height:100%!important;border:0!important;background:transparent!important;display:grid!important;place-items:center!important;overflow:hidden!important}
 .favorite-item-icon .brand-icon img,.recent-item-icon .brand-icon img{width:72%!important;height:72%!important;max-width:72%!important;max-height:72%!important;object-fit:contain!important;display:block!important}
+
+/* Final mobile header fit: keep the sponsor card beside the official logo without overflow. */
+@media(max-width:520px){
+  .profile-nav{gap:4px;overflow:hidden}
+  .profile-brand{flex:1 1 auto;min-width:0;max-width:calc(100% - 150px)}
+  .profile-brand strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .profile-nav-ad{flex:0 0 106px!important;width:106px!important;min-width:106px!important;max-width:106px!important;height:36px;min-height:36px;padding:4px 4px 4px 6px;gap:3px}
+  .profile-nav-ad .spcx-ad-copy strong{font-size:6.8px}
+  .profile-nav-ad .spcx-ad-cta{padding:3px 4px;font-size:6px}
+  .profile-nav-ad .spcx-ad-label{right:2px;top:2px;font-size:4.5px}
+  .back-home{flex:0 0 auto;margin-left:0;padding:5px 6px;font-size:9px}
+}

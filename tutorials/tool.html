@@ -17,26 +17,29 @@
 <link rel="stylesheet" href="tutorial.css?v=20261004-5">
 </head>
 <body>
-<header class="topbar"><div class="wrap"><a class="brand" href="../"><span data-icon="compass"></span> AI 新手导航</a><a class="back" href="index.html"><span data-icon="book"></span> 教程目录 / Guides</a></div></header>
+<header class="topbar"><div class="wrap"><a class="brand" href="../"><span data-icon="compass"></span><span id="pageBrand"></span></a><div style="display:flex;align-items:center;gap:10px"><a class="back" href="index.html" id="pageBack"></a><div class="language-picker" id="pageLanguagePicker"><button id="pageLanguageButton" class="lang-button" type="button" aria-haspopup="menu" aria-expanded="false"><span class="lang-globe" aria-hidden="true">🌐</span><span id="pageLanguageLabel">语言</span><span class="lang-chevron" aria-hidden="true">⌄</span></button><div id="pageLanguageMenu" class="language-menu" role="menu" hidden><button type="button" data-language="zh">简体中文<span>简中</span></button><button type="button" data-language="zh-TW">繁體中文<span>繁中</span></button><button type="button" data-language="en">English<span>EN</span></button></div></div></div></div></header>
 <main class="wrap content" id="app"><section class="section"><h2>正在加载教程 / Loading guide…</h2></section></main>
-<script src="../icons.js?v=20261004-3"></script><script>document.querySelectorAll("[data-icon]").forEach(el=>{el.innerHTML=ASHIcons.svg(el.dataset.icon);});</script><script src="tutorial-data.js?v=20261004-8"></script>
+<script src="../i18n.js?v=20261007-1"></script>
+<script src="tutorial-i18n.js?v=20261007-1"></script>
+<script src="../icons.js?v=20261004-3"></script>
+<script src="tutorial-data.js?v=20261004-8"></script>
 <script>
 (async()=>{
-const params=new URLSearchParams(location.search), name=params.get("tool");
+const TI=window.ASHTutorialI18n,I18N=window.ASHI18n;
+const params=new URLSearchParams(location.search),name=params.get("tool");
 const internationalNames={"豆包":"Doubao","通义千问":"Qwen","文心助手":"ERNIE Assistant","腾讯元宝":"Yuanbao","智谱清言":"ChatGLM","秘塔AI搜索":"Metaso","即梦AI":"Jimeng AI","通义灵码":"Qoder CN"};
 const slugify=name=>{const seed=internationalNames[name]||name;let slug=String(seed).toLowerCase().replace(/&/g," and ").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");return slug||"tool-"+encodeURIComponent(name).replace(/%/g,"").toLowerCase()};
-const app=await fetch("../app.js?v=20261004-7").then(r=>r.text());
-const body=app.match(/const tools=\[(.*?)\n\];/s)?.[1];
+const appText=await fetch("../app.js?v=20261004-7").then(r=>r.text());
+const body=appText.match(/const tools=\[(.*?)\n\];/s)?.[1];
 const tools=body?Function("return ["+body+"]")():[];
-const t=tools.find(x=>x[0]===name);
+const tool=tools.find(x=>x[0]===name);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
-if(!t){
-document.title="教程未找到 · AI Starter Hub";
-document.querySelector("#app").innerHTML='<section class="section"><h2>找不到这个工具 / Tool not found</h2><p class="lead">返回教程目录，选择一个工具开始学习。</p><div class="actions"><a class="btn primary" href="index.html">返回教程目录 / Back to guides</a></div></section>';
-return;
+if(!tool){
+ document.title=TI.t("detailNotFound");
+ document.querySelector("#app").innerHTML='<section class="section"><h2>'+esc(TI.t("detailNotFound"))+'</h2><p class="lead">'+esc(TI.t("detailNotFoundLead"))+'</p><div class="actions"><a class="btn primary" href="index.html">'+esc(TI.t("backGuides"))+'</a></div></section>';
+ TI.bindPicker(); TI.bindSync(()=>location.reload()); return;
 }
-
-const [title,icon,cat,desc,free,url,publisher]=t;
+const [originalTitle,icon,originalCat,originalDesc,originalFree,url,publisher]=tool;
 const fallback={
 "聊天 / 综合":{mode:"chat",learn:"先提出一个具体问题，再继续追问。",learnEn:"Start with one concrete question, then refine it.",task:"完成一次真实的小任务。",taskEn:"Complete one small real task.",prompt:"请用零基础能看懂的方式解释这个问题，并给出可执行步骤。",promptEn:"Explain this for a beginner and give actionable steps.",tip:"具体描述目标、对象和限制条件。",tipEn:"State the goal, audience, and constraints.",avoid:"不要一次塞进太多互不相关的要求。",avoidEn:"Do not mix many unrelated tasks in one prompt."},
 "聊天 / 办公":{mode:"office",learn:"从总结、改写或整理开始。",learnEn:"Start with summarizing, rewriting, or organizing.",task:"把一段杂乱内容整理成清晰结果。",taskEn:"Turn messy content into a clear result.",prompt:"把下面内容整理成要点、待办和缺失信息。",promptEn:"Turn the text below into key points, actions, and missing information."},
@@ -64,8 +67,7 @@ const fallback={
 "翻译":{mode:"translate",learn:"先翻译短句，再要求语气和场景适配。",learnEn:"Start with a short sentence, then adjust tone and context.",task:"完成一次自然的中英或中日翻译。",taskEn:"Complete one natural Chinese-English or Chinese-Japanese translation.",prompt:"请自然翻译，不要逐字直译；保留数字、人名和语气。",promptEn:"Translate naturally, not word-for-word. Preserve numbers, names, and tone."},
 "学习 / 数学":{mode:"math",learn:"先输入一道简单题，重点看步骤。",learnEn:"Enter a simple problem and focus on the steps.",task:"完成一道带步骤讲解的题。",taskEn:"Solve one problem with step-by-step explanation.",prompt:"请解这道题，并一步一步解释每一步为什么这样做。最后检查答案。",promptEn:"Solve this problem step by step, explain why each step works, and verify the answer."}
 };
-const p=window.tutorialProfiles?.[title]||fallback[cat]||fallback["聊天 / 综合"];
-
+const p=window.tutorialProfiles?.[originalTitle]||fallback[originalCat]||fallback["聊天 / 综合"];
 const visuals={
 chat:{title:"对话示意 / Chat workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">● ● ●　'+esc(title)+'</div><div class="browser-body"><div class="mock-title">'+ASHIcons.svg("message")+' '+esc(title)+'</div><div class="message-box">'+esc(p.prompt)+'</div><div class="reply">② AI response / AI 输出<br><span>检查结果 → 继续追问 → 再修改</span></div></div></div></div>'},
 search:{title:"搜索与来源 / Search & sources",html:'<div class="mock"><div class="browser"><div class="browser-bar">Search · '+esc(title)+'</div><div class="browser-body"><div class="search-bar">'+ASHIcons.svg("search")+' '+esc(p.prompt)+'</div><div class="source-row">① Results / 结果　② Sources / 来源　③ Summary / 摘要</div><div class="result-card"><b>先看结论 / Read the takeaway</b><br><span>然后打开来源核对证据。</span></div></div></div></div>'},
@@ -82,50 +84,69 @@ local:{title:"本地模型 / Local AI workspace",html:'<div class="mock"><div cl
 math:{title:"数学步骤 / Math workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Solve · '+esc(title)+'</div><div class="browser-body"><div class="equation">2x + 6 = 14</div><div class="result-card"><b>Step 1 / 第一步</b><br><span>2x = 8 → x = 4</span></div><div class="source-row">不要只看答案 / Focus on why each step works.</div></div></div></div>'},
 office:{title:"写作与办公 / Writing workspace",html:'<div class="mock"><div class="browser"><div class="browser-bar">Write · '+esc(title)+'</div><div class="browser-body"><div class="prompt">'+esc(p.prompt)+'</div><div class="result-card"><b>Draft / 草稿</b><br><span>先生成，再检查事实、语气和格式。</span></div></div></div></div>'}
 };
-const v=visuals[p.mode]||visuals.chat;
-const renderVideos=videos=>{if(!videos?.length)return "";return '<section class="section guide-video-section" id="video"><div class="guide-video-heading"><div><span class="panel-label">WATCH / 视频教程</span><h2>教程视频直接播放 <span>Watch right here</span></h2></div><span class="building-tag">本站内嵌 · 点播放器即可播放</span></div><p class="lead">视频已经直接嵌入本教程页面，不需要先跳转到 YouTube 或其他站点。YouTube、Bilibili 等可嵌入视频都会在这里显示原生播放器；只有平台明确禁止第三方嵌入时，才保留来源入口作为备用。</p><div class="guide-video-list">'+videos.map(video=>{if(video.type==="search"){return '<article class="guide-video-card guide-video-search"><div class="guide-video-search-icon">'+ASHIcons.svg("search")+'</div><div class="guide-video-copy"><div class="guide-video-meta"><span>'+esc(video.sourceType||"教程搜索")+'</span><small>'+esc(video.source||"YouTube")+'</small></div><h3>'+esc(video.title||"相关教程")+'</h3><p>'+esc(video.note||"按当前工具名称精确搜索入门教程。")+'</p><div class="guide-video-actions"><a class="btn primary" href="'+esc(video.searchUrl)+'" target="_blank" rel="noopener noreferrer">🔎 打开教程来源 ↗</a></div></div></article>';}const isExternal=video.type==="external";const id=encodeURIComponent(video.videoId||"");const embedUrl=isExternal?video.embedUrl:("https://www.youtube-nocookie.com/embed/"+id+"?rel=0&playsinline=1&modestbranding=1");const watch=video.url||("https://www.youtube.com/watch?v="+id);const media=embedUrl?'<div class="guide-video-media"><iframe class="guide-video-player" src="'+esc(embedUrl)+'" title="'+esc(video.title||"视频教程")+'" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>':'<div class="guide-video-search-icon">'+ASHIcons.svg("play")+'</div>';return '<article class="guide-video-card">'+media+'<div class="guide-video-copy"><div class="guide-video-meta"><span>'+esc(video.sourceType||(isExternal?"教程视频":"精选教程"))+'</span><small>'+esc(video.source||"")+'</small></div><h3>'+esc(video.title||"视频教程")+'</h3><p>'+esc(video.note||"围绕这个工具的入门使用进行讲解。")+'</p><div class="guide-video-actions"><a class="btn secondary" href="'+esc(watch)+'" target="_blank" rel="noopener noreferrer">来源页面 ↗</a></div></div></article>';}).join("")+'</div><p class="guide-video-footnote">提示：播放器就在上方。正常情况下直接点击播放器中的 ▶ 即可观看；若平台限制第三方播放，可使用“来源页面”打开原视频。</p></section>';};
-
-const canonicalUrl=new URL("../../tools/"+slugify(title)+"/",location.href);
-const seoDescription=desc+" 提供官方入口、图文步骤、第一次任务、提示词与教程视频。";
-const setMeta=(selector,content,attr="content")=>{const el=document.querySelector(selector); if(el) el.setAttribute(attr,content);};
-document.title=title+" 新手教程｜怎么用、入门步骤与提示词 · AI Starter Hub";
-setMeta('meta[name="description"]',seoDescription);
-setMeta('meta[property="og:title"]',document.title);
-setMeta('meta[property="og:description"]',seoDescription);
-setMeta('meta[property="og:url"]',canonicalUrl.href);
-setMeta('meta[name="twitter:title"]',document.title);
-setMeta('meta[name="twitter:description"]',seoDescription);
-let canonical=document.querySelector('link[rel="canonical"]'); if(!canonical){canonical=document.createElement("link"); canonical.rel="canonical"; document.head.append(canonical);} canonical.href=canonicalUrl.href;
-const oldLd=document.querySelector("#tool-structured-data"); if(oldLd) oldLd.remove();
-const ld=document.createElement("script"); ld.type="application/ld+json"; ld.id="tool-structured-data";
-ld.textContent=JSON.stringify([
-  {"@context":"https://schema.org","@type":"WebPage","name":document.title,"description":seoDescription,"url":canonicalUrl.href,"inLanguage":["zh-CN","en"],"isPartOf":{"@type":"WebSite","name":"AI 新手导航","url":"https://starterhub-dev.github.io/ai-tools/"},"about":{"@type":"SoftwareApplication","name":title,"url":url,"applicationCategory":cat,"operatingSystem":"Web"}},
-  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AI 新手导航","item":"https://starterhub-dev.github.io/ai-tools/"},{"@type":"ListItem","position":2,"name":"新手教程","item":"https://starterhub-dev.github.io/ai-tools/tutorials/"},{"@type":"ListItem","position":3,"name":title,"item":canonicalUrl.href}]}
-]);
-document.head.append(ld);
-
-document.querySelector("#app").innerHTML=
-'<header class="hero"><div class="wrap"><div class="eyebrow">'+esc(title).toUpperCase()+' · TOOL-SPECIFIC GUIDE</div><h1>'+ASHIcons.brand(title,url)+' '+esc(title)+' 新手图文教程</h1><p>'+esc(desc)+'</p><small>'+esc(p.learnEn)+'</small><div class="tool-badges"><span class="pill">'+esc(cat)+'</span><span class="pill">'+esc(free)+'</span><span class="pill">'+esc(publisher)+'</span></div><div class="hero-task"><b>'+ASHIcons.svg("target")+' 第一次任务 / First task</b><span>'+esc(p.task)+'</span><small>'+esc(p.taskEn)+'</small></div></div></header>'+
-'<nav class="toc"><strong>本页内容 / On this page</strong><a href="#start">① 认识 / Understand</a><a href="#video">② 视频 / Watch</a><a href="#do">③ 操作 / Practice</a><a href="#task">④ 任务 / First task</a><a href="#notes">⑤ 注意 / Notes</a></nav>'+
-'<section class="section" id="start"><h2>01｜先认识它是干什么的 <span>Understand the tool</span></h2><p class="lead">'+esc(p.learn)+'<br>'+esc(p.learnEn)+'</p><div class="step"><h3>第 1 步：打开官方入口 <span>Step 1: Open the official site</span></h3><p>教程负责“教你怎么开始”，实际服务由 '+esc(publisher)+' 官方网站提供。</p><p>This guide shows you how to start. The actual service is provided by '+esc(publisher)+'.</p><div class="actions"><a class="btn primary" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">打开官网 / Open official site ↗</a></div></div><div class="visual"><div class="visual-head">'+esc(v.title)+'</div>'+v.html+'</div><div class="visual-note">'+ASHIcons.svg("image")+' 操作示意 / Visual guide: 这是原创的界面示意图，不是官方截图。实际按钮和界面可能不同。</div></section>'+renderVideos(p.videos)+
-'<section class="section" id="do"><h2>02｜跟着图做一次 <span>Practice with the visual steps</span></h2><div class="step"><h3>第 2 步：准备输入 <span>Step 2: Prepare your input</span></h3><p>'+esc(p.learn)+'。先完成最小任务，不追求一次学会全部功能。</p><p>'+esc(p.learnEn)+'. Start with the smallest useful task instead of learning every feature at once.</p><div class="visual"><div class="visual-head">① Input / 输入</div><div class="mock"><div class="browser"><div class="browser-body"><div class="message-box">'+esc(p.prompt)+'</div></div></div></div></div></div><div class="step"><h3>第 3 步：检查结果并继续 <span>Step 3: Review and refine</span></h3><p>第一次结果不满意很正常。告诉工具哪里要改、保留什么、删掉什么。</p><p>It is normal for the first result to need changes. Say what to keep, change, or remove.</p><div class="tip"><strong>万能补充 / Useful follow-ups:</strong> “再简单一点” · “给我 3 个版本” · “只修改这一部分” · “再检查一次”<br>“Make it simpler” · “Give me 3 versions” · “Change only this part” · “Check it again”</div></div></section>'+
-'<section class="section" id="task"><h2>03｜直接复制，完成第一次任务 <span>Your first task</span></h2><p class="lead">'+esc(p.task)+'<br>'+esc(p.taskEn)+'</p><div class="prompt-wrap"><div class="prompt" id="promptText">'+esc(p.prompt)+'</div><button class="copy-btn" id="copyPrompt" type="button">复制提示词 / Copy prompt</button></div><div class="task-en"><b>English prompt / 英文提示词</b><div class="prompt">'+esc(p.promptEn)+'</div></div><div class="done">'+ASHIcons.svg("target")+' <strong>新手原则 / Beginner rule</strong><br>'+esc(p.tip)+'<br>'+esc(p.tipEn)+'</div></section>'+
-'<section class="section" id="notes"><h2>04｜常见坑 & 免费说明 <span>Common mistakes & access notes</span></h2><div class="warning">'+ASHIcons.svg("alert")+'<b>常见坑 / Common pitfall</b><br>'+esc(p.avoid)+'<br>'+esc(p.avoidEn)+'</div><p class="lead"><strong>当前标记 / Current label:</strong> '+esc(free)+'</p><p>免费额度、模型、功能、地区限制和界面都会变化。我们不会把一次性试用包装成“永久免费”，实际使用前请以官方页面为准。</p><p>Free quotas, models, features, regional availability, and interfaces can change. Check the official site for current terms.</p><div class="source">官方入口 / Official site：<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+esc(url)+'</a><br>教程更新时间 / Guide update: 2026-10-03 · UI may change.</div><div class="actions"><a class="btn primary" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">现在试试 / Try it ↗</a><a class="btn secondary" href="index.html">返回教程目录 / Back to guides</a></div></section>'+
-'<div class="footer">'+ASHIcons.svg("compass")+' AI 新手导航 · Discover → Understand → Learn → Use<br>本教程用于入门导航，不代表第三方工具的官方说明。</div>';
-
-
-
-const copy=document.querySelector("#copyPrompt");
-copy?.addEventListener("click",async()=>{
-try{
-await navigator.clipboard.writeText(p.prompt);
-copy.textContent="已复制 / Copied ✓";
-setTimeout(()=>copy.textContent="复制提示词 / Copy prompt",1500);
-}catch(e){
-const ta=document.createElement("textarea");ta.value=p.prompt;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();
-copy.textContent="已复制 / Copied ✓";setTimeout(()=>copy.textContent="复制提示词 / Copy prompt",1500);
+function pick(key){
+ const v=p[key+"En"];
+ if(TI.lang()==="en")return v||p[key]||"";
+ if(TI.lang()==="zh-TW")return I18N.toTraditional?p[key]!==undefined?I18N.toTraditional(p[key]):"":(p[key]||"");
+ return p[key]||"";
 }
-});
-})().catch(e=>{console.error(e);document.querySelector("#app").innerHTML='<section class="section"><h2>教程加载失败 / Guide failed to load</h2><p class="lead">请刷新页面后再试。</p></section>';});
+function visualLabel(value){
+ const parts=String(value||"").split(" / ");
+ if(TI.lang()==="en")return parts.length>1?parts.slice(1).join(" / "):parts[0];
+ if(TI.lang()==="zh-TW")return I18N.toTraditional(parts[0]||value);
+ return parts[0]||value;
+}
+function localizedToolDesc(){return TI.toolDescription(tool)||originalDesc;}
+function renderVideos(videos,title){
+ if(!videos?.length)return "";
+ const L=TI.lang();
+ return '<section class="section guide-video-section" id="video"><div class="guide-video-heading"><div><span class="panel-label">WATCH / '+esc(TI.t("videoSearch"))+'</span><h2>'+esc(TI.t("videoHeading"))+' <span>'+esc(TI.t("videoHeadingEn"))+'</span></h2></div><span class="building-tag">'+esc(TI.t("videoTag"))+'</span></div><p class="lead">'+esc(TI.t("videoLead"))+'</p><div class="guide-video-list">'+videos.map(video=>{
+   if(video.type==="search"){
+     return '<article class="guide-video-card guide-video-search"><div class="guide-video-search-icon">'+ASHIcons.svg("search")+'</div><div class="guide-video-copy"><div class="guide-video-meta"><span>'+esc(TI.t("videoSearch"))+'</span><small>'+esc(video.source||"YouTube")+'</small></div><h3>'+esc(video.title||("Tutorials for "+title))+'</h3><p>'+esc(L==="en"?"Search beginner tutorials for this tool.":L==="zh-TW"?I18N.toTraditional(video.note||TI.t("videoSearchNote")):(video.note||TI.t("videoSearchNote")))+'</p><div class="guide-video-actions"><a class="btn primary" href="'+esc(video.searchUrl)+'" target="_blank" rel="noopener noreferrer">'+esc(TI.t("videoOpenSearch"))+'</a></div></div></article>';
+   }
+   const isExternal=video.type==="external",id=encodeURIComponent(video.videoId||""),embedUrl=isExternal?video.embedUrl:("https://www.youtube-nocookie.com/embed/"+id+"?rel=0&playsinline=1&modestbranding=1"),watch=video.url||("https://www.youtube.com/watch?v="+id);
+   const sourceType=TI.videoSourceType(video.sourceType||(isExternal?"视频教程":"精选教程"));
+   const note=L==="en"?"Beginner walkthrough for "+title+".":L==="zh-TW"?I18N.toTraditional(video.note||"圍繞這個工具的入門使用進行講解。"):(video.note||"围绕这个工具的入门使用进行讲解。");
+   const media=embedUrl?'<div class="guide-video-media"><iframe class="guide-video-player" src="'+esc(embedUrl)+'" title="'+esc(video.title||TI.t("videoFallback"))+'" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>':'<div class="guide-video-search-icon">'+ASHIcons.svg("play")+'</div>';
+   return '<article class="guide-video-card">'+media+'<div class="guide-video-copy"><div class="guide-video-meta"><span>'+esc(sourceType)+'</span><small>'+esc(video.source||"")+'</small></div><h3>'+esc(video.title||TI.t("videoFallback"))+'</h3><p>'+esc(note)+'</p><div class="guide-video-actions"><a class="btn secondary" href="'+esc(watch)+'" target="_blank" rel="noopener noreferrer">'+esc(TI.t("videoSource"))+'</a></div></div></article>';
+ }).join("")+'</div><p class="guide-video-footnote">'+esc(TI.t("videoFootnote"))+'</p></section>';
+}
+function render(){
+ const L=TI.lang();
+ p.learn=pick("learn");p.task=pick("task");p.prompt=pick("prompt");p.tip=pick("tip");p.avoid=pick("avoid");
+ const title=TI.toolName(tool)||originalTitle,cat=TI.category(originalCat),free=TI.status(originalFree),desc=localizedToolDesc();
+ const seoTitle=L==="en"?title+" Beginner Guide | How to Use, Prompts & Steps · AI Starter Hub":(L==="zh-TW"?title+" 新手教學｜使用方法、提示詞與步驟 · AI Starter Hub":title+" 新手教程｜怎么用、入门步骤与提示词 · AI Starter Hub");
+ const seoDescription=L==="en"?desc+" Beginner guide with visual steps, a first task, prompts, and the official link.":(L==="zh-TW"?desc+" 提供官方入口、圖文步驟、第一次任務、提示詞與教學影片。":desc+" 提供官方入口、图文步骤、第一次任务、提示词与教程视频。");
+ document.documentElement.lang=L==="en"?"en":(L==="zh-TW"?"zh-TW":"zh-CN");
+ document.title=seoTitle;
+ ["meta[name=\"description\"]","meta[property=\"og:title\"]","meta[property=\"og:description\"]","meta[name=\"twitter:title\"]","meta[name=\"twitter:description\"]"].forEach((sel,i)=>{const el=document.querySelector(sel);if(el){if(i===0)el.setAttribute("content",seoDescription);else if(i===2)el.setAttribute("content",seoDescription);else el.setAttribute("content",seoTitle);}});
+ const canonicalUrl=new URL("../../tools/"+slugify(originalTitle)+"/",location.href);
+ let canonical=document.querySelector('link[rel="canonical"]');if(!canonical){canonical=document.createElement("link");canonical.rel="canonical";document.head.append(canonical);}canonical.href=canonicalUrl.href;
+ const oldLd=document.querySelector("#tool-structured-data");if(oldLd)oldLd.remove();const ld=document.createElement("script");ld.type="application/ld+json";ld.id="tool-structured-data";ld.textContent=JSON.stringify([
+   {"@context":"https://schema.org","@type":"WebPage","name":seoTitle,"description":seoDescription,"url":canonicalUrl.href,"inLanguage":[L==="en"?"en":(L==="zh-TW"?"zh-TW":"zh-CN")],"isPartOf":{"@type":"WebSite","name":"AI 新手导航","url":"https://starterhub-dev.github.io/ai-tools/"},"about":{"@type":"SoftwareApplication","name":title,"url":url,"applicationCategory":cat,"operatingSystem":"Web"}},
+   {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":L==="en"?"AI Starter Hub":(L==="zh-TW"?"AI 新手導航":"AI 新手导航"),"item":"https://starterhub-dev.github.io/ai-tools/"},{"@type":"ListItem","position":2,"name":L==="en"?"Beginner guides":(L==="zh-TW"?"新手教學":"新手教程"),"item":"https://starterhub-dev.github.io/ai-tools/tutorials/"},{"@type":"ListItem","position":3,"name":title,"item":canonicalUrl.href}]}
+ ]);
+ document.head.append(ld);
+ const v=visuals[p.mode]||visuals.chat;
+ const heroTitle=L==="en"?title+" Beginner Guide":title+" "+TI.t("detailTitleSuffix");
+ const heroLead=L==="en"?desc:I18N.toTraditional?((L==="zh-TW"?I18N.toTraditional(desc):desc)):desc;
+ const heroSmall=L==="en"?p.learn:(L==="zh-TW"?I18N.toTraditional(p.learn):p.learn);
+ const videoHtml=renderVideos(p.videos,title);
+ const toc=TI.t("toc"), firstTask=TI.t("firstTask");
+ document.querySelector("#app").innerHTML=
+ '<header class="hero"><div class="wrap"><div class="eyebrow">'+esc(title).toUpperCase()+' · '+esc(TI.t("detailEyebrow"))+'</div><h1>'+ASHIcons.brand(originalTitle,url)+' '+esc(heroTitle)+'</h1><p>'+esc(heroLead)+'</p><small>'+esc(heroSmall)+'</small><div class="tool-badges"><span class="pill">'+esc(cat)+'</span><span class="pill">'+esc(free)+'</span><span class="pill">'+esc(publisher)+'</span></div><div class="hero-task"><b>'+ASHIcons.svg("target")+' '+esc(firstTask)+'</b><span>'+esc(p.task)+'</span><small>'+(L==="en"?esc(p.taskEn||""):L==="zh-TW"?esc(I18N.toTraditional(p.taskEn||"")):esc(p.taskEn||""))+'</small></div></div></header>'+
+ '<nav class="toc"><strong>'+esc(toc)+'</strong><a href="#start">① '+esc(TI.t("understand"))+'</a><a href="#video">② '+esc(TI.t("watch"))+'</a><a href="#do">③ '+esc(TI.t("practice"))+'</a><a href="#task">④ '+esc(TI.t("task"))+'</a><a href="#notes">⑤ '+esc(TI.t("notes"))+'</a></nav>'+
+ '<section class="section" id="start"><h2>'+esc(TI.t("understandTitle"))+' <span>'+esc(TI.t("understandSpan"))+'</span></h2><p class="lead">'+esc(p.learn)+'</p><div class="step"><h3>'+esc(TI.t("step1"))+' <span>'+esc(TI.t("step1En"))+'</span></h3><p>'+esc(TI.t("officialIntro"))+' '+esc(publisher)+' '+esc(TI.t("officialIntro2"))+'</p><div class="actions"><a class="btn primary" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+esc(TI.t("openOfficial"))+'</a></div></div><div class="visual"><div class="visual-head">'+esc(visualLabel(v.title))+'</div>'+v.html+'</div><div class="visual-note">'+ASHIcons.svg("image")+' '+esc(TI.t("visualNote"))+'</div></section>'+videoHtml+
+ '<section class="section" id="do"><h2>'+esc(TI.t("practiceTitle"))+' <span>'+esc(TI.t("practiceSpan"))+'</span></h2><div class="step"><h3>'+esc(TI.t("step2"))+' <span>'+esc(TI.t("step2En"))+'</span></h3><p>'+esc(p.learn)+esc(TI.t("step2Lead"))+'</p><div class="visual"><div class="visual-head">① '+(L==="en"?"Input":L==="zh-TW"?"輸入":"Input / 输入")+'</div><div class="mock"><div class="browser"><div class="browser-body"><div class="message-box">'+esc(p.prompt)+'</div></div></div></div></div></div><div class="step"><h3>'+esc(TI.t("step3"))+' <span>'+esc(TI.t("step3En"))+'</span></h3><p>'+esc(TI.t("step3Lead"))+'</p><div class="tip"><strong>'+esc(TI.t("followupTitle"))+'</strong><br>'+esc(TI.t("followups")).replace(/\n/g,"<br>")+'</div></div></section>'+
+ '<section class="section" id="task"><h2>'+esc(TI.t("taskTitle"))+' <span>'+esc(TI.t("taskSpan"))+'</span></h2><p class="lead">'+esc(p.task)+'</p><div class="prompt-wrap"><div class="prompt" id="promptText">'+esc(p.prompt)+'</div><button class="copy-btn" id="copyPrompt" type="button">'+esc(TI.t("copyPrompt"))+'</button></div>'+(L==="en"?"":'<div class="task-en"><b>'+esc(TI.t("englishPrompt"))+'</b><div class="prompt">'+esc(p.promptEn||"")+'</div></div>')+'<div class="done">'+ASHIcons.svg("target")+' <strong>'+esc(TI.t("beginnerRule"))+'</strong><br>'+esc(p.tip)+'</div></section>'+
+ '<section class="section" id="notes"><h2>'+esc(TI.t("notesTitle"))+' <span>'+esc(TI.t("notesSpan"))+'</span></h2><div class="warning">'+ASHIcons.svg("alert")+'<b>'+esc(TI.t("pitfall"))+'</b><br>'+esc(p.avoid)+'</div><p class="lead"><strong>'+esc(TI.t("currentLabel"))+'</strong> '+esc(free)+'</p><p>'+esc(TI.t("freeNotice"))+'</p>'+(L!=="en"?'<p>'+esc(TI.t("freeNoticeEn"))+'</p>':'')+'<div class="source">'+(L==="en"?"Official site:":"官方入口 / Official site：")+' <a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+esc(url)+'</a><br>'+esc(TI.t("updated"))+'</div><div class="actions"><a class="btn primary" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+esc(TI.t("try"))+'</a><a class="btn secondary" href="index.html">'+esc(TI.t("backGuides"))+'</a></div></section>'+
+ '<div class="footer">'+ASHIcons.svg("compass")+' '+esc(TI.t("footerDetail"))+'<br>'+esc(TI.t("footerDetailNote"))+'</div>';
+ document.querySelectorAll("[data-icon]").forEach(el=>{el.innerHTML=ASHIcons.svg(el.dataset.icon);});
+ const copy=document.querySelector("#copyPrompt");copy?.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(p.prompt);}catch(e){const ta=document.createElement("textarea");ta.value=p.prompt;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();}copy.textContent=TI.t("copied");setTimeout(()=>copy.textContent=TI.t("copyPrompt"),1500);});
+ TI.bindPicker();
+}
+TI.bindSync(render);
+render();
+})().catch(e=>{console.error(e);document.querySelector("#app").innerHTML='<section class="section"><h2>'+esc?.(TI.t("loadFail"))+'</h2><p class="lead">'+esc?.(TI.t("loadFailLead"))+'</p></section>';});
 </script>
 </body></html>

@@ -134,7 +134,6 @@
     const lang=i.current();document.documentElement.lang=lang==="en"?"en":(lang==="zh-TW"?"zh-TW":"zh-CN");
     document.title=lang==="en"?"My Profile | AI Starter Hub":(lang==="zh-TW"?"我的 · AI Starter Hub":"我的 · AI Starter Hub");
     const set=(id,key)=>{const e=s(id);if(e)e.textContent=i.t(key);};
-    set("profileStatus","profileStatusChecking");
     document.querySelector(".profile-brand strong").textContent=lang==="en"?"AI Starter Hub":"AI 新手導航";
     const back=document.querySelector(".back-home");if(back&&back.lastChild)back.lastChild.textContent=" "+i.t("profileBack");
     const hero=document.querySelector(".profile-hero");if(hero){hero.querySelector(".eyebrow").textContent=i.t("profileEyebrow");hero.querySelector("h1").textContent=i.t("profileTitle");hero.querySelector("p").textContent=i.t("profileLead");}

@@ -152,3 +152,9 @@ button,a{font:inherit}
 
 /* Favorite brand logos */
 .favorite-item-icon img{width:72%;height:72%;object-fit:contain;display:block}
+
+/* Profile tool-logo hard reset: never render the generic info fallback in list rows */
+.favorite-item-icon .brand-icon .brand-fallback,.recent-item-icon .brand-icon .brand-fallback{display:none!important;width:0!important;height:0!important;visibility:hidden!important}
+.favorite-item-icon .brand-icon[data-broken="1"] .brand-fallback,.recent-item-icon .brand-icon[data-broken="1"] .brand-fallback{display:none!important}
+.favorite-item-icon .brand-icon,.recent-item-icon .brand-icon{width:100%!important;height:100%!important;border:0!important;background:transparent!important;display:grid!important;place-items:center!important;overflow:hidden!important}
+.favorite-item-icon .brand-icon img,.recent-item-icon .brand-icon img{width:72%!important;height:72%!important;max-width:72%!important;max-height:72%!important;object-fit:contain!important;display:block!important}

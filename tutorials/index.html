@@ -13,7 +13,7 @@
 <meta name="twitter:title" content="AI 工具新手教程 | 150+ AI 工具图文指南与视频教程">
 <meta name="twitter:description" content="按工具浏览 AI 新手教程。">
 <link rel="stylesheet" href="../style.css?v=20261004-19"><link rel="stylesheet" href="tutorial.css?v=20261004-5">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"AI 工具新手教程","url":"https://starterhub-dev.github.io/ai-tools/tutorials/","description":"AI 新手导航的工具教程目录，提供 150+ 工具的入门指南。","inLanguage":["zh-CN","en"],"isPartOf":{"@type":"WebSite","name":"AI 新手导航","url":"https://starterhub-dev.github.io/ai-tools/"}}</script></head><body>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"AI 工具新手教程","url":"https://starterhub-dev.github.io/ai-tools/tutorials/","description":"AI 新手导航的工具教程目录，提供 150+ 工具的入门指南。","inLanguage":["zh-CN","zh-TW","en"],"isPartOf":{"@type":"WebSite","name":"AI 新手导航","url":"https://starterhub-dev.github.io/ai-tools/"}}</script></head><body>
 <header class="topbar"><div class="wrap"><a class="brand" href="../"><span data-icon="compass"></span><span id="pageBrand"></span></a><div style="display:flex;align-items:center;gap:10px"><a class="back" href="../" id="pageBack"></a><div class="language-picker" id="pageLanguagePicker"><button id="pageLanguageButton" class="lang-button" type="button" aria-haspopup="menu" aria-expanded="false"><span class="lang-globe" aria-hidden="true">🌐</span><span id="pageLanguageLabel">语言</span><span class="lang-chevron" aria-hidden="true">⌄</span></button><div id="pageLanguageMenu" class="language-menu" role="menu" hidden><button type="button" data-language="zh">简体中文<span>简中</span></button><button type="button" data-language="zh-TW">繁體中文<span>繁中</span></button><button type="button" data-language="en">English<span>EN</span></button></div></div></div></div></header>
 <header class="hero"><div class="wrap"><div class="eyebrow" id="tutorialEyebrow"></div><h1 id="tutorialTitle"></h1><p id="tutorialLead"></p><small id="tutorialSub"></small><div class="tool-badges"><span class="pill"><span data-icon="mobile"></span><span id="badgeMobile"></span></span><span class="pill"><span data-icon="globe"></span><span id="badgeLanguage"></span></span><span class="pill"><span data-icon="image"></span><span id="badgeVisual"></span></span><span class="pill"><span data-icon="star"></span><span id="badgeBeginner"></span></span></div></div></header>
 <main class="wrap content"><section class="section"><h2 id="guideHeading"></h2><p class="lead" id="guideBrowse"></p><div id="guide-grid" class="guide-grid"></div><div class="tip" style="margin-top:18px"><strong id="readTipTitle"></strong> <span id="readTip"></span></div></section></main>
@@ -26,8 +26,7 @@
 const TI=window.ASHTutorialI18n, I18N=window.ASHI18n;
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
 const slugify=name=>{const seed={"豆包":"Doubao","通义千问":"Qwen","文心助手":"ERNIE Assistant","腾讯元宝":"Yuanbao","智谱清言":"ChatGLM","秘塔AI搜索":"Metaso","即梦AI":"Jimeng AI","通义灵码":"Qoder CN"}[name]||name;let slug=String(seed).toLowerCase().replace(/&/g," and ").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");return slug||"tool-"+encodeURIComponent(name).replace(/%/g,"").toLowerCase()};
-const [res,appRes]=await Promise.all([fetch("../app.js?v=20261004-6"),fetch("../app.js?v=20261004-6")]);
-const app=await appRes.text();
+const app=await fetch("../app.js?v=20261004-6").then(r=>r.text());
 const body=app.match(/const tools=\[(.*?)\n\];/s)?.[1];
 const tools=body?Function("return ["+body+"]")():[];
 function render(){

@@ -281,28 +281,71 @@ button:active,.open:active,.learn:active,.favorite-button:active,.cat:active,.au
    Language switcher · i18n foundation
    ========================================================= */
 .nav{gap:10px}
+.language-picker{position:relative;flex:0 0 auto}
 .lang-button{
-  flex:0 0 auto;
-  min-width:38px;
-  height:34px;
-  padding:0 10px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  min-width:92px;
+  height:36px;
+  padding:0 11px;
   border:1px solid #d7ddea;
-  border-radius:9px;
+  border-radius:10px;
   background:#f8f9fc;
   color:#34415a;
-  font:800 10px/32px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
-  letter-spacing:.04em;
+  font:800 11px/34px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  letter-spacing:.01em;
   cursor:pointer;
   transition:transform 120ms cubic-bezier(.2,.85,.25,1.18),background 180ms cubic-bezier(.22,1,.36,1),border-color 180ms cubic-bezier(.22,1,.36,1),color 180ms cubic-bezier(.22,1,.36,1),box-shadow 180ms cubic-bezier(.22,1,.36,1)
 }
-.lang-button:hover{background:#fff;border-color:#c5cedf;color:#17233d;box-shadow:0 6px 16px rgba(20,32,55,.08);transform:translateY(-1px)}
+.lang-button:hover,.lang-button[aria-expanded="true"]{background:#fff;border-color:#bfc9dc;color:#17233d;box-shadow:0 7px 18px rgba(20,32,55,.09);transform:translateY(-1px)}
 .lang-button:focus-visible{outline:2px solid #8297d0;outline-offset:2px}
-.lang-button:active{transform:scale(.96)}
+.lang-button:active{transform:scale(.97)}
+.lang-globe{font-size:14px;line-height:1}
+.lang-chevron{font-size:12px;line-height:1;transform:translateY(-1px);transition:transform 180ms ease}
+.lang-button[aria-expanded="true"] .lang-chevron{transform:rotate(180deg) translateY(1px)}
+.language-menu{
+  position:absolute;
+  top:calc(100% + 8px);
+  right:0;
+  width:190px;
+  padding:6px;
+  border:1px solid #dfe4ed;
+  border-radius:12px;
+  background:rgba(255,255,255,.98);
+  box-shadow:0 16px 38px rgba(23,32,51,.16),0 3px 8px rgba(23,32,51,.06);
+  z-index:80;
+  transform-origin:top right;
+}
+.language-menu[hidden]{display:none}
+.language-menu button{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border:0;
+  border-radius:8px;
+  padding:9px 10px;
+  background:transparent;
+  color:#4c5870;
+  font:700 12px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  text-align:left;
+  cursor:pointer;
+}
+.language-menu button span{color:#98a1b2;font-size:9px;font-weight:800;letter-spacing:.04em}
+.language-menu button:hover{background:#f3f5f9;color:#172033}
+.language-menu button.is-selected{background:#eef2f8;color:#172033}
+.language-menu button.is-selected::before{content:"✓";margin-right:-2px;color:#566b9e;font-weight:900}
 @media(max-width:760px){
   .nav{gap:7px}
-  .lang-button{min-width:34px;height:32px;padding:0 8px;font-size:9px;line-height:30px}
+  .lang-button{min-width:88px;height:34px;padding:0 9px;font-size:10px;line-height:32px}
 }
 @media(max-width:520px){
   .navlinks{display:none}
-  .lang-button{min-width:31px;height:30px;padding:0 7px;font-size:8.5px;line-height:28px}
+  .lang-button{min-width:78px;height:32px;padding:0 8px;font-size:9px;line-height:30px}
+  .lang-globe{font-size:13px}
+  .language-menu{right:0;width:174px}
+}
 }

@@ -116,9 +116,9 @@ for(const tool of tools){
     '<meta property="og:title" content="'+attr(title+" 新手教程 | AI Starter Hub")+'"><meta property="og:description" content="'+attr(desc)+'">'+
     '<meta property="og:url" content="'+attr(canonical)+'"><meta name="twitter:card" content="summary">'+
     '<meta name="twitter:title" content="'+attr(title+" 新手教程")+'"><meta name="twitter:description" content="'+attr(desc)+'">'+
-    '<link rel="stylesheet" href="../../style.css?v=20261004-19"><link rel="stylesheet" href="../../tutorials/tutorial.css?v=20261007-1">'+
+    '<link rel="stylesheet" href="../../style.css?v=20261004-19"><link rel="stylesheet" href="../../tutorials/tutorial.css?v=20261007-2">'+
     '<script type="application/ld+json">'+ld(jsonLd)+'</script></head><body>'+
-    '<header class="seo-top topbar"><div class="wrap"><a href="../../" class="seo-brand brand"><span data-icon="compass"></span><span id="pageBrand">AI Starter Hub</span></a><a href="../../tutorials/" class="seo-back back" id="pageBack">全部教程 / Guides</a></div></header>'+
+    '<header class="seo-top topbar"><div class="wrap"><a href="../../" class="seo-brand brand"><img class="tutorial-brand-mark" src="../../ai-starter-hub-mark.svg" alt="" aria-hidden="true"><span id="pageBrand">AI Starter Hub</span></a><a href="../../tutorials/" class="seo-back back" id="pageBack">全部教程 / Guides</a></div></header>'+
     '<main class="wrap content" id="app"><nav class="seo-breadcrumb"><a href="../../">AI 新手导航</a><span>›</span><a href="../../tutorials/">AI 工具教程</a><span>›</span><strong>'+esc(title)+'</strong></nav>'+
     '<article class="seo-article"><header class="seo-hero"><div class="seo-kicker">'+esc(cat)+' · '+esc(free)+'</div><div class="seo-title-row"><div class="seo-logo" data-brand-name="'+attr(title)+'" data-brand-url="'+attr(url)+'"><span aria-hidden="true">'+esc(logoFallback)+'</span></div><div><h1>'+esc(title)+' 新手教程</h1><p>'+esc(desc)+'</p><div class="seo-meta"><span>'+esc(publisher)+'</span><span>官方入口</span><span>新手友好</span></div></div></div></header>'+
     '<section><h2>这个工具是做什么的？ / What is it for?</h2><p>'+esc(p.learn||desc)+'</p><p>AI Starter Hub 为第一次使用者提供简明中文步骤和英文提示，实际服务、价格、免费额度与功能请以官方页面为准。</p></section>'+

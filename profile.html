@@ -149,7 +149,7 @@
     window.dispatchEvent(new CustomEvent("ash:profile-language-applied",{detail:{language:lang}}));
   }
   window.addEventListener("ash:language-changed",apply);
-  window.addEventListener("DOMContentLoaded",apply);apply();
+  apply();
 })();
 </script>
 </body>

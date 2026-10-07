@@ -154,7 +154,7 @@ function bindPicker(onChange){
     if(item.firstChild)item.firstChild.nodeValue=labels[key]||key;
     if(tail)tail.textContent=key==="zh"?"简中":(key==="zh-TW"?"繁中":"EN");
     item.setAttribute("aria-checked",String(key===lang()));item.classList.toggle("is-selected",key===lang());
-    if(!item.dataset.bound){item.dataset.bound="1";item.addEventListener("click",()=>{window.ASHI18n?.set(key);});}
+    if(!item.dataset.bound){item.dataset.bound="1";item.addEventListener("click",()=>{menu.hidden=true;btn.setAttribute("aria-expanded","false");window.ASHI18n?.set(key);});}
   });
   if(!btn.dataset.bound){
     btn.dataset.bound="1";

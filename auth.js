@@ -43,7 +43,10 @@ function makeText(tag, text, className) {
   return el;
 }
 
+let currentUser = null;
+
 function renderUser(user) {
+  currentUser = user || null;
   if (!button) return;
 
   button.replaceChildren();
@@ -81,13 +84,15 @@ function renderUser(user) {
 
   button.append(
     makeText("span", name),
-    makeText("b", "我的")
+    makeText("b", window.ASHI18n?.t("profileMe") || "我的")
   );
 
   button.onclick = () => {
     window.location.href = new URL("./profile.html", window.location.href).href;
   };
 }
+
+window.addEventListener("ash:language-changed", () => renderUser(currentUser));
 
 if (SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY) {
   supabase.auth.onAuthStateChange((_event, session) => {

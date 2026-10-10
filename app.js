@@ -68,7 +68,6 @@ const tools=[
 ["PlayHT","🎙️","音频 / 配音","AI 语音生成与配音平台，提供免费体验额度。","免费额度","https://play.ht/","PlayHT"],
 ["AIVA","🎼","音乐","AI 作曲工具，可生成不同风格的音乐。","免费额度","https://www.aiva.ai/","AIVA"],
 ["Soundraw","🎹","音乐","AI 音乐生成与背景音乐创作工具。","免费试用","https://soundraw.io/","SOUNDRAW"],
-["Tome","📖","演示 / 文档","AI 演示和故事化内容创作工具。","免费额度","https://tome.app/","Tome"],
 ["Beautiful.ai","✨","演示 / 文档","AI 辅助制作演示文稿和商务幻灯片。","免费试用","https://www.beautiful.ai/","Beautiful.ai"],
 ["Otter.ai","🦦","会议 / 音频","会议录音、转写、摘要和行动项整理工具。","免费额度","https://otter.ai/","Otter.ai"],
 ["Fireflies.ai","🔥","会议 / 音频","AI 会议记录、转写、摘要和搜索工具。","免费额度","https://fireflies.ai/","Fireflies.ai"],
@@ -82,7 +81,6 @@ const tools=[
 ["通义灵码","🪄","编程","阿里 AI 编程助手，提供 IDE 代码补全和问答。","免费使用","https://tongyi.aliyun.com/lingma","Alibaba"],
 ["Blackbox AI","🖤","编程","AI 编程助手，支持代码生成、解释与开发辅助。","免费额度","https://www.blackbox.ai/","Blackbox AI"],
 ["Replit","🧑‍💻","编程","在线编程环境，内置 AI 开发辅助功能。","免费入口","https://replit.com/","Replit"],
-["Phind","🔎","编程 / 搜索","面向开发者的 AI 搜索与编程助手。","免费入口","https://www.phind.com/","Phind"],
 ["Symbolab","🧮","学习 / 研究","数学题求解与步骤讲解工具，适合学习。","免费入口","https://www.symbolab.com/","Symbolab"],
 ["Grok","🤖","聊天 / 助手","xAI 的通用 AI 助手，适合问答、研究、图片理解与创作。","免费入口","https://grok.com/","xAI"],
 ["Meta AI","🦙","聊天 / 助手","Meta 的 AI 助手，适合日常问答、研究、写作和图片创作。","免费入口","https://www.meta.ai/","Meta"],
@@ -171,6 +169,9 @@ function toolSlug(name){
   return slug;
 }
 const HOT_RANK=["ChatGPT","Gemini","Claude","Perplexity","DeepSeek","Grok","Kimi","NotebookLM","Cursor","GitHub Copilot","Midjourney","Canva","Runway","Suno","ElevenLabs","CapCut","Google AI Studio","Hugging Face","Manus","Genspark","通义千问","Kling AI","Gamma","HeyGen","Replit"];
+const RECOMMENDED_RANK=["ChatGPT","DeepSeek","Gemini","NotebookLM","Claude","Perplexity","Gamma","Canva","Microsoft Copilot","CapCut","Suno","Kimi","豆包","Google AI Studio","Leonardo AI","Cursor","Hugging Face","Ollama","Gemini Code Assist","Runway"];
+function recommendedRank(name){const i=RECOMMENDED_RANK.indexOf(name);return i>=0?i:1000+Math.max(0,tools.findIndex(item=>item[0]===name));}
+function freeAccessRank(status){const ranks={"免费入口":0,"免费使用":0,"免费 / 本地":0,"免费 / 开源":1,"免费额度":2,"免费试用":3,"按量计费":4,"付费为主":5};return Object.prototype.hasOwnProperty.call(ranks,status)?ranks[status]:3;}
 function heatScore(name){
   let hash=2166136261;
   for(let i=0;i<name.length;i++) hash=Math.imul(hash^name.charCodeAt(i),16777619);
@@ -230,10 +231,11 @@ function render({animate=false}={}){
   let a;if(q&&window.SearchCore){a=window.SearchCore.search(input.value,{tools,category:active,limit:tools.length}).results.map(item=>item.tool);}else{a=tools.filter(x=>active==="全部"||mainCategory(x)===active);}
   const sort=$("#sort").value;
   const favoriteIds=new Set((window.ASHFavorites?.getAll?.()||[]).map(item=>item.toolId));
+  if(sort==="default"&&!q) a.sort((x,y)=>recommendedRank(x[0])-recommendedRank(y[0]));
   if(sort==="heat") a.sort((x,y)=>heatScore(y[0])-heatScore(x[0]));
   if(sort==="favorites") a.sort((x,y)=>(favoriteIds.has(getToolId(y))?1:0)-(favoriteIds.has(getToolId(x))?1:0)||heatScore(y[0])-heatScore(x[0]));
   if(sort==="name") a.sort((x,y)=>x[0].localeCompare(y[0]));
-  if(sort==="free") a.sort((x,y)=>x[4].localeCompare(y[4])||heatScore(y[0])-heatScore(x[0]));
+  if(sort==="free") a.sort((x,y)=>freeAccessRank(x[4])-freeAccessRank(y[4])||heatScore(y[0])-heatScore(x[0]));
   $("#count").textContent=tools.length;
   $("#summary").textContent=window.ASHI18n?.t("shownCount",a.length)||(`当前显示 ${a.length} 个`);
   $("#summary").dataset.i18nReady="1";
@@ -262,7 +264,7 @@ function render({animate=false}={}){
       <div class="desc">${esc(desc)}</div>
       <div class="meta"><span class="tag">${esc(category)}</span><span class="tag">${esc(x[6])}</span></div>
       <div class="card-signal">
-        <span class="popularity ${hot?"is-hot":""}">🔥 ${window.ASHI18n?.t("heatLabel",score)||("热度 "+score)}${rank?` · TOP ${rank}`:""}</span>
+        <span class="popularity ${hot?"is-hot":""}">🔥 ${rank?(window.ASHI18n?.t("popularRank",rank)||("热门第 "+rank)):(window.ASHI18n?.t("popularLabel")||"精选工具")}</span>
         <span class="signal-note">${window.ASHI18n?.t("signalNote")||"站内参考指数"}</span>
       </div>
       <div class="card-actions guide-ready">
@@ -293,7 +295,10 @@ window.addEventListener("ash:favorites-changed",()=>document.querySelectorAll(".
 $("#sort").onchange=()=>render({animate:true});
 window.addEventListener("ash:language-changed",()=>{renderCats();render({animate:true});if(window.SearchSuggestions?.refresh)window.SearchSuggestions.refresh();});
 renderCats();render();
-function pickTask(task){const c=taskMap[task];if(c){active=c;renderCats();render({animate:true})}$("#tools").scrollIntoView({behavior:"smooth",block:"start"})}
+const toolGrid=document.getElementById("grid");
+toolGrid?.addEventListener("click",event=>{const card=event.target.closest(".card");if(!card||event.target.closest("a,button,input,select"))return;const link=card.querySelector(".open");if(link)link.click();});
+const mobileMenuButton=document.getElementById("mobileMenuButton");const mobileNavPanel=document.getElementById("mobileNavPanel");if(mobileMenuButton&&mobileNavPanel){mobileMenuButton.addEventListener("click",()=>{const open=mobileNavPanel.hidden;mobileNavPanel.hidden=!open;mobileMenuButton.setAttribute("aria-expanded",String(open));});mobileNavPanel.querySelectorAll("a").forEach(link=>link.addEventListener("click",()=>{mobileNavPanel.hidden=true;mobileMenuButton.setAttribute("aria-expanded","false");}));document.addEventListener("keydown",event=>{if(event.key==="Escape"){mobileNavPanel.hidden=true;mobileMenuButton.setAttribute("aria-expanded","false");}});}
+function pickTask(task){const c=taskMap[task];if(c){active=c;renderCats();render({animate:true})}document.querySelectorAll(".starter-card").forEach(card=>card.classList.toggle("is-active",card.dataset.task===task));$("#tools").scrollIntoView({behavior:"smooth",block:"start"})}
 
 const sitebar=document.querySelector(".sitebar");
 let navTick=false;

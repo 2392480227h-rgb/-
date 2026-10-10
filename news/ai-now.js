@@ -7,6 +7,10 @@
   const sourceEl = root.querySelector("[data-ai-now-source]");
   const linkEl = root.querySelector("[data-ai-now-link]");
   const statusEl = root.querySelector("[data-ai-now-status]");
+  const language = () => window.ASHI18n?.current() || "zh";
+  const newsLabel = () => language()==="en" ? "🟣 AI updates" : (language()==="zh-TW" ? "🟣 AI 動態" : "🟣 AI 动态");
+  const originalLabel = () => language()==="en" ? "Original" : "原文";
+  const viewLabel = () => language()==="en" ? "Read original:" : "查看原文：";
 
   const state = {
     items: [],
@@ -28,6 +32,7 @@
     const time = new Date(iso).getTime();
     if (!Number.isFinite(time)) return "";
     const minutes = Math.max(0, Math.round((Date.now() - time) / 60000));
+    if (language()==="en") { if(minutes<60)return `${minutes} min ago`; const hours=Math.round(minutes/60); if(hours<24)return `${hours} hr ago`; return `${Math.round(hours/24)} days ago`; }
     if (minutes < 60) return `${minutes} 分钟前`;
     const hours = Math.round(minutes / 60);
     if (hours < 24) return `${hours} 小时前`;
@@ -41,11 +46,11 @@
     root.classList.add("is-changing");
 
     const swap = () => {
-      labelEl.textContent = item.label || "🟣 AI 动态";
+      labelEl.textContent = newsLabel();
       titleEl.textContent = item.title || "AI 圈有新动态";
       sourceEl.textContent = [item.source, timeAgo(item.publishedAt)].filter(Boolean).join(" · ");
       linkEl.href = escapeUrl(item.url);
-      linkEl.setAttribute("aria-label", `查看：${item.title || "AI 动态"}`);
+      const linkText=linkEl.querySelector("span");if(linkText)linkText.textContent=originalLabel();linkEl.setAttribute("aria-label", `${viewLabel()} ${item.title || newsLabel()}`);
       root.classList.remove("is-changing");
       requestAnimationFrame(() => root.classList.add("is-visible"));
     };
@@ -84,6 +89,8 @@
   root.addEventListener("focusin", pause);
   root.addEventListener("focusout", resume);
 
+  window.addEventListener("ash:language-changed",()=>{const linkText=linkEl.querySelector("span");if(linkText)linkText.textContent=originalLabel();if(state.items.length&&state.index>=0)show(state.items[state.index],true);else labelEl.textContent=newsLabel();});
+
   fetch("data/ai-news.json", { cache: "no-store" })
     .then(response => {
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -98,9 +105,10 @@
       schedule();
     })
     .catch(() => {
-      labelEl.textContent = "🟣 AI 动态";
-      titleEl.textContent = "正在等待新鲜 AI 情报……";
-      sourceEl.textContent = "公开来源同步中";
+      labelEl.textContent = newsLabel();
+      titleEl.textContent = language()==="en" ? "Waiting for fresh AI updates…" : (language()==="zh-TW" ? "正在等待最新 AI 情報……" : "正在等待新鲜 AI 情报……");
+      sourceEl.textContent = language()==="en" ? "Syncing public sources" : (language()==="zh-TW" ? "正在同步公開來源" : "公开来源同步中");
+      const linkText=linkEl.querySelector("span");if(linkText)linkText.textContent=originalLabel();
       linkEl.removeAttribute("href");
       statusEl.textContent = "SYNC";
       root.classList.add("is-visible");

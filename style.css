@@ -351,6 +351,7 @@ button:active,.open:active,.learn:active,.favorite-button:active,.cat:active,.au
 
 
 /* User-audit fixes: compact cards, better mobile targets, and a real mobile menu. */
+.auth-label-mobile{display:none}
 .mobile-menu-button{display:none;flex:0 0 auto;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid #dfe4ed;border-radius:10px;background:#fff;color:#25314a;font-size:21px;line-height:1;cursor:pointer}
 .mobile-nav-panel[hidden]{display:none}
 .mobile-nav-panel{position:absolute;top:64px;left:0;right:0;z-index:30;display:flex;flex-direction:column;gap:4px;padding:10px 16px 14px;background:rgba(255,255,255,.98);border-bottom:1px solid #e4e8f0;box-shadow:0 12px 28px rgba(23,32,51,.12)}

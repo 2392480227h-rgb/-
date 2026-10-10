@@ -75,7 +75,7 @@ const UI={
     indexEyebrow:"BEGINNER GUIDES · Visual Tutorials",indexTitle:"New to AI?",indexTitle2:"Follow the steps.",
     indexLead:"Every tool in the directory has a beginner tutorial. These guides use visual steps, clear English instructions, a first task, and access notes to help you go from opening a tool to actually using it.",
     indexSub:"Every listed tool has a beginner guide with visual steps, English instructions, a first task, and access notes.",
-    badgeMobile:"Mobile-friendly",badgeLanguage:"English guides",badgeVisual:"Visual steps",badgeBeginner:"Beginner first",
+    badgeMobile:"Mobile-friendly",badgeLanguage:"Bilingual guides",badgeVisual:"Visual steps",badgeBeginner:"Beginner first",
     allGuides:"All guides",browse:"Browse tutorials by tool. Open any tool to see its beginner guide.",
     readTipTitle:"Reading tip",readTip:"Product interfaces change over time. The visuals here are original interface mockups, not official screenshots. Button names use common wording where possible; when a real interface differs, follow the current official site.",
     footer:"Guides evolve as products and interfaces change.",

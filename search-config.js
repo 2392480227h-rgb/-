@@ -4,6 +4,7 @@ const SearchConfig = {
     { id:"image", label:"图片创作", categories:["图片","设计"], phrases:["图片","图像","照片","画图","画画","绘图","绘画","做图","作图","做图片","生成图片","图片生成","ai绘图","ai绘画","ai图片","海报","封面","头像","壁纸","插画","艺术图","概念图","商品图","产品图","商品照片","产品照片","抠图","去背景","背景移除","修图","图片编辑","image","images","photo","poster","illustration","art","design"] },
     { id:"video", label:"视频创作", categories:["视频","视频 / 音频"], phrases:["视频","做视频","生成视频","ai视频","视频生成","视频制作","短视频","短片","宣传片","口播","剪视频","剪辑","视频剪辑","字幕","视频字幕","视频特效","动画","video","videos","editing","shorts","reels"] },
     { id:"audio", label:"音乐音频", categories:["音频","音乐","音频 / 配音","视频 / 音频"], phrases:["音乐","做音乐","生成音乐","ai音乐","音乐生成","作曲","ai作曲","歌曲","生成歌曲","写歌","写一首歌","做一首歌","创作歌曲","歌曲创作","背景音乐","配乐","音频","录音","语音","配音","声音","tts","语音合成","文字转语音","转写","语音转文字","录音转文字","录音转成文字","音频转文字","音频转成文字","播客","music","audio","song","songs","compose","composition","voice","voiceover","text to speech","speech to text"] },
+    { id:"presentation", label:"演示文稿", categories:["演示 / 文档","图表 / 文档","写作 / 办公"], phrases:["ppt","powerpoint","幻灯片","演示文稿","做ppt","制作ppt","做课件","slides","slide deck","presentation","keynote","课件"] },
     { id:"write", label:"写作办公", categories:["写作","写作 / 办公"], phrases:["写作","写文章","文章","作文","小说","写小说","故事","邮件","写邮件","文案","广告文案","改写","润色","扩写","缩写","报告","写报告","办公","写东西","writing","write","email","copywriting"] },
     { id:"learn", label:"学习研究", categories:["学习","学习 / 研究","搜索 / 研究"], phrases:["学习","学习资料","资料","查资料","研究","论文","查论文","文献","知识","学习笔记","做笔记","总结资料","读文档","看论文","数学题","作业","考试","学习英语","study","learn","research","paper","papers","math"] },
     { id:"code", label:"编程开发", categories:["编程","编程 / 开发","开发 / 模型"], phrases:["编程","代码","写代码","写程序","开发","程序","网站","做网站","网页","前端","后端","python","javascript","typescript","java","c++","程序报错","代码报错","debug","调试","coding","code","developer","development"] },
@@ -36,7 +37,7 @@ const SearchConfig = {
     {id:"debug",intent:"code",label:"调试代码",phrases:["debug","调试","程序报错","代码报错","修复bug","fix bug"]},
     {id:"python",intent:"code",label:"Python",phrases:["python"]},
     {id:"chat_general",intent:"chat",label:"通用聊天",phrases:["聊天","问问题","问答","助手","chat","assistant"]},
-    {id:"presentation",intent:"write",label:"演示文稿 / PPT",phrases:["ppt","powerpoint","幻灯片","演示文稿","制作ppt","做ppt","做课件","slides","slide deck","presentation","keynote"]}
+    {id:"presentation",intent:"presentation",label:"演示文稿 / PPT",phrases:["ppt","powerpoint","幻灯片","演示文稿","制作ppt","做ppt","做课件","slides","slide deck","presentation","keynote"]}
   ],
   stopPhrases:["我想要","我想","我要","我想用","我想让ai","我想让","我要用","帮我","请帮我","请问","有没有","能不能","可不可以","可以帮我","怎么用","怎么","怎么去","怎么才能","如何用","如何","怎样用","怎样","告诉我","教我","我需要","想要","想用","使用","用ai","一下","一个","一下子","给我","帮忙"],
   toolMeta:{
@@ -48,7 +49,7 @@ const SearchConfig = {
     "Leonardo AI":{intents:["image"],tasks:["image_creation","poster"],keywords:["图片","绘画","海报","插画"]},
     "Ideogram":{intents:["image"],tasks:["image_creation","poster"],keywords:["海报","文字排版","图片"]},
     "Adobe Firefly":{intents:["image"],tasks:["image_creation","poster"],keywords:["图片","设计","海报"]},
-    "Canva":{intents:["image","write"],tasks:["poster","product_image","article","presentation"],keywords:["海报","设计","文案","ppt","powerpoint","演示文稿","幻灯片","slides","presentation"]},
+    "Canva":{intents:["image","presentation"],tasks:["poster","product_image","article","presentation"],keywords:["海报","设计","文案","ppt","powerpoint","演示文稿","幻灯片","slides","presentation"]},
     "PhotoRoom":{intents:["image"],tasks:["product_image","background_remove"],keywords:["商品图","抠图","去背景"]},
     "Midjourney":{intents:["image"],tasks:["image_creation","poster"],keywords:["图片","绘画","概念图"]},
     "Krea":{intents:["image"],tasks:["image_creation"],keywords:["图片","设计","增强"]},
@@ -96,9 +97,9 @@ const SearchConfig = {
     "Cline":{intents:["code"],tasks:["coding","debug"],keywords:["代码","Agent","VS Code"]},
     "Roo Code":{intents:["code"],tasks:["coding","debug"],keywords:["代码","Agent","开发"]},
     "OpenHands":{intents:["code"],tasks:["coding","debug","website"],keywords:["代码","Agent","开发"]},
-    "Gamma":{intents:["write"],tasks:["presentation"],keywords:["ppt","powerpoint","演示文稿","幻灯片","做课件","汇报","slides","slide deck","presentation","keynote"]},
-    "Beautiful.ai":{intents:["write"],tasks:["presentation"],keywords:["ppt","powerpoint","演示文稿","幻灯片","做课件","汇报","slides","slide deck","presentation"]},
-    "Napkin AI":{intents:["write","image"],tasks:["presentation","poster"],keywords:["ppt","演示文稿","流程图","图表","幻灯片","slides","presentation","diagram"]}
+    "Gamma":{intents:["presentation"],tasks:["presentation"],keywords:["ppt","powerpoint","演示文稿","幻灯片","做课件","汇报","slides","slide deck","presentation","keynote"]},
+    "Beautiful.ai":{intents:["presentation"],tasks:["presentation"],keywords:["ppt","powerpoint","演示文稿","幻灯片","做课件","汇报","slides","slide deck","presentation"]},
+    "Napkin AI":{intents:["presentation","image"],tasks:["presentation","poster"],keywords:["ppt","演示文稿","流程图","图表","幻灯片","slides","presentation","diagram"]},
   }
 };
 window.ASHSearchConfig=SearchConfig;

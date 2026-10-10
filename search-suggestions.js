@@ -50,7 +50,6 @@ function draw(){
     input.value=this.dataset.q;
     box.hidden=true;
     if(typeof render==="function")render({animate:true});
-    input.focus();
     document.getElementById("tools")?.scrollIntoView({behavior:"smooth",block:"start"});
   });
   box.querySelectorAll("[data-name]").forEach(b=>b.onclick=function(){

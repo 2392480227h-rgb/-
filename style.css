@@ -348,3 +348,63 @@ button:active,.open:active,.learn:active,.favorite-button:active,.cat:active,.au
   .lang-globe{font-size:13px}
   .language-menu{right:0;width:174px}
 }
+
+
+/* User-audit fixes: compact cards, better mobile targets, and a real mobile menu. */
+.mobile-menu-button{display:none;flex:0 0 auto;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid #dfe4ed;border-radius:10px;background:#fff;color:#25314a;font-size:21px;line-height:1;cursor:pointer}
+.mobile-nav-panel[hidden]{display:none}
+.mobile-nav-panel{position:absolute;top:64px;left:0;right:0;z-index:30;display:flex;flex-direction:column;gap:4px;padding:10px 16px 14px;background:rgba(255,255,255,.98);border-bottom:1px solid #e4e8f0;box-shadow:0 12px 28px rgba(23,32,51,.12)}
+.mobile-nav-panel a{display:flex;align-items:center;min-height:44px;padding:9px 12px;border-radius:9px;color:#34415a;text-decoration:none;font-weight:750}
+.mobile-nav-panel a:hover,.mobile-nav-panel a:focus-visible{background:#f3f5f9}
+.pricing-note{display:block;max-width:420px;margin-top:5px;color:#68758b;font-size:11px;line-height:1.4;text-align:right}
+.card{min-width:0;cursor:pointer}
+.card .top,.card-top-actions{min-width:0}
+.card-top-actions{gap:5px}
+.card .badge{max-width:130px;overflow-wrap:anywhere}
+.card h2{margin:9px 0 4px}
+.card .desc{min-height:40px;line-height:1.45}
+.card .card-signal{margin-top:8px}
+.favorite-button{min-height:34px}
+.signal-note{color:#66738a}
+.cat,.lang-button,.auth-button{min-height:40px}
+@media(max-width:760px){
+  .mobile-menu-button{display:inline-flex}
+  .navlinks{display:none!important}
+  .mobile-nav-panel:not([hidden]){display:flex}
+  .nav{gap:7px}
+  .pricing-note{max-width:100%;text-align:left}
+  .toolbar{max-width:100%}
+  .toolbar select{max-width:100%}
+  .footgrid{padding-left:0;padding-right:0}
+}
+@media(max-width:520px){
+  .wrap{width:calc(100% - 22px)}
+  .nav{gap:5px;justify-content:space-between}
+  .brand{gap:6px;min-width:0;flex:1 1 auto}
+  .brand-mark{width:32px;height:32px}
+  .brand-name strong{font-size:13px}
+  .mobile-menu-button{width:38px;height:40px;flex:0 0 38px}
+  .auth-button{gap:5px;min-height:40px;padding:5px 7px;font-size:11px;flex:0 0 auto}
+  .auth-button .google-mark{width:18px;height:18px;font-size:13px}
+  .auth-label-desktop{display:none}
+  .auth-label-mobile{display:inline!important}
+  .lang-button{min-width:70px;height:40px;padding:0 7px;font-size:10px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .grid .card{padding:11px;border-radius:12px}
+  .card .top{gap:5px;align-items:flex-start}
+  .card .icon,.card .icon .brand-icon{width:34px;height:34px;flex:0 0 34px}
+  .card-top-actions{flex:1 1 auto;justify-content:flex-end;gap:4px}
+  .card .badge{max-width:82px;white-space:normal;text-align:center;font-size:9px;line-height:1.25;padding:4px 5px}
+  .favorite-button{min-height:34px;min-width:34px;padding:5px 6px;font-size:10px;gap:2px}
+  .favorite-button .favorite-star{font-size:15px}
+  .card h2{font-size:15px;overflow-wrap:anywhere}
+  .card .desc{min-height:44px;font-size:12px;overflow-wrap:anywhere}
+  .card .meta{gap:4px;margin:8px 0}
+  .card .tag{max-width:100%;overflow-wrap:anywhere;font-size:9px}
+  .card-signal{align-items:flex-start;flex-direction:column;gap:3px}
+  .popularity{font-size:10px}
+  .signal-note{font-size:9px;color:#66738a}
+  .card-actions{gap:6px}
+  .card-actions .open,.card-actions .learn{min-height:36px;padding:7px 6px;font-size:11px;text-align:center}
+  .pricing-note{font-size:10px}
+}

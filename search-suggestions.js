@@ -42,14 +42,16 @@ function draw(){
     const label=task?(window.ASHI18n?.t("suggestRecognized",window.ASHI18n?.task(task)||task)||("识别到："+task)):(intent?(window.ASHI18n?.t("suggestRecognized",intent)||("识别到："+intent)):(window.ASHI18n?.t("suggestLooking")||"你可能在找 / You may be looking for"));
     box.innerHTML='<div class="suggest-title">'+esc(label)+'</div>'+list.map(tool=>{const name=window.ASHI18n?.toolName(tool)||tool[0];const desc=window.ASHI18n?.toolDescription(tool)||tool[3];const cat=window.ASHI18n?.category(tool)||tool[2];return '<button class="suggest-item" data-name="'+esc(tool[0])+'"><span class="suggest-icon">'+(window.ASHIcons?ASHIcons.brand(tool[0],tool[5]):tool[1])+'</span><span><strong>'+esc(name)+'</strong><small>'+esc(cat)+' · '+esc(desc)+'</small></span><b>›</b></button>';}).join("");
   }else{
-    box.innerHTML='<div class="suggest-empty">'+(window.ASHI18n?.t("suggestEmpty")||"暂时没找到合适的工具。换一种说法试试。")+'</div>';
+    box.innerHTML="";box.hidden=true;return;
   }
 
   box.hidden=false;
   box.querySelectorAll("[data-q]").forEach(b=>b.onclick=function(){
     input.value=this.dataset.q;
-    draw();
+    box.hidden=true;
+    if(typeof render==="function")render({animate:true});
     input.focus();
+    document.getElementById("tools")?.scrollIntoView({behavior:"smooth",block:"start"});
   });
   box.querySelectorAll("[data-name]").forEach(b=>b.onclick=function(){
     input.value=this.dataset.name;

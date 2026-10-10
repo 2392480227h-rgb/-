@@ -87,6 +87,20 @@ function toolName(tool){
 function toolText(tool){
   return Array.isArray(tool)?tool.join(" "):JSON.stringify(tool);
 }
+function priceSearchTerms(tool){
+  const status=Array.isArray(tool)?String(tool[4]||""):"";
+  const terms={
+    "免费入口":"free free access available free to start 免费可用",
+    "免费使用":"free free to use free access 免费可用",
+    "免费额度":"free free tier limited free access quota 免费额度",
+    "免费试用":"free trial limited free access 免费试用",
+    "免费 / 开源":"free open source open-source 免费开源",
+    "免费 / 本地":"free local offline 免费本地",
+    "按量计费":"paid pay as you go usage based 付费 按量计费",
+    "付费为主":"paid mostly paid subscription 付费为主"
+  };
+  return terms[status]||"";
+}
 function metaFor(tool){
   return config.toolMeta[toolName(tool)]||{};
 }
@@ -119,7 +133,7 @@ function fuzzyScore(term,target){
 }
 
 function toolScore(tool,ctx){
-  const name=toolName(tool),text=norm(toolText(tool)),cat=norm(categoryOf(tool)),meta=metaFor(tool);
+  const name=toolName(tool),text=compact(toolText(tool)+" "+priceSearchTerms(tool)),cat=norm(categoryOf(tool)),meta=metaFor(tool);
   let score=0;
   const nameN=compact(name);
 
